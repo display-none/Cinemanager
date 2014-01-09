@@ -10,7 +10,11 @@ import javax.persistence.Query;
 
 import org.cinemanager.common.MovieGenre;
 import org.cinemanager.common.MovieVersion;
+import org.cinemanager.entity.GroupTicket;
 import org.cinemanager.entity.Movie;
+import org.cinemanager.entity.Ticket;
+
+import com.google.common.collect.Lists;
 
 public class Main {
 
@@ -30,6 +34,14 @@ public class Main {
 		movie.setRuntime(123);
 		movie.setVersion(MovieVersion.BOTH);
 		
+		Ticket t1 = new Ticket();
+		Ticket t2 = new Ticket();
+		Ticket t3 = new Ticket();
+		GroupTicket gt = new GroupTicket();
+		gt.setTickets(Lists.newArrayList(t1, t2, t3));
+		
+		em.persist(gt);
+		
 		em.persist(movie);
 		
 		em.flush();
@@ -38,5 +50,8 @@ public class Main {
 		List<Movie> results = query.getResultList();
 		
 		System.out.println(results.get(0).getTitle());
+		
+		em.getTransaction().commit();
+		em.close();
 	}
 }

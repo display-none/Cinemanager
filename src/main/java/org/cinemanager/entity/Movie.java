@@ -12,8 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.ValidationMode;
-
 import org.cinemanager.common.MovieGenre;
 import org.cinemanager.common.MovieVersion;
 
@@ -29,7 +27,7 @@ public class Movie {
 	private String title;
 	
 	@Temporal(value=TemporalType.DATE)
-	@Column(name="releaseDate", nullable=false)
+	@Column(name="release_date", nullable=false)
 	private Date releaseDate;
 	
 	@Enumerated(value=EnumType.STRING)
@@ -39,7 +37,7 @@ public class Movie {
 	@Column(name="runtime")
 	private int runtime;
 	
-	@Column(name="minimalAge")
+	@Column(name="minimal_age")
 	private int minimalAge;
 	
 	@Enumerated(value=EnumType.STRING)
@@ -48,10 +46,6 @@ public class Movie {
 	
 	public Long getId() {
 		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
 	}
 	
 	public String getTitle() {
