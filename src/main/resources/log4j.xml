@@ -14,7 +14,7 @@
 			fatal
 	-->
 	<logger name="openjpa.jdbc.SQL" additivity="false">
-	 <appender-ref ref="DatabaseLog"/>
+		<level value="warn" />
 	</logger>    
 
 	<category name="openjpa.jdbc.SQL">
