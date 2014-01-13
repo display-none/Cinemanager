@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="group_ticket")
-public class GroupTicket {
+public class GroupTicket implements IEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

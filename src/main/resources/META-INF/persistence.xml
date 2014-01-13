@@ -4,10 +4,15 @@
   version="2.0">
   <persistence-unit name="openjpa">
     <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
-    <class>org.cinemanager.entity.Movie</class>
-    <class>org.cinemanager.entity.Ticket</class>
-    <class>org.cinemanager.entity.GroupTicket</class>
+    <class>org.cinemanager.entity.Auditorium</class>
+    <class>org.cinemanager.entity.Booking</class>
     <class>org.cinemanager.entity.Employee</class>
+    <class>org.cinemanager.entity.GroupTicket</class>
+    <class>org.cinemanager.entity.Marathon</class>
+    <class>org.cinemanager.entity.Movie</class>
+    <class>org.cinemanager.entity.Seat</class>
+    <class>org.cinemanager.entity.Showing</class>
+    <class>org.cinemanager.entity.Ticket</class>
     
     <properties>
       <property name="openjpa.ConnectionURL" value="jdbc:hsqldb:db/cinemanager_database;shutdown=true"/>

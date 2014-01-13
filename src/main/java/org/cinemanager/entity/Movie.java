@@ -12,12 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import org.cinemanager.common.MovieGenre;
 import org.cinemanager.common.MovieVersion;
 
 @Entity
 @Table(name="movie")
-public class Movie {
+public class Movie implements IEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
