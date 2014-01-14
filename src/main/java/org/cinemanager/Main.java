@@ -27,7 +27,7 @@ import javax.swing.JScrollBar;
 import org.cinemanager.gui.BookingView;
 import org.cinemanager.gui.EmployeerView;
 import org.cinemanager.gui.MarathonView;
-import org.cinemanager.gui.MovieView;
+import org.cinemanager.gui.AddMovieView;
 import org.cinemanager.gui.ShowingView;
 import org.cinemanager.gui.TicketView;
 
@@ -41,7 +41,7 @@ public class Main extends JFrame implements WindowListener {
 	private JPanel panel,panel_middle;
 	private TicketView ticket;   
 	private BookingView booking;
-	private MovieView movie; 
+	private AddMovieView movie; 
 	private ShowingView showing;
 	private EmployeerView employeer;  
 	private MarathonView marathon;
@@ -57,7 +57,7 @@ public class Main extends JFrame implements WindowListener {
 		addWindowListener(this);
 		panel_middle = new JPanel();
 		panel = new JPanel(); 
-		panel_middle.setLayout(new GridLayout(7,2)); 
+		panel_middle.setLayout(new BorderLayout()); 
 		scroll = new JScrollBar(); 
 		scroll.add(panel_middle);
 		panel.setLayout(new BorderLayout());   
@@ -167,8 +167,10 @@ public class Main extends JFrame implements WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				movie = new org.cinemanager.gui.MovieView(panel_middle);  
-				movie.add_movie(); 
+				movie = new AddMovieView(panel_middle);  
+				movie.resetPanel();
+				panel_middle.removeAll();
+				panel_middle.add(movie);
 				panel.repaint();
 				panel.revalidate();
 				
@@ -182,8 +184,8 @@ public class Main extends JFrame implements WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				movie = new org.cinemanager.gui.MovieView(panel_middle);  
-				movie.delete_movie(); 
+				movie = new org.cinemanager.gui.AddMovieView(panel_middle);  
+//				movie.delete_movie(); 
 				panel.repaint();
 				panel.revalidate();
 				
