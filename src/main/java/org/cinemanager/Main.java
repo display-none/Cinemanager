@@ -167,8 +167,8 @@ public class Main extends JFrame implements WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				movie = new AddMovieView(panel_middle);  
-				movie.resetPanel();
+				movie = new AddMovieView();  
+				movie.reset();
 				panel_middle.removeAll();
 				panel_middle.add(movie);
 				panel.repaint();
@@ -184,7 +184,7 @@ public class Main extends JFrame implements WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				movie = new org.cinemanager.gui.AddMovieView(panel_middle);  
+//				movie = new org.cinemanager.gui.AddMovieView(panel_middle);  
 //				movie.delete_movie(); 
 				panel.repaint();
 				panel.revalidate();

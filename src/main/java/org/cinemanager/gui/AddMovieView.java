@@ -14,13 +14,16 @@ import javax.swing.JTextField;
 
 import org.cinemanager.common.MovieGenre;
 import org.cinemanager.common.MovieVersion;
+import org.cinemanager.controller.MovieController;
+import org.cinemanager.entity.Movie;
 
 
-public class AddMovieView extends JPanel { 
+public class AddMovieView extends JPanel implements View<Movie> { 
 
 	private static final long serialVersionUID = 1L;
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 	private final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT);
+	private final String APPLY_BUTTON_LABEL = "Save";
 	
 	private JTextField titleTextField;
 	private JTextField releaseDateTextField;
@@ -28,8 +31,9 @@ public class AddMovieView extends JPanel {
 	private JTextField minimalAgeTextField; 
 	private JComboBox<MovieGenre> genreComboBox;
 	private ButtonGroup versionButtonGroup;
+	private MovieController controller = MovieController.getInstance();
 	
-	public AddMovieView(JPanel mainpanel) { 
+	public AddMovieView() { 
 		this.setLayout(new GridLayout(7, 2));
 		
 		addPanelTitle(); 
@@ -161,12 +165,28 @@ public class AddMovieView extends JPanel {
 		this.add(panel);
 	}
 	
-	public void resetPanel() {
+	@Override
+	public void reset() {
 		titleTextField.setText("");
 		releaseDateTextField.setText("");
 		runtimeTextField.setText("");
 		minimalAgeTextField.setText("");
 		genreComboBox.setSelectedIndex(0);
 		versionButtonGroup.clearSelection();;
+	}
+
+	@Override
+	public void doApplyAction() {
+		controller.createAndPersistMovie(this);
+	}
+
+	@Override
+	public Movie doGetResultAction() {
+		return controller.createMovie(this);
+	}
+
+	@Override
+	public String getApplyButtonLabel() {
+		return APPLY_BUTTON_LABEL;
 	}
 }
