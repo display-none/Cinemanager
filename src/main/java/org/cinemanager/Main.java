@@ -29,7 +29,7 @@ public class Main {
 
 	
 	public static void main(String[] args) {
-		System.out.print("hello");
+		System.out.print("hello123");
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("openjpa");
 		EntityManager em = emf.createEntityManager();
