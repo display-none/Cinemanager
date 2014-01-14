@@ -23,19 +23,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
-import org.cinemanager.common.EmployeePosition;
-import org.cinemanager.common.MovieGenre;
-import org.cinemanager.common.MovieVersion;
-import org.cinemanager.common.ShowingVersion;
-import org.cinemanager.common.TicketType;
-import org.cinemanager.entity.Auditorium;
-import org.cinemanager.entity.Booking;
-import org.cinemanager.entity.Employee;
-import org.cinemanager.entity.GroupTicket;
-import org.cinemanager.entity.Movie;
-import org.cinemanager.entity.Seat;
-import org.cinemanager.entity.Showing;
-import org.cinemanager.entity.Ticket;
+
 import org.cinemanager.gui.BookingView;
 import org.cinemanager.gui.EmployeerView;
 import org.cinemanager.gui.MarathonView;
@@ -96,7 +84,7 @@ public class Main extends JFrame implements WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ticket = new org.cinemanager.gui.TicketView(panel_middle);    
+				ticket = new TicketView(panel_middle);    
 				ticket.add_new_ticket();
 				panel.repaint();
 				panel.revalidate();
@@ -111,7 +99,7 @@ public class Main extends JFrame implements WindowListener {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ticket = new org.cinemanager.gui.TicketView(panel_middle);    
+				ticket = new TicketView(panel_middle);    
 				ticket.add_new_group_ticket();
 				panel.repaint();
 				panel.revalidate();
