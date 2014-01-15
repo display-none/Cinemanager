@@ -52,7 +52,7 @@ public class AddMovieView extends JPanel implements View<Movie> {
 	public Date getReleaseDate() {
 		String date = releaseDateTextField.getText();
 		Date parsedDate = null;
-		if(date != "") {
+		if(!(date.equals(""))) {
 			try {
 				parsedDate = dateParser.parse(date);
 			} catch (ParseException e) {
@@ -172,7 +172,7 @@ public class AddMovieView extends JPanel implements View<Movie> {
 		runtimeTextField.setText("");
 		minimalAgeTextField.setText("");
 		genreComboBox.setSelectedIndex(0);
-		versionButtonGroup.clearSelection();;
+		versionButtonGroup.clearSelection();
 	}
 
 	@Override

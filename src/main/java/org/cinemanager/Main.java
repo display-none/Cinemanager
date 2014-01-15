@@ -3,19 +3,16 @@ package org.cinemanager;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Date;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -25,13 +22,12 @@ import javax.swing.JScrollBar;
 
 
 import org.cinemanager.gui.BookingView;
-import org.cinemanager.gui.EmployeerView;
+import org.cinemanager.gui.AddEmployeeView;
 import org.cinemanager.gui.MarathonView;
 import org.cinemanager.gui.AddMovieView;
 import org.cinemanager.gui.ShowingView;
-import org.cinemanager.gui.TicketView;
+import org.cinemanager.gui.AddTicketView;
 
-import com.google.common.collect.Lists;
 
 public class Main extends JFrame implements WindowListener { 
 	private JMenuBar menubar;  
@@ -39,11 +35,11 @@ public class Main extends JFrame implements WindowListener {
 	private JMenuItem menuitem;
 	private Button apply_button; 
 	private JPanel panel,panel_middle;
-	private TicketView ticket;   
+	private AddTicketView ticket;   
 	private BookingView booking;
 	private AddMovieView movie; 
 	private ShowingView showing;
-	private EmployeerView employeer;  
+	private AddEmployeeView employee;  
 	private MarathonView marathon;
 	private JScrollBar scroll;   
 	private EntityManagerFactory emf; 
@@ -70,7 +66,6 @@ public class Main extends JFrame implements WindowListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				
 			}  
 			
 		}); 
@@ -84,8 +79,10 @@ public class Main extends JFrame implements WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ticket = new TicketView(panel_middle);    
-				ticket.add_new_ticket();
+				ticket = new AddTicketView();   
+				ticket.reset();
+				panel_middle.removeAll();
+				panel_middle.add(ticket);
 				panel.repaint();
 				panel.revalidate();
 				
@@ -99,10 +96,10 @@ public class Main extends JFrame implements WindowListener {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ticket = new TicketView(panel_middle);    
+				/*ticket = new AddTicketView(panel_middle);    
 				ticket.add_new_group_ticket();
 				panel.repaint();
-				panel.revalidate();
+				panel.revalidate();*/
 				
 				
 			}
@@ -116,11 +113,13 @@ public class Main extends JFrame implements WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				employeer = new EmployeerView(panel_middle);  
-				employeer.add_new_empolyeer(); 
+				employee = new AddEmployeeView();   
+				employee.reset();
+				panel_middle.removeAll();
+				panel_middle.add(employee);
 				panel.repaint();
 				panel.revalidate();
-				
+				 
 			}  
 			 
 				 
@@ -131,10 +130,12 @@ public class Main extends JFrame implements WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				employeer = new org.cinemanager.gui.EmployeerView(panel_middle);  
-				employeer.delete_employeer(); 
+				/*employeer = new AddEmployeerView();   
+				employeer.reset();
+				panel_middle.removeAll();
+				panel_middle.add(employeer);
 				panel.repaint();
-				panel.revalidate();
+				panel.revalidate();*/
 				
 			}  
 			 
@@ -146,10 +147,10 @@ public class Main extends JFrame implements WindowListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				employeer = new org.cinemanager.gui.EmployeerView(panel_middle);  
-				employeer.print_all_employeers(); 
+			/*	employee = new org.cinemanager.gui.AddEmployeeView(panel_middle);  
+				employee.print_all_employeers(); 
 				panel.repaint();
-				panel.revalidate();
+				panel.revalidate();*/
 				
 			}  
 			 
@@ -308,64 +309,6 @@ public class Main extends JFrame implements WindowListener {
 	
 	public static void main(String[] args) {
 		Main main = new Main();
-		
-		/*Movie movie = new Movie();
-		movie.setTitle("sth");
-		movie.setGenre(MovieGenre.ACTION);
-		movie.setReleaseDate(new Date());
-		movie.setRuntime(123);
-		movie.setVersion(MovieVersion.BOTH);
-		em.persist(movie);
-		
-		Ticket t1 = new Ticket();
-		Ticket t2 = new Ticket();
-		Ticket t3 = new Ticket();
-		GroupTicket gt = new GroupTicket();
-		gt.setTickets(Lists.newArrayList(t1, t2, t3));
-		em.persist(gt);
-		
-		Auditorium auditorium = new Auditorium();
-		em.persist(auditorium);
-		
-		Employee employee = new Employee();
-		employee.setFirstName("dupa");
-		employee.setLastName("maryna");
-		employee.setPosition(EmployeePosition.MANAGER);
-		em.persist(employee);
-		
-		Showing showing = new Showing();
-		showing.setAuditorium(auditorium);
-		showing.setDate(new Date());
-		showing.setSupervisingEmployee(employee);
-		showing.setVersion(ShowingVersion.VERSION_2D);
-		showing.setMovie(movie);
-		em.persist(showing);
-		
-		Seat seat = new Seat();
-		seat.setAuditorium(auditorium);
-		seat.setRow(0);
-		seat.setNumber(0);
-		em.persist(seat);
-		
-		Booking booking = new Booking();
-		booking.setExpirationDate(new Date());
-		booking.setShowing(showing);
-		booking.setSeat(seat);
-		em.persist(booking);
-		
-		Ticket ticket = new Ticket();
-		ticket.setPrice(3.5f);
-		ticket.setSeat(seat);
-		ticket.setShowing(showing);
-		ticket.setType(TicketType.NORMAL);
-		em.persist(ticket);
-		
-		em.flush();
-		em.clear();
-		Query query = em.createQuery("select m from Movie m");
-		List<Movie> results = query.getResultList();
-		
-		System.out.println(results.get(0).getTitle());*/
 	}
 	@Override
 	public void windowOpened(WindowEvent e) {
