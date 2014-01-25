@@ -26,7 +26,7 @@ import org.cinemanager.entity.Movie;
 import org.cinemanager.entity.Showing;
 
 
-public class AddShowingView  extends JPanel implements View<Showing> {    
+public class AddShowingView  extends View<Showing> {    
 	private JTextField  textfieldMovieID,textfieldDate,textfieldAuditorium,textfieldEmployeeID,textfieldMarathonID; 
 	private ButtonGroup buttonGroupVersion; 
 	private ShowingController showingController;  

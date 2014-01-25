@@ -26,7 +26,7 @@ public class ShowingController {
 	}
 	public static ShowingController getInstance() {
 		if(instance == null) {
-			instance = ShowingController();  						/** NIE ROZUMIEM O CO MU CHODZI **/ 
+			instance = new ShowingController();  						/** NIE ROZUMIEM O CO MU CHODZI **/ 
 		}
 		return instance;
 	}

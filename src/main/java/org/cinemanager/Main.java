@@ -5,14 +5,8 @@ import java.awt.Button;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.LinkedList;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -22,31 +16,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
 
-
-
-
-
-
-
-
-
-
-
-
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.gui.AddGroupTicketView;
+import org.cinemanager.gui.AddShowingView;
 import org.cinemanager.gui.BookingView;
 import org.cinemanager.gui.AddEmployeeView;
 import org.cinemanager.gui.DeleteEmployeeView;
 import org.cinemanager.gui.MarathonView;
 import org.cinemanager.gui.AddMovieView;
-<<<<<<< HEAD
-import org.cinemanager.gui.AddShowingView;
-=======
-import org.cinemanager.gui.ShowEmployeesView;
-import org.cinemanager.gui.ShowingView;
->>>>>>> 8038761bd97c92077bbbf5d427fc13c3603f02f1
 import org.cinemanager.gui.AddTicketView;
+import org.cinemanager.gui.ShowEmployeesView;
 import org.cinemanager.gui.View;
 import org.cinemanager.gui.ViewCreator;
 import org.cinemanager.gui.ViewManager;
@@ -157,15 +136,10 @@ public class Main extends JFrame implements ViewManager {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
 				showing = new AddShowingView(); 
 				showing.reset(); 
-				panel_middle.removeAll();
-				panel_middle.add(showing);
-=======
-				showing = new org.cinemanager.gui.ShowingView(mainPanel); 
-				showing.add_show();  
->>>>>>> 8038761bd97c92077bbbf5d427fc13c3603f02f1
+				mainPanel.removeAll();
+				mainPanel.add(showing);
 				panel.repaint();
 				panel.revalidate();
 				
