@@ -6,12 +6,10 @@ import org.cinemanager.gui.AddEmployeeView;
 
 public class EmployeeController {
 	private static EmployeeController instance;
-	
 	private EmployeeDao dao = new EmployeeDao();
-	
 	public void createAndPersistEmployee(AddEmployeeView addEmployeeView) {
-		Employee movie = createEmployee(addEmployeeView);
-		dao.persist(movie);
+		Employee employee = createEmployee(addEmployeeView);
+		dao.persist(employee);
 	}
 	
 	public Employee createEmployee(AddEmployeeView addEmployeeView) {
