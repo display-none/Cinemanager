@@ -1,6 +1,7 @@
 package org.cinemanager.dao;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -24,7 +25,9 @@ public class Dao<T extends IEntity> {
 		}
 		closeContext();
 	}
-	
+	public List getAllEmployee() { 
+		return null;
+	}
 	public void persist(Collection<T> entities) {
 		createContext();
 		for(T entity : entities) {
