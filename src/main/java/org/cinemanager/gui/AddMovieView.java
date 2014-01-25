@@ -5,11 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import org.cinemanager.common.MovieGenre;
@@ -32,13 +30,11 @@ public class AddMovieView extends View<Movie> {
 	private JTextField runtimeTextField;
 	private JTextField minimalAgeTextField; 
 	private JComboBox<MovieGenre> genreComboBox;
-	private ButtonGroup versionButtonGroup;
+	private RadioGroup<MovieVersion> versionRadioGroup;
 	
 	private MovieController controller = MovieController.getInstance();
-	private ViewManager viewManager;
 	
-	private AddMovieView(ViewManager viewManager) {
-		this.viewManager = viewManager;
+	private AddMovieView() {
 		this.setLayout(new GridLayout(7, 2));
 		
 		addPanelTitle(); 
@@ -90,7 +86,7 @@ public class AddMovieView extends View<Movie> {
 	}
 	
 	public MovieVersion getVersion() {
-		return MovieVersion.valueOf((String) versionButtonGroup.getSelection().getSelectedObjects()[0]);		//this is horrible
+		return versionRadioGroup.getSelected();
 	}
 	
 	private void addPanelTitle() {
@@ -144,18 +140,14 @@ public class AddMovieView extends View<Movie> {
 	}
 	
 	private void addVersion() {
-		JLabel version = new JLabel( " Version :  "); 
 		JPanel panel = new JPanel(); 
 		panel.setLayout(new GridLayout(1,1));
+		
+		JLabel version = new JLabel( " Version :  "); 
 		panel.add(version);
 		
-		versionButtonGroup = new ButtonGroup();
-		for(MovieVersion movieVersion : MovieVersion.values()) {
-			JRadioButton radioButton = new JRadioButton(movieVersion.toString());
-			versionButtonGroup.add(radioButton);
-			panel.add(radioButton);
-		}
-		versionButtonGroup.setSelected(versionButtonGroup.getSelection(), true);
+		versionRadioGroup = new RadioGroup<>(MovieVersion.values());
+		panel.add(versionRadioGroup);
 		this.add(panel);
 	}
 	
@@ -177,7 +169,7 @@ public class AddMovieView extends View<Movie> {
 		runtimeTextField.setText("");
 		minimalAgeTextField.setText("");
 		genreComboBox.setSelectedIndex(0);
-		versionButtonGroup.clearSelection();
+		versionRadioGroup.setFirstSelected();
 	}
 	
 	@Override
@@ -186,7 +178,8 @@ public class AddMovieView extends View<Movie> {
 				!releaseDateTextField.getText().isEmpty() ||
 				!runtimeTextField.getText().isEmpty() ||
 				!minimalAgeTextField.getText().isEmpty() ||
-				genreComboBox.getSelectedIndex() != 0;
+				genreComboBox.getSelectedIndex() != 0 ||
+				!versionRadioGroup.isFirstSelected();
 	}
 
 	@Override
@@ -224,7 +217,7 @@ public class AddMovieView extends View<Movie> {
 
 		@Override
 		public AddMovieView createView(ViewManager viewManager) {
-			return new AddMovieView(viewManager);
+			return new AddMovieView();
 		}
 		
 	}

@@ -1,5 +1,8 @@
 package org.cinemanager.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,6 +29,11 @@ public class Marathon implements IEntity {
 	@JoinColumn(name="supervising_employee_id", nullable=false)
 	private Employee supervisingEmployee;
 	
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumn(name="marathon_id", referencedColumnName="id", nullable=true)
+	private List<Showing> showings;
+
+	
 	@Override
 	public Long getId() {
 		return id;
@@ -45,5 +53,13 @@ public class Marathon implements IEntity {
 
 	public void setSupervisingEmployee(Employee supervisingEmployee) {
 		this.supervisingEmployee = supervisingEmployee;
+	}
+
+	public List<Showing> getShowings() {
+		return showings;
+	}
+
+	public void setShowings(List<Showing> showings) {
+		this.showings = showings;
 	}
 }

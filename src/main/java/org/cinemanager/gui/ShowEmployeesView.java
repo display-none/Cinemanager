@@ -21,24 +21,22 @@ import org.cinemanager.entity.IEntity;
 public class ShowEmployeesView extends View<Employee> {
 
 	private static final long serialVersionUID = 1L;
-	private JList<JLabel>employeeList;
+	private JList<Employee>employeeList;
 	private EmployeeController controller = EmployeeController.getInstance(); ; 
-	private RowsElement rowsElement = new RowsElement(); 
 	private ShowEmployeesView(ViewManager viewManager) {
 		 
-		employeeList = new JList<JLabel>( createListModel() );
+		employeeList = new JList<Employee>( createListModel() );
 		employeeList.setCellRenderer( new EmployeeCellRender()); 
 		 
 		this.add(employeeList); 
-		this.setVisible(true);
 	} 
-	public DefaultListModel<JLabel> createListModel(){ 
-		List<Employee> list = controller.getAllEmployee();  
-		System.out.println("Size : " + list.size());
-		DefaultListModel<JLabel> listmodel = new DefaultListModel<JLabel>();
-		for(Employee it : list) { 
+	public DefaultListModel<Employee> createListModel(){ 
+		List<Employee> employees = controller.getAllEmployees();  
+		System.out.println("Size : " + employees.size());
+		DefaultListModel<Employee> listmodel = new DefaultListModel<Employee>();
+		for(Employee employee : employees) { 
 			 
-			listmodel.addElement(new RowsElement().getPanel(it));
+			listmodel.addElement(employee);
 		}
 		return listmodel;
 	} 
@@ -100,28 +98,16 @@ public class ShowEmployeesView extends View<Employee> {
 		
 	}
 } 
-class EmployeeCellRender extends DefaultListCellRenderer{
-	public EmployeeCellRender() { 
-		
-	}
+class EmployeeCellRender extends JPanel implements ListCellRenderer<Employee> {
+
+	private static final long serialVersionUID = 1L;
+
 	@Override
-	public Component getListCellRendererComponent(JList list, Object value,
-			int index, boolean isSelected, boolean cellHasFocus) { 
-		  JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus); 
-		  
-		  return label;
+	public Component getListCellRendererComponent(JList<? extends Employee> list, Employee value, int index, boolean isSelected,
+			boolean cellHasFocus) {
+		add(new JLabel(value.getFirstName() + " " + value.getLastName() + " - " + value.getPosition().toString()));
+		add(new JButton("some button"));
+		return this;
 	} 
 	
 } 
-class RowsElement {  
-	private JPanel panel; 
-	private JButton button = new JButton("Delete");
-	public RowsElement(){ 
-		
-	} 
-	public JLabel getPanel(Employee employee){ 
-		JLabel label = new JLabel(); 
-		label.add(new JLabel(employee.getFirstName()));
-		return label;
-	}
-}

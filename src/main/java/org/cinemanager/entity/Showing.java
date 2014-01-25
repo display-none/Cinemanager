@@ -47,10 +47,6 @@ public class Showing implements IEntity {
 	@JoinColumn(name="supervising_employee_id", nullable=false)
 	private Employee supervisingEmployee;
 	
-	@ManyToOne(fetch=FetchType.LAZY, optional=true)
-	@JoinColumn
-	private Marathon marathon;
-	
 	@Override
 	public Long getId() {
 		return id;
@@ -86,14 +82,6 @@ public class Showing implements IEntity {
 
 	public void setSupervisingEmployee(Employee supervisingEmployee) {
 		this.supervisingEmployee = supervisingEmployee;
-	}
-
-	public Marathon getMarathon() {
-		return marathon;
-	}
-
-	public void setMarathon(Marathon marathon) {
-		this.marathon = marathon;
 	}
 
 	public Movie getMovie() {

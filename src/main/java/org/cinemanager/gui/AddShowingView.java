@@ -1,4 +1,5 @@
 package org.cinemanager.gui;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -7,11 +8,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import org.cinemanager.common.ShowingVersion;
@@ -33,10 +32,9 @@ public class AddShowingView extends View<Showing> {
 	private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT);
 	
 	private JTextField  textfieldMovieID,textfieldDate,textfieldAuditorium,textfieldEmployeeID,textfieldMarathonID; 
-	private ButtonGroup buttonGroupVersion; 
+	private RadioGroup<ShowingVersion> versionRadioGroup; 
 	private JButton buttonEmploeeID,buttonMarathonID;
 	private Movie movie;  
-	private Marathon marathon; 
 	private Auditorium auditorium; 
 	private Employee employee;
 	
@@ -46,14 +44,13 @@ public class AddShowingView extends View<Showing> {
 	private AddShowingView(ViewManager viewManager) {
 		this.viewManager = viewManager;
 		this.setLayout(new GridLayout(7,1));  
+		
 		addDate(); 
 		addTitle(); 
 		addMovieID(); 
 		addAuditorium();  
 		addEmployeeID(); 
-		addMarathonID();  
 		addVersion(); 
-		
 	}
 	
 	public void addTitle(){ 
@@ -125,18 +122,16 @@ public class AddShowingView extends View<Showing> {
 	}
 
 	public void addVersion() { 
-		JPanel fourthPanelVersion = new JPanel(); 
-		fourthPanelVersion.setLayout(new GridLayout(1,1)); 
+		JPanel panel = new JPanel(); 
+		panel.setLayout(new GridLayout(1,1));
+		
+		JLabel versionLabel = new JLabel("Version: ");
+		panel.add(versionLabel);
 		 
-		buttonGroupVersion= new ButtonGroup();
-		for(ShowingVersion poition : ShowingVersion.values()) {
-			JRadioButton radioButton = new JRadioButton(poition.toString());
-			buttonGroupVersion.add(radioButton);
-			fourthPanelVersion.add(radioButton);
-		}   
-		buttonGroupVersion.setSelected(buttonGroupVersion.getSelection(), true); 
-		 
-		this.add(fourthPanelVersion);
+		versionRadioGroup= new RadioGroup<>(ShowingVersion.values());
+		panel.add(versionRadioGroup);
+		
+		this.add(panel);
 	}
 
 	public void addEmployeeID(){ 
@@ -162,21 +157,6 @@ public class AddShowingView extends View<Showing> {
 		this.add(fifthpanelEmployee);
 	}
 	
-	public void addMarathonID(){ 
-		JLabel marathonLabel = new JLabel("MarathonID : "); 
-		textfieldMarathonID = new JTextField(10); 
-		textfieldMarathonID.setEditable(false); 
-		buttonMarathonID = new JButton("Choose EmployeeID"); 
-		 
-		JPanel sixthpanelEmployee = new JPanel();  
-		sixthpanelEmployee.setLayout(new GridLayout(1,1)); 
-		sixthpanelEmployee.add(marathonLabel); 
-		sixthpanelEmployee.add(textfieldMarathonID); 
-		sixthpanelEmployee.add(buttonMarathonID); 
-		 
-		this.add(sixthpanelEmployee);
-	}
-
 	public Date getDate() {    
 		String date = textfieldDate.getText();
 		Date parsedDate = null;
@@ -201,12 +181,8 @@ public class AddShowingView extends View<Showing> {
 		return employee;
 	}
 
-	public Marathon getMarathon(){ 
-		return marathon;
-	}
-
 	public ShowingVersion getVersion(){ 
-		return (ShowingVersion) buttonGroupVersion.getSelection().getSelectedObjects()[0]; 
+		return versionRadioGroup.getSelected();
 	}
 	
 	@Override

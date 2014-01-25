@@ -2,10 +2,8 @@ package org.cinemanager.gui;
 import java.awt.Font;
 import java.awt.GridLayout;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import org.cinemanager.common.EmployeePosition;
@@ -21,13 +19,11 @@ public class AddEmployeeView extends View<Employee> {
 	private static final String CANCEL_BUTTON_LABEL = "Cancel";
 	
 	private JTextField firstNameTextField, lastNameTextField; 
-	private ButtonGroup employeePositionButtonGroup;
+	private RadioGroup<EmployeePosition> employeePositionRadioGroup;
 	
 	private final EmployeeController controller = EmployeeController.getInstance(); 
-	private final ViewManager viewManager;
 	
-	private AddEmployeeView(ViewManager viewManager) {
-		this.viewManager = viewManager;
+	private AddEmployeeView() {
 		this.setLayout(new GridLayout(4,1)); 
 		addLabel(); 
 		addFirstNamePanel(); 
@@ -69,13 +65,8 @@ public class AddEmployeeView extends View<Employee> {
 		panel.setLayout(new GridLayout(1,1)); 
 		panel.add(position);
 		
-		employeePositionButtonGroup= new ButtonGroup();
-		for(EmployeePosition poition : EmployeePosition.values()) {
-			JRadioButton radioButton = new JRadioButton(poition.toString());
-			employeePositionButtonGroup.add(radioButton);
-			panel.add(radioButton);
-		}   
-		employeePositionButtonGroup.setSelected(employeePositionButtonGroup.getSelection(), true);
+		employeePositionRadioGroup= new RadioGroup<>(EmployeePosition.values());
+		panel.add(employeePositionRadioGroup);
 		
 		this.add(panel);
 	}
@@ -89,7 +80,7 @@ public class AddEmployeeView extends View<Employee> {
 	}
 	
 	public EmployeePosition getPosition() { 
-		return EmployeePosition.valueOf((String) employeePositionButtonGroup.getSelection().getSelectedObjects()[0]);		//this is horrible
+		return employeePositionRadioGroup.getSelected();
 	}
 	
 	@Override
@@ -128,7 +119,7 @@ public class AddEmployeeView extends View<Employee> {
 	public void reset() {
 		firstNameTextField.setText(""); 
 		lastNameTextField.setText(""); 
-		employeePositionButtonGroup.clearSelection();
+		employeePositionRadioGroup.setFirstSelected();
 	}
 	
 
@@ -140,7 +131,7 @@ public class AddEmployeeView extends View<Employee> {
 
 		@Override
 		public AddEmployeeView createView(ViewManager viewManager) {
-			return new AddEmployeeView(viewManager);
+			return new AddEmployeeView();
 		}
 		
 	}

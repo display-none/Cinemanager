@@ -25,7 +25,7 @@ public class EmployeeController {
 		employee.setPosition(addEmployeeView.getPosition());
 		return employee;
 	}
-	public List<Employee> getAllEmployee() { 
+	public List<Employee> getAllEmployees() { 
 		List<Employee> abc = new ArrayList<Employee>(); 
 		 
 		Employee e1 = new Employee(); 

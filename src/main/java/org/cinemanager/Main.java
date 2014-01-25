@@ -51,7 +51,7 @@ public class Main extends JFrame implements ViewManager {
 	
 	public Main() {
 		super(FRAME_TITLE);
-		setBounds(100, 50, 700, 500);  
+		setBounds(100, 50, 800, 500);  
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
 	}
 	
@@ -209,6 +209,13 @@ public class Main extends JFrame implements ViewManager {
 		main.createGui();
 	}
 	
+	
+	@Override
+	public <T extends View<? extends IEntity>> void requestResultFrom(ViewCreator<T> viewCreator) {
+		T view = viewCreator.createView(this);
+		viewStack.addLast(view);
+		setCurrentView(view);
+	}
 
 	private class PanelLaunchingListener<T extends View<? extends IEntity>> implements ActionListener {
 		

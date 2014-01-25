@@ -20,7 +20,6 @@ public class ShowingController {
 		show.setMovie(addShowView.getMovie()); 
 		show.setVersion(addShowView.getVersion()); 
 		show.setAuditorium(addShowView.getAuditorium()); 
-		show.setMarathon(addShowView.getMarathon()); 
 		show.setSupervisingEmployee(addShowView.getEmployee()); 
 		return show ;
 	}

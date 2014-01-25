@@ -4,20 +4,15 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
-import java.util.TreeMap;
+import java.text.SimpleDateFormat;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-import org.cinemanager.common.EmployeePosition;
+import org.apache.log4j.pattern.DatePatternConverter;
 import org.cinemanager.common.TicketType;
 import org.cinemanager.controller.TicketController;
 import org.cinemanager.controller.TicketPriceHelper;
@@ -32,12 +27,16 @@ public class AddTicketView extends View<Ticket> {
 	private static final long serialVersionUID = 1L;
 	private static final String APPLY_BUTTON_LABEL = "Save";
 	private static final String CANCEL_BUTTON_LABEL = "Cancel";
+	private static final String SHOWING_DATE_FORMAT = "dd MMM 'at' hh:mm";
+	private final SimpleDateFormat showingDateParser = new SimpleDateFormat(SHOWING_DATE_FORMAT);
 	
 	private JTextField priceTextField; 
-	private ButtonGroup ticketTypeButtonGroup;  
-	private JButton choose_seat,choose_show;
+	private RadioGroup<TicketType> ticketTypeRadioGroup;  
+	private JButton chooseSeatButton, chooseShowingButton;
+	private JTextField seatTextField;
+	private JTextField showingTextField;
 	
-	private Seat seat; 
+	private Seat seat;
 	private Showing showing;
 
 	private final TicketController controller = TicketController.getInstance();
@@ -46,13 +45,13 @@ public class AddTicketView extends View<Ticket> {
 	
 	private AddTicketView(ViewManager viewManager) { 
 		this.viewManager = viewManager;
-		this.setLayout(new GridLayout(6,1)); 
+		this.setLayout(new GridLayout(6,1));
+		
 		addPanelTitle(); 
+		addShowing(); 
 		addSeat(); 
-		addShow(); 
 		addType(); 
 		addPrice();
-		addGroupTicket();     
 	}  
 	
 	private void addPanelTitle() {
@@ -62,72 +61,89 @@ public class AddTicketView extends View<Ticket> {
 	}
 	
 	private void addSeat() { 
-		JLabel panelSeat = new JLabel(" SeatID ");  
-		choose_seat = new JButton("Choose seat");   /** select seat button **/
-		 
-		
 		JPanel panel = new JPanel(); 
 		panel.setLayout(new GridLayout(1,1)); 
-		panel.add(panelSeat);
-		panel.add(choose_seat);	 
+		 
+		JLabel seatLabel = new JLabel(" Seat ");  
+		panel.add(seatLabel);
+		
+		seatTextField = new JTextField();
+		seatTextField.setEditable(false);
+		panel.add(seatTextField);
+		
+		chooseSeatButton = new JButton("Choose seat");
+		chooseSeatButton.addActionListener(new ChooseSeatActionListener());
+		panel.add(chooseSeatButton);	 
 		 
 		this.add(panel);
 	}
 	
-	private void addGroupTicket() {
-		
+	private void updateSeatDetails() {
+		if(seat != null) {
+			seatTextField.setText("seat " + convertNumberToLetter(seat.getRow()) + " " + seat.getNumber());
+		}
+	}
+	
+	private String convertNumberToLetter(int i) {
+		return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".substring(i, i+1);
 	}
 	
 	private void addPrice() { 
-		JLabel pricelabel = new JLabel(" Ticket Price "); 
+		JLabel priceLabel = new JLabel(" Ticket Price "); 
 		priceTextField = new JTextField(5); 
 		priceTextField.setEditable(false); 
 		 
 		JPanel panel = new JPanel(); 
 		panel.setLayout(new GridLayout(1,1)); 
-		panel.add(pricelabel); 
-		panel.add(priceTextField); 
+		panel.add(priceLabel); 
+		panel.add(priceTextField);
+		
+		updatePrice();
 		
 		this.add(panel);
+	}
+	
+	private void updatePrice() {
+		int newPriceInt = ticketPriceHelper.getPriceForTicketType(ticketTypeRadioGroup.getSelected());
+		String newPrice = String.valueOf((int)newPriceInt/100) + "." + String.valueOf(newPriceInt % 100 - newPriceInt % 10) + String.valueOf(newPriceInt % 10);
+		priceTextField.setText(newPrice);
 	}
 	
 	private void addType() {  
 		JPanel panel = new JPanel();  
 		panel.setLayout(new GridLayout(1,1));
 		
-		ticketTypeButtonGroup = new ButtonGroup(); 
-		for(TicketType ticketType : TicketType.values()) {
-			JRadioButton radioButton = new JRadioButton(ticketType.toString());
-			ticketTypeButtonGroup.add(radioButton);
-			panel.add(radioButton);
-			
-			addPriceChangingActionListener(radioButton, ticketType);
-		}
+		JLabel ticketTypeLabel = new JLabel("Type : ");
+		panel.add(ticketTypeLabel);
+		
+		ticketTypeRadioGroup = new RadioGroup<>(TicketType.values(), new PriceChangingActionListener());
+		panel.add(ticketTypeRadioGroup);
+		
 		this.add(panel);
 	}
 
-	private void addPriceChangingActionListener(JRadioButton radioButton, final TicketType ticketType) {
-		radioButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int newPriceInt = ticketPriceHelper.getPriceForTicketType(ticketType);
-				String newPrice = String.valueOf((int)newPriceInt/100) + "." + String.valueOf(newPriceInt % 100 - newPriceInt % 10) + String.valueOf(newPriceInt % 10);
-				priceTextField.setText(newPrice);
-			}
-		});
-	}
-	
-	private void addShow() { 
-		JLabel panelShow = new JLabel(" Show"); 	 
-		choose_show = new JButton("Choose Show");     /** select show button **/
-		 
+	private void addShowing() { 
 		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1)); 
-		panel.add(panelShow); 
-		panel.add(choose_show);	 
+		panel.setLayout(new GridLayout(1,1));
+		
+		JLabel showingLabel = new JLabel(" Showing "); 	 
+		panel.add(showingLabel); 
+		
+		showingTextField = new JTextField();
+		showingTextField.setEditable(false);
+		panel.add(showingTextField);
+		
+		chooseShowingButton = new JButton("Choose Showing ");
+		chooseShowingButton.addActionListener(new ChooseShowingActionListener());
+		panel.add(chooseShowingButton);	 
 		 
 		this.add(panel);
+	}
+	
+	private void updateShowingDetails() {
+		if(showing != null) {
+			showingTextField.setText(showing.getMovie().getTitle() + " on " + showingDateParser.format(showing.getDate()));
+		}
 	}
 	
 	public Seat getSeat() { 
@@ -139,7 +155,7 @@ public class AddTicketView extends View<Ticket> {
 	}
 	
 	public TicketType getTicketType() { 
-		return TicketType.valueOf((String) ticketTypeButtonGroup.getSelection().getSelectedObjects()[0]);		//this is horrible
+		return ticketTypeRadioGroup.getSelected();
 	}
 	
 	@Override
@@ -160,10 +176,15 @@ public class AddTicketView extends View<Ticket> {
 	
 	@Override
 	public void handleRequestedResult(IEntity result) {
-		// TODO Auto-generated method stub
-		
+		if(result instanceof Showing) {
+			showing = (Showing) result;
+			updateShowingDetails();
+		} else if (result instanceof Seat) {
+			seat = (Seat) result;
+			updateSeatDetails();
+		}
 	}
-	
+
 	@Override
 	public String getApplyButtonLabel() {
 		return APPLY_BUTTON_LABEL;
@@ -176,11 +197,10 @@ public class AddTicketView extends View<Ticket> {
 	
 	@Override
 	public void reset() {
-		//combo_box_ticket_type.setSelectedIndex(0); /** nie mogê tego ustawiæ **/
-		ticketTypeButtonGroup.clearSelection();
+		ticketTypeRadioGroup.setFirstSelected();
 		priceTextField.setText(""); 
 	}
-	
+
 	public static ViewCreator<AddTicketView> getCreator() {
 		return new AddTicketViewCreator();
 	}
@@ -191,6 +211,33 @@ public class AddTicketView extends View<Ticket> {
 		public AddTicketView createView(ViewManager viewManager) {
 			return new AddTicketView(viewManager);
 		}
-		
+	}
+	
+	private class PriceChangingActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			updatePrice();
+		}
+	}
+	
+	private class ChooseSeatActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(showing == null) {
+				JOptionPane.showMessageDialog(AddTicketView.this, "Select showing first");
+			} else {
+				viewManager.requestResultFrom(ChooseSeatView.getCreator(showing.getAuditorium()));
+			}
+		}
+	}
+	
+	private class ChooseShowingActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			viewManager.requestResultFrom(ShowShowingsView.getCreator());
+		}
 	}
 }

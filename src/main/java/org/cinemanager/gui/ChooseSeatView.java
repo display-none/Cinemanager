@@ -1,16 +1,17 @@
 package org.cinemanager.gui;
 
-import java.util.Date;
-
+import org.cinemanager.entity.Auditorium;
+import org.cinemanager.entity.Booking;
 import org.cinemanager.entity.IEntity;
-import org.cinemanager.entity.Movie;
-import org.cinemanager.entity.Showing;
+import org.cinemanager.entity.Seat;
 
-public class ShowShowingsView extends View<Showing> {
+import com.google.common.base.CaseFormat;
+
+public class ChooseSeatView extends View<Seat> {
 
 	private static final long serialVersionUID = 1L;
 
-	private ShowShowingsView(ViewManager viewManager) {
+	private ChooseSeatView(ViewManager viewManager, Auditorium auditorium) {
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -27,7 +28,7 @@ public class ShowShowingsView extends View<Showing> {
 	}
 
 	@Override
-	public Showing doGetResultAction() {
+	public Seat doGetResultAction() {
 		return null;
 	}
 	
@@ -55,15 +56,21 @@ public class ShowShowingsView extends View<Showing> {
 
 	}
 	
-	public static ViewCreator<ShowShowingsView> getCreator() {
-		return new ShowShowingsViewCreator();
+	public static ViewCreator<ChooseSeatView> getCreator(Auditorium auditorium) {
+		return new ChooseSeatViewCreator(auditorium);
 	}
 	
-	private static class ShowShowingsViewCreator implements ViewCreator<ShowShowingsView> {
+	private static class ChooseSeatViewCreator implements ViewCreator<ChooseSeatView> {
 
+		private Auditorium auditorium;
+		
+		public ChooseSeatViewCreator(Auditorium auditorium) {
+			this.auditorium = auditorium;
+		}
+		
 		@Override
-		public ShowShowingsView createView(ViewManager viewManager) {
-			return new ShowShowingsView(viewManager);
+		public ChooseSeatView createView(ViewManager viewManager) {
+			return new ChooseSeatView(viewManager, auditorium);
 		}
 		
 	}
