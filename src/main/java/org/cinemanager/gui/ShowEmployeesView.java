@@ -1,42 +1,38 @@
 package org.cinemanager.gui;
 
-import java.awt.Component;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.ListCellRenderer;
+
 import org.cinemanager.controller.EmployeeController;
 import org.cinemanager.entity.Employee;
 import org.cinemanager.entity.IEntity;
+import org.cinemanager.gui.EntityList.DeleteActionListenerCreator;
+import org.cinemanager.gui.EntityList.EntityFormatter;
 
 public class ShowEmployeesView extends View<Employee> {
 
 	private static final long serialVersionUID = 1L;
-	private JList<Employee>employeeList;
-	private EmployeeController controller = EmployeeController.getInstance(); ; 
+	private static final String APPLY_BUTTON_LABEL = "Done";
+	private static final String CANCEL_BUTTON_LABEL = "Back";
+	
+	private JList<Employee> employeeList;
+	
+	private static final EmployeeController controller = EmployeeController.getInstance();
+	
 	private ShowEmployeesView(ViewManager viewManager) {
-		 
-		employeeList = new JList<Employee>( createListModel() );
-		employeeList.setCellRenderer( new EmployeeCellRender()); 
-		 
-		this.add(employeeList); 
-	} 
-	public DefaultListModel<Employee> createListModel(){ 
-		List<Employee> employees = controller.getAllEmployees();  
-		DefaultListModel<Employee> listmodel = new DefaultListModel<Employee>();
-		for(Employee employee : employees) { 
-			 
-			listmodel.addElement(employee);
-		}
-		return listmodel;
-	} 
-	public void createString() { 
 		
-	}
+		setLayout(new BorderLayout());
+		
+		List<Employee> employees = controller.getAllEmployees();
+		
+		employeeList = new EntityList<Employee>(employees, new EmployeeFormatter(), new ActionListenerCreator());
+		this.add(employeeList);
+	} 
+
 	@Override
 	public boolean hasAnyChanges() {
 		// TODO Auto-generated method stub
@@ -51,26 +47,22 @@ public class ShowEmployeesView extends View<Employee> {
 
 	@Override
 	public Employee doGetResultAction() {
-		// TODO Auto-generated method stub
-		return null;
+		return employeeList.getSelectedValue();
 	}
 	
 	@Override
 	public void handleRequestedResult(IEntity result) {
-		// TODO Auto-generated method stub
-		
+		//this view does not request anything
 	}
 
 	@Override
 	public String getApplyButtonLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return APPLY_BUTTON_LABEL;
 	}
 	
 	@Override
 	public String getCancelButtonLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return CANCEL_BUTTON_LABEL;
 	}
 
 	@Override
@@ -91,17 +83,36 @@ public class ShowEmployeesView extends View<Employee> {
 		}
 		
 	}
-} 
-class EmployeeCellRender extends JPanel implements ListCellRenderer<Employee> {
-
-	private static final long serialVersionUID = 1L;
-
-	@Override
-	public Component getListCellRendererComponent(JList<? extends Employee> list, Employee value, int index, boolean isSelected,
-			boolean cellHasFocus) {
-		add(new JLabel(value.getFirstName() + " " + value.getLastName() + " - " + value.getPosition().toString()));
-		add(new JButton("some button"));
-		return this;
-	} 
 	
+	private static class EmployeeFormatter implements EntityFormatter<Employee> {
+
+		@Override
+		public String getLabelText(Employee entity) {
+			return entity.getFirstName() + " " + entity.getLastName() + " - " + entity.getPosition().toString();
+		}
+		
+	}
+	
+	private static class ActionListenerCreator implements DeleteActionListenerCreator {
+
+		@Override
+		public ActionListener create(Long id) {
+			return new DeleteActionListener(id);
+		}
+		
+	}
+	
+	private static class DeleteActionListener implements ActionListener {
+		
+		private Long id;
+		
+		public DeleteActionListener(Long id) {
+			this.id = id;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			controller.deleteEmployee(id);
+		}
+	}
 } 

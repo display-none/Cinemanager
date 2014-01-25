@@ -10,22 +10,23 @@ public class ShowingController {
 	private ShowingDao dao = new ShowingDao();
 	
 	public void createAndPersistShowing(AddShowingView addShowView) {
-		Showing show = createShow(addShowView);
+		Showing show = createShowing(addShowView);
 		dao.persist(show);
 	}
 	
-	public Showing createShow(AddShowingView addShowView) {
-		Showing show = new Showing();
-		show.setDate(addShowView.getDate()); 
-		show.setMovie(addShowView.getMovie()); 
-		show.setVersion(addShowView.getVersion()); 
-		show.setAuditorium(addShowView.getAuditorium()); 
-		show.setSupervisingEmployee(addShowView.getEmployee()); 
-		return show ;
+	public Showing createShowing(AddShowingView addShowView) {
+		Showing showing = new Showing();
+		showing.setDate(addShowView.getDate()); 
+		showing.setMovie(addShowView.getMovie()); 
+		showing.setVersion(addShowView.getVersion()); 
+		showing.setAuditorium(addShowView.getAuditorium()); 
+		showing.setSupervisingEmployee(addShowView.getEmployee()); 
+		return showing;
 	}
+	
 	public static ShowingController getInstance() {
 		if(instance == null) {
-			instance = new ShowingController();  						/** NIE ROZUMIEM O CO MU CHODZI **/ 
+			instance = new ShowingController();
 		}
 		return instance;
 	}

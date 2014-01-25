@@ -199,7 +199,7 @@ public class AddShowingView extends View<Showing> {
 	
 	@Override
 	public Showing doGetResultAction() {
-		return showingController.createShow(this);
+		return showingController.createShowing(this);
 	}
 	
 	@Override
