@@ -1,13 +1,16 @@
 package org.cinemanager.gui;
+
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JComboBox;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
+import org.cinemanager.controller.MarathonController;
+import org.cinemanager.entity.Employee;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Marathon;
 
@@ -16,59 +19,89 @@ public class AddMarathonView extends View<Marathon> {
 	
 	private static final long serialVersionUID = 1L;
 	
-	/*
-	private JPanel mainpanel,panel1,panel2;
-	private JTextField tf1,tf2;
-	private JComboBox<Integer> cb;
-	*/
-	
 	private final ViewManager viewManager;
-	
+	private Employee employee;  
+	private JTextField marathonNameTextField,employeeIDTextField,showingIDTextField;  
+	private static final String APPLY_BUTTON_LABEL = "Save";
+	private static final String CANCEL_BUTTON_LABEL = "Cancel"; 
+	 
+	private final MarathonController controller = MarathonController.getInstance(); 
 	private AddMarathonView(ViewManager viewManager) {
-		this.viewManager = viewManager;
-	}
-	
-	/*
-	public  AddMarathonView(JPanel panel ) { 
-		this.mainpanel = panel; 
-		mainpanel.removeAll(); 
+		this.viewManager = viewManager; 
+		this.setLayout(new GridLayout(4,1));
+		addTitle(); 
+		addName(); 
+		addEmployee();  
+		addShowing();
 	}  
-	public void add_marathon() { 
-		panel1 = new JPanel(); 
-		panel2 = new JPanel();  
+	public void addTitle(){ 
+		JLabel titleLabel = new JLabel(" Add new marathon"); 
+		titleLabel.setFont(new Font("Bold",Font.BOLD,15)); 
 		 
-		panel1.setLayout(new GridLayout(1,1)); 
-		panel2.setLayout(new GridLayout(1,1)); 
+		this.add(titleLabel);
+	} 
+	public void addName() { 
+		JLabel nameLabel = new JLabel("Name : "); 
+		marathonNameTextField = new JTextField(10); 
 		 
-		tf1 = new JTextField(10); 
-		tf2 = new JTextField(5);   
-		tf2.setEditable(false);
-		   
-		panel1.add(new JLabel("Name of Marathon : ")); 
-		panel1.add(tf1); 
+		JPanel namePanel = new JPanel(); 
+		namePanel.setLayout(new GridLayout(1,1));  
 		 
-		panel2.add(new JLabel("EmployeeID : ")); 
-		panel2.add(tf2); 
-		cb = new JComboBox<Integer>(); 
-		cb.addActionListener( new ActionListener() {
+		namePanel.add(nameLabel); 
+		namePanel.add(marathonNameTextField); 
+		 
+		this.add(namePanel);
+	}  
+	public void addEmployee() { 
+		JLabel employeeLabel = new JLabel(" EmployeeID : "); 
+		employeeIDTextField = new JTextField(5); 
+		employeeIDTextField.setEditable(false); 
+		JButton chooseEmployeeButton = new JButton("Choose EmployeeID"); 
+		chooseEmployeeButton.addActionListener(new ActionListener() {					/**ChooseEmployeeIDButton ActionListner **/
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				
 			}
-		}); 
-		panel2.add(cb); 
-		
-		mainpanel.add(new JLabel("Add new marathon ")); 
-		mainpanel.add(panel1); 
-		mainpanel.add(panel2); 
-		
-	} 
-	public void delete_maratohn() {
-	 
+		});
+		JPanel employeePanel = new JPanel(); 
+		employeePanel.setLayout(new GridLayout(1,1));   
+		 
+		employeePanel.add(employeeLabel); 
+		employeePanel.add(employeeIDTextField);  
+		employeePanel.add(chooseEmployeeButton);
+		 
+		this.add(employeePanel);
 	}
-	*/
-	
+	public void addShowing() { 
+		JLabel showingLabel = new JLabel(" ShowingID : "); 
+		showingIDTextField= new JTextField(5); 
+		showingIDTextField.setEditable(false);  
+		JButton chooseShow = new JButton("Choose ShowingID");
+		chooseShow.addActionListener(new ActionListener() {   				/** ChooseShowButton actionlistner **/
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+		
+				
+			}
+		});
+		JPanel showingPanel = new JPanel(); 
+		showingPanel .setLayout(new GridLayout(1,1));   
+		 
+		showingPanel.add(showingLabel); 
+		showingPanel.add(showingIDTextField);   
+		showingPanel.add(chooseShow);
+		 
+		this.add(showingPanel );
+	}
+	public String getName() { 
+		return marathonNameTextField.getText();
+	} 
+	public Employee getEmployee() { 
+		return employee;
+	}
 	@Override
 	public boolean hasAnyChanges() {
 		// TODO Auto-generated method stub
@@ -77,14 +110,13 @@ public class AddMarathonView extends View<Marathon> {
 	
 	@Override
 	public void doApplyAction() {
-		// TODO Auto-generated method stub
+		 controller.createAndPersistMarathon(this);
 		
 	}
 	
 	@Override
 	public Marathon doGetResultAction() {
-		// TODO Auto-generated method stub
-		return null;
+		return controller.createMarathon(this);
 	}
 	
 	@Override
@@ -95,14 +127,12 @@ public class AddMarathonView extends View<Marathon> {
 	
 	@Override
 	public String getApplyButtonLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return APPLY_BUTTON_LABEL; 
 	}
 	
 	@Override
 	public String getCancelButtonLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return CANCEL_BUTTON_LABEL;
 	}
 	
 	@Override
