@@ -9,12 +9,28 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.cinemanager.entity.Booking;
 
-public class BookingView {
+
+public class AddBookingView extends View<Booking> {
+	
+	/*
 	private JPanel mainpanel,panel1,panel2,panel4; 
 	private JTextField tf1,tf2,tf3;
 	private JButton choose_showing,choose_seat,search;
-	public  BookingView(JPanel panel ) { 
+	*/
+	
+	private static final long serialVersionUID = 1L;
+	
+	
+	private final ViewManager viewManager;
+	
+	private AddBookingView(ViewManager viewManager) {
+		this.viewManager = viewManager;
+	}
+	
+	/*
+	public  AddBookingView(JPanel panel ) { 
 		this.mainpanel = panel; 
 		mainpanel.removeAll(); 
 	} 
@@ -44,9 +60,6 @@ public class BookingView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/** 
-				 * Coœ tam
-				 */
 				
 			}
 		});  
@@ -56,9 +69,6 @@ public class BookingView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/** 
-				 * Coœ tam
-				 */
 				
 			}
 		});  
@@ -104,9 +114,6 @@ public class BookingView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/** 
-				 * Coœ tam
-				 */
 				
 			}
 		});  
@@ -116,9 +123,6 @@ public class BookingView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/** 
-				 * Coœ tam
-				 */
 				
 			}
 		});    
@@ -128,9 +132,6 @@ public class BookingView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/** 
-				 * Wyszukanie i wrzucenie na panel;
-				 */
 				
 			}
 		});
@@ -155,6 +156,45 @@ public class BookingView {
 	
 	} 
 	public void display_all_bookings() {
+		
+	}
+	
+	*/
+	
+	@Override
+	public void doApplyAction() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public Booking doGetResultAction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getApplyButtonLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static ViewCreator<AddBookingView> getCreator() {
+		return new AddBookingViewCreator();
+	}
+	
+	private static class AddBookingViewCreator implements ViewCreator<AddBookingView> {
+
+		@Override
+		public AddBookingView createView(ViewManager viewManager) {
+			return new AddBookingView(viewManager);
+		}
 		
 	}
 }

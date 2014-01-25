@@ -5,18 +5,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import org.cinemanager.common.EmployeePosition;
 import org.cinemanager.common.ShowingVersion;
 import org.cinemanager.controller.ShowingController;
 import org.cinemanager.entity.Auditorium;
@@ -26,19 +23,25 @@ import org.cinemanager.entity.Movie;
 import org.cinemanager.entity.Showing;
 
 
-public class AddShowingView  extends View<Showing> {    
+public class AddShowingView extends View<Showing> {
+	
+	private static final long serialVersionUID = 1L;
+	private static final String APPLY_BUTTON_LABEL = "Save"; 
+	private final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT);
+	private static final String DATE_FORMAT = "yyyy-MM-dd";  
 	private JTextField  textfieldMovieID,textfieldDate,textfieldAuditorium,textfieldEmployeeID,textfieldMarathonID; 
 	private ButtonGroup buttonGroupVersion; 
-	private ShowingController showingController;  
 	private JButton buttonEmploeeID,buttonMarathonID;
-	private static final String APPLY_BUTTON_LABEL = "Save"; 
-	private static final String DATE_FORMAT = "yyyy-MM-dd";  
 	private Movie movie;  
 	private Marathon marathon; 
 	private Auditorium auditorium; 
 	private Employee employee;
-	private final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT);
-	public AddShowingView() { 
+	
+	private final ShowingController showingController = ShowingController.getInstance();
+	private final ViewManager viewManager;
+	
+	private AddShowingView(ViewManager viewManager) {
+		this.viewManager = viewManager;
 		this.setLayout(new GridLayout(7,1));  
 		addDate(); 
 		addTitle(); 
@@ -208,5 +211,18 @@ public class AddShowingView  extends View<Showing> {
 		 textfieldDate.setText(""); 
 		 textfieldAuditorium.setText(""); 
 		
-	} 
+	}
+	
+	public static ViewCreator<AddShowingView> getCreator() {
+		return new AddShowingViewCreator();
+	}
+	
+	private static class AddShowingViewCreator implements ViewCreator<AddShowingView> {
+
+		@Override
+		public AddShowingView createView(ViewManager viewManager) {
+			return new AddShowingView(viewManager);
+		}
+		
+	}
  }

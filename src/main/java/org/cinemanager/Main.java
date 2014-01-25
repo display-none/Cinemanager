@@ -16,16 +16,23 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
 
+
+
+
+
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.gui.AddGroupTicketView;
 import org.cinemanager.gui.AddShowingView;
-import org.cinemanager.gui.BookingView;
+import org.cinemanager.gui.AddBookingView;
 import org.cinemanager.gui.AddEmployeeView;
-import org.cinemanager.gui.DeleteEmployeeView;
-import org.cinemanager.gui.MarathonView;
+import org.cinemanager.gui.AddMarathonView;
 import org.cinemanager.gui.AddMovieView;
 import org.cinemanager.gui.AddTicketView;
+import org.cinemanager.gui.ShowBookingsView;
 import org.cinemanager.gui.ShowEmployeesView;
+import org.cinemanager.gui.ShowMarathonsView;
+import org.cinemanager.gui.ShowMoviesView;
+import org.cinemanager.gui.ShowShowingsView;
 import org.cinemanager.gui.View;
 import org.cinemanager.gui.ViewCreator;
 import org.cinemanager.gui.ViewManager;
@@ -37,16 +44,8 @@ public class Main extends JFrame implements ViewManager {
 	
 	private static final long serialVersionUID = 1L;
 	private JMenuBar menubar;  
-	private JMenu menu;   
-	private JMenuItem menuitem;
 	private Button apply_button; 
 	private JPanel panel,mainPanel;
-	private AddTicketView ticket;   
-	private BookingView booking;
-	private AddMovieView movie; 
-	private AddShowingView showing;
-	private AddEmployeeView employee;  
-	private MarathonView marathon;
 	private JScrollBar scroll;
 	
 
@@ -54,7 +53,7 @@ public class Main extends JFrame implements ViewManager {
 	
 	
 	public Main ( )  {  						/** create gui interface **/  
-		super("CinemaManager");
+		super("Cinemanager");
 	}
 	
 	private void createGui() {
@@ -84,159 +83,15 @@ public class Main extends JFrame implements ViewManager {
 		
 		
 		menubar = new JMenuBar();  
-		/***********************************************************/ 
-		JMenu menu; 
-		JMenuItem menuitem;
 		
 		createTicketMenu();
 		createEmployeeMenu();
+		createMovieMenu();
+		createShowingMenu();
+		createBookingMenu();
+		createMarathonMenu();
 		
 		
-		
-		
-		/***********************************************************/   
-		menu = new JMenu("Movie ");  
-		menuitem = new JMenuItem("Add new movie");  
-		menuitem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				movie = new AddMovieView();  
-				movie.reset();
-				mainPanel.removeAll();
-				mainPanel.add(movie);
-				panel.repaint();
-				panel.revalidate();
-				
-			}  
-			 
-				 
-		});  
-		menu.add(menuitem);  
-		menuitem = new JMenuItem("Print or Delete movie");  
-		menuitem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-//				movie = new org.cinemanager.gui.AddMovieView(panel_middle);  
-//				movie.delete_movie(); 
-				panel.repaint();
-				panel.revalidate();
-				
-			}  
-			 
-				 
-		}); 
-		menu.add(menuitem);  
-		menubar.add(menu);  
-		/***********************************************************/    
-		menu = new JMenu("Showing ");  
-		menuitem = new JMenuItem("Add new show");  
-		menuitem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				showing = new AddShowingView(); 
-				showing.reset(); 
-				mainPanel.removeAll();
-				mainPanel.add(showing);
-				panel.repaint();
-				panel.revalidate();
-				
-			}  
-			 
-				 
-		});  
-		menu.add(menuitem);  
-		menuitem = new JMenuItem("Display or Delete show");  
-		menuitem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				
-			}  
-			 
-				 
-		});  
-		menu.add(menuitem);  
-		menubar.add(menu);  
-		/***********************************************************/ 
-		menu = new JMenu("Booking ");  
-		menuitem = new JMenuItem("Make new booking");  
-		menuitem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				booking= new BookingView(mainPanel); 
-				booking.add_booking();  
-				panel.repaint();
-				panel.revalidate();
-				
-			}  
-			 
-				 
-		});  
-		menu.add(menuitem);  
-		menuitem = new JMenuItem("Canel booking");  
-		menuitem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				booking= new BookingView(mainPanel); 
-				booking.canel_booking();  
-				panel.repaint();
-				panel.revalidate();
-				
-			}  
-			 
-				 
-		});  
-		menu.add(menuitem);  
-		menuitem = new JMenuItem("Print all bookings");  
-		menuitem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				
-			}  
-			 
-				 
-		}); 
-		menu.add(menuitem);  
-		menubar.add(menu);   
-		/***********************************************************/  
-		menu = new JMenu("Marathon ");  
-		menuitem = new JMenuItem("Add new marathon");  
-		menuitem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				marathon= new org.cinemanager.gui.MarathonView(mainPanel); 
-				marathon.add_marathon(); 
-				panel.repaint();
-				panel.revalidate();
-				
-			}  
-			 
-				 
-		});  
-		menu.add(menuitem);  
-		menuitem = new JMenuItem("Display or delete marathons");  
-		menuitem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				
-			}  
-			 
-				 
-		}); 
-		menu.add(menuitem);  
-		menubar.add(menu);   
-		/***********************************************************/  
 		panel.add(menubar,BorderLayout.NORTH);
 		this.add(panel);
 		this.setVisible(true);
@@ -255,8 +110,43 @@ public class Main extends JFrame implements ViewManager {
 		JMenu menu = new JMenu("Emplyoee");
 		
 		menu.add(getMenuItem("Add new employee", AddEmployeeView.getCreator()));
-		menu.add(getMenuItem("Delete employee", DeleteEmployeeView.getCreator()));
 		menu.add(getMenuItem("Show all employees", ShowEmployeesView.getCreator()));
+		
+		menubar.add(menu);
+	}
+	
+	private void createMovieMenu() {
+		JMenu menu = new JMenu("Movie");
+		
+		menu.add(getMenuItem("Add new movie", AddMovieView.getCreator()));
+		menu.add(getMenuItem("Show all movies", ShowMoviesView.getCreator()));
+		
+		menubar.add(menu);
+	}
+	
+	private void createShowingMenu() {
+		JMenu menu = new JMenu("Showing");
+		
+		menu.add(getMenuItem("Add new showing", AddShowingView.getCreator()));
+		menu.add(getMenuItem("Show all showings", ShowShowingsView.getCreator()));
+		
+		menubar.add(menu);
+	}
+	
+	private void createBookingMenu() {
+		JMenu menu = new JMenu("Booking");
+		
+		menu.add(getMenuItem("Add new booking", AddBookingView.getCreator()));
+		menu.add(getMenuItem("Show all bookings", ShowBookingsView.getCreator()));
+		
+		menubar.add(menu);
+	}
+	
+	private void createMarathonMenu() {
+		JMenu menu = new JMenu("Marathon");
+		
+		menu.add(getMenuItem("Add new marathon", AddMarathonView.getCreator()));
+		menu.add(getMenuItem("Show all marathons", ShowMarathonsView.getCreator()));
 		
 		menubar.add(menu);
 	}
@@ -266,11 +156,7 @@ public class Main extends JFrame implements ViewManager {
 		menuitem.addActionListener(new PanelLaunchingListener<T>(viewCreator));
 		return menuitem;
 	}
-	
-	
-	
-	
-	
+
 	private void setCurrentView(View<? extends IEntity> view) {
 		mainPanel.removeAll();
 		mainPanel.add(view);

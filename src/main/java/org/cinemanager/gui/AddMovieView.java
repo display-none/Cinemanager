@@ -32,8 +32,10 @@ public class AddMovieView extends View<Movie> {
 	private JComboBox<MovieGenre> genreComboBox;
 	private ButtonGroup versionButtonGroup;
 	private MovieController controller = MovieController.getInstance();
+	private ViewManager viewManager;
 	
-	public AddMovieView() { 
+	private AddMovieView(ViewManager viewManager) {
+		this.viewManager = viewManager;
 		this.setLayout(new GridLayout(7, 2));
 		
 		addPanelTitle(); 
@@ -188,5 +190,19 @@ public class AddMovieView extends View<Movie> {
 	@Override
 	public String getApplyButtonLabel() {
 		return APPLY_BUTTON_LABEL;
+	}
+	
+
+	public static ViewCreator<AddMovieView> getCreator() {
+		return new AddMovieViewCreator();
+	}
+	
+	private static class AddMovieViewCreator implements ViewCreator<AddMovieView> {
+
+		@Override
+		public AddMovieView createView(ViewManager viewManager) {
+			return new AddMovieView(viewManager);
+		}
+		
 	}
 }

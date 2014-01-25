@@ -8,12 +8,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.cinemanager.entity.Marathon;
 
-public class MarathonView { 
+
+public class AddMarathonView extends View<Marathon> { 
+	
+	private static final long serialVersionUID = 1L;
+	
+	/*
 	private JPanel mainpanel,panel1,panel2;
 	private JTextField tf1,tf2;
 	private JComboBox<Integer> cb;
-	public  MarathonView(JPanel panel ) { 
+	*/
+	
+	private final ViewManager viewManager;
+	
+	private AddMarathonView(ViewManager viewManager) {
+		this.viewManager = viewManager;
+	}
+	
+	/*
+	public  AddMarathonView(JPanel panel ) { 
 		this.mainpanel = panel; 
 		mainpanel.removeAll(); 
 	}  
@@ -38,9 +53,6 @@ public class MarathonView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/** 
-				 * Wybrane ID pokazuje w tf2
-				 */
 				
 			}
 		}); 
@@ -51,11 +63,46 @@ public class MarathonView {
 		mainpanel.add(panel2); 
 		
 	} 
-	public void delete_maratohn() { 
-		/** 
-		 * Drukowanie 
-		 * Double click wywala okno z potwierdzeniem 
-		 * if( true ) usun
-		 */
+	public void delete_maratohn() {
+	 
+	}
+	*/
+	
+	@Override
+	public void doApplyAction() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public Marathon doGetResultAction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getApplyButtonLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+	public static ViewCreator<AddMarathonView> getCreator() {
+		return new AddMarathonViewCreator();
+	}
+	
+	private static class AddMarathonViewCreator implements ViewCreator<AddMarathonView> {
+
+		@Override
+		public AddMarathonView createView(ViewManager viewManager) {
+			return new AddMarathonView(viewManager);
+		}
+		
 	}
 }
