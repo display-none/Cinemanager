@@ -13,7 +13,7 @@ import org.cinemanager.controller.EmployeeController;
 import org.cinemanager.entity.Employee;
 
 
-public class AddEmployeeView extends JPanel implements View<Employee> {
+public class AddEmployeeView extends View<Employee> {
 
 	private static final long serialVersionUID = 1L;
 	private static final String APPLY_BUTTON_LABEL = "Save";
@@ -21,7 +21,7 @@ public class AddEmployeeView extends JPanel implements View<Employee> {
 	private ButtonGroup employeePositionButtonGroup; 
 	private EmployeeController controller = EmployeeController.getInstance(); 
 	
-	public AddEmployeeView() {  
+	private AddEmployeeView(ViewManager viewManager) {  
 		this.setLayout(new GridLayout(4,1)); 
 		addLabel(); 
 		addFirstNamePanel(); 
@@ -83,7 +83,7 @@ public class AddEmployeeView extends JPanel implements View<Employee> {
 	}
 	
 	public EmployeePosition getPosition() { 
-		return (EmployeePosition) employeePositionButtonGroup.getSelection().getSelectedObjects()[0];
+		return EmployeePosition.valueOf((String) employeePositionButtonGroup.getSelection().getSelectedObjects()[0]);		//this is horrible
 	}
 	
 	@Override
@@ -106,5 +106,19 @@ public class AddEmployeeView extends JPanel implements View<Employee> {
 		firstNameTextField.setText(""); 
 		lastNameTextField.setText(""); 
 		employeePositionButtonGroup.clearSelection();
+	}
+	
+
+	public static ViewCreator<AddEmployeeView> getCreator() {
+		return new AddEmployeeViewCreator();
+	}
+	
+	private static class AddEmployeeViewCreator implements ViewCreator<AddEmployeeView> {
+
+		@Override
+		public AddEmployeeView createView(ViewManager viewManager) {
+			return new AddEmployeeView(viewManager);
+		}
+		
 	}
 }

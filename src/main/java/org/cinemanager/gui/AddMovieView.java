@@ -18,7 +18,7 @@ import org.cinemanager.controller.MovieController;
 import org.cinemanager.entity.Movie;
 
 
-public class AddMovieView extends JPanel implements View<Movie> { 
+public class AddMovieView extends View<Movie> { 
 
 	private static final long serialVersionUID = 1L;
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -85,7 +85,7 @@ public class AddMovieView extends JPanel implements View<Movie> {
 	}
 	
 	public MovieVersion getVersion() {
-		return (MovieVersion) versionButtonGroup.getSelection().getSelectedObjects()[0];		//this is horrible
+		return MovieVersion.valueOf((String) versionButtonGroup.getSelection().getSelectedObjects()[0]);		//this is horrible
 	}
 	
 	private void addPanelTitle() {

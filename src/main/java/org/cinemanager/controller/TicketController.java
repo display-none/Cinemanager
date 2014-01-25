@@ -5,21 +5,22 @@ import org.cinemanager.entity.Ticket;
 import org.cinemanager.gui.AddTicketView;
 
 public class TicketController {
-private static TicketController instance;
+	private static TicketController instance;
 	
 	private TicketDao dao = new TicketDao();
+	private TicketPriceHelper ticketPriceHelper = new TicketPriceHelper();
 	
-	public void createAndPersistMovie(AddTicketView addTicketView) {
-		Ticket ticket = createMovie(addTicketView);
+	public void createAndPersistTicket(AddTicketView addTicketView) {
+		Ticket ticket = createTicket(addTicketView);
 		dao.persist(ticket);
 	}
 	
-	public Ticket createMovie(AddTicketView addTicketView) {
+	public Ticket createTicket(AddTicketView addTicketView) {
 		Ticket ticket = new Ticket();
-		ticket.setSeat(addTicketView.getseatid());
-		ticket.setShowing(addTicketView.getshowid());
-		ticket.setType(addTicketView.gettype());
-		ticket.setPrice(addTicketView.getprice());
+		ticket.setSeat(addTicketView.getSeat());
+		ticket.setShowing(addTicketView.getShowing());
+		ticket.setType(addTicketView.getTicketType());
+		ticket.setPrice(ticketPriceHelper.getPriceForTicketType(addTicketView.getTicketType()));
 	//	ticket.setgroupticket(addTicketView.getgroupticket());    /** Piter : dobrze ta linia ? **/
 		return ticket;
 	}
