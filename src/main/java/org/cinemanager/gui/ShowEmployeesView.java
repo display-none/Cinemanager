@@ -1,6 +1,7 @@
 package org.cinemanager.gui;
 
 import org.cinemanager.entity.Employee;
+import org.cinemanager.entity.IEntity;
 
 public class ShowEmployeesView extends View<Employee> {
 
@@ -8,6 +9,12 @@ public class ShowEmployeesView extends View<Employee> {
 
 	private ShowEmployeesView(ViewManager viewManager) {
 		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public boolean hasAnyChanges() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
@@ -21,9 +28,21 @@ public class ShowEmployeesView extends View<Employee> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void handleRequestedResult(IEntity result) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public String getApplyButtonLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getCancelButtonLabel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

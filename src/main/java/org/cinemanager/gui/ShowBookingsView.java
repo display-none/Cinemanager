@@ -1,6 +1,7 @@
 package org.cinemanager.gui;
 
 import org.cinemanager.entity.Booking;
+import org.cinemanager.entity.IEntity;
 
 public class ShowBookingsView extends View<Booking> {
 
@@ -8,6 +9,12 @@ public class ShowBookingsView extends View<Booking> {
 
 	private ShowBookingsView(ViewManager viewManager) {
 		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public boolean hasAnyChanges() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
@@ -21,9 +28,21 @@ public class ShowBookingsView extends View<Booking> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void handleRequestedResult(IEntity result) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public String getApplyButtonLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getCancelButtonLabel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

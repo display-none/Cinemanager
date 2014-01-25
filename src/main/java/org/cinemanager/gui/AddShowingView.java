@@ -18,6 +18,7 @@ import org.cinemanager.common.ShowingVersion;
 import org.cinemanager.controller.ShowingController;
 import org.cinemanager.entity.Auditorium;
 import org.cinemanager.entity.Employee;
+import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Marathon;
 import org.cinemanager.entity.Movie;
 import org.cinemanager.entity.Showing;
@@ -27,8 +28,10 @@ public class AddShowingView extends View<Showing> {
 	
 	private static final long serialVersionUID = 1L;
 	private static final String APPLY_BUTTON_LABEL = "Save"; 
-	private final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT);
+	private static final String CANCEL_BUTTON_LABEL = "Cancel";
 	private static final String DATE_FORMAT = "yyyy-MM-dd";  
+	private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT);
+	
 	private JTextField  textfieldMovieID,textfieldDate,textfieldAuditorium,textfieldEmployeeID,textfieldMarathonID; 
 	private ButtonGroup buttonGroupVersion; 
 	private JButton buttonEmploeeID,buttonMarathonID;
@@ -51,13 +54,15 @@ public class AddShowingView extends View<Showing> {
 		addMarathonID();  
 		addVersion(); 
 		
-	}  
+	}
+	
 	public void addTitle(){ 
 		JLabel showingTitleLabel = new JLabel("Add new Showing"); 
 		showingTitleLabel.setFont(new Font("Bold",Font.BOLD,15)); 
 		 
 		this.add(showingTitleLabel);
-	} 
+	}
+
 	public void addMovieID() { 
 		JLabel movieIDLabel = new JLabel(" MovieID : ");   		
 		JButton buttonMovieID = new JButton("Choose MovieID");  
@@ -80,7 +85,8 @@ public class AddShowingView extends View<Showing> {
 		 
 		  
 		this.add(firstPanelMovieID);	
-	} 
+	}
+
 	public void addDate() { 
 		JLabel dateLabel = new JLabel(" Show Date (yyyy-MM-dd) : "); 
 		textfieldDate = new JTextField(10); 
@@ -92,7 +98,8 @@ public class AddShowingView extends View<Showing> {
 		secondPanelDate.add(textfieldDate); 
 		 
 		this.add(secondPanelDate);
-	} 
+	}
+
 	public void addAuditorium(){
 		JLabel auditoriumLabel = new JLabel("AuditoriumID : "); 
 		textfieldAuditorium = new JTextField(10); 
@@ -115,7 +122,8 @@ public class AddShowingView extends View<Showing> {
 		thirdPanelAuditorium.add(auditoriumButton);  
 		
 		this.add(thirdPanelAuditorium); 
-	} 
+	}
+
 	public void addVersion() { 
 		JPanel fourthPanelVersion = new JPanel(); 
 		fourthPanelVersion.setLayout(new GridLayout(1,1)); 
@@ -129,7 +137,8 @@ public class AddShowingView extends View<Showing> {
 		buttonGroupVersion.setSelected(buttonGroupVersion.getSelection(), true); 
 		 
 		this.add(fourthPanelVersion);
-	} 
+	}
+
 	public void addEmployeeID(){ 
 		JLabel empolyeeLabel = new JLabel("EmployeeID : "); 
 		textfieldEmployeeID = new JTextField(10); 
@@ -152,6 +161,7 @@ public class AddShowingView extends View<Showing> {
 		 
 		this.add(fifthpanelEmployee);
 	}
+	
 	public void addMarathonID(){ 
 		JLabel marathonLabel = new JLabel("MarathonID : "); 
 		textfieldMarathonID = new JTextField(10); 
@@ -165,7 +175,8 @@ public class AddShowingView extends View<Showing> {
 		sixthpanelEmployee.add(buttonMarathonID); 
 		 
 		this.add(sixthpanelEmployee);
-	} 
+	}
+
 	public Date getDate() {    
 		String date = textfieldDate.getText();
 		Date parsedDate = null;
@@ -176,35 +187,61 @@ public class AddShowingView extends View<Showing> {
 			}
 		}
 		return parsedDate;
-	} 
+	}
+
 	public Movie getMovie(){   
 		return movie;
-	} 
+	}
+
 	public Auditorium getAuditorium() { 
 		return auditorium;
 	}
+	
 	public Employee getEmployee() { 
 		return employee;
-	} 
+	}
+
 	public Marathon getMarathon(){ 
 		return marathon;
-	} 
+	}
+
 	public ShowingVersion getVersion(){ 
 		return (ShowingVersion) buttonGroupVersion.getSelection().getSelectedObjects()[0]; 
 	}
+	
+	@Override
+	public boolean hasAnyChanges() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	@Override
 	public void doApplyAction() {
 		showingController.createAndPersistShowing(this);
 		
 	}
+	
 	@Override
 	public Showing doGetResultAction() {
 		return showingController.createShow(this);
 	}
+	
+	@Override
+	public void handleRequestedResult(IEntity result) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public String getApplyButtonLabel() {
 		return APPLY_BUTTON_LABEL; 
 	}
+	
+	@Override
+	public String getCancelButtonLabel() {
+		return CANCEL_BUTTON_LABEL;
+	}
+	
 	@Override
 	public void reset() {
 		 textfieldMovieID.setText(""); 

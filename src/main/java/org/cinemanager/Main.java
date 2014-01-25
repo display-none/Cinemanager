@@ -3,6 +3,7 @@ package org.cinemanager;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -14,19 +15,15 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-
-
-
-
-
+import javax.swing.border.EmptyBorder;
 
 import org.cinemanager.entity.IEntity;
-import org.cinemanager.gui.AddGroupTicketView;
-import org.cinemanager.gui.AddShowingView;
 import org.cinemanager.gui.AddBookingView;
 import org.cinemanager.gui.AddEmployeeView;
+import org.cinemanager.gui.AddGroupTicketView;
 import org.cinemanager.gui.AddMarathonView;
 import org.cinemanager.gui.AddMovieView;
+import org.cinemanager.gui.AddShowingView;
 import org.cinemanager.gui.AddTicketView;
 import org.cinemanager.gui.ShowBookingsView;
 import org.cinemanager.gui.ShowEmployeesView;
@@ -43,46 +40,33 @@ import com.google.common.collect.Lists;
 public class Main extends JFrame implements ViewManager { 
 	
 	private static final long serialVersionUID = 1L;
-	private JMenuBar menubar;  
-	private Button apply_button; 
-	private JPanel panel,mainPanel;
-	private JScrollBar scroll;
+	private static final String FRAME_TITLE = "Cinemanager";
 	
-
+	private JMenuBar menubar;
+	private Button applyButton; 
+	private Button cancelButton;
+	private JPanel mainPanel;
+	
 	private LinkedList<View<? extends IEntity>> viewStack = Lists.newLinkedList();
 	
-	
-	public Main ( )  {  						/** create gui interface **/  
-		super("Cinemanager");
+	public Main() {
+		super(FRAME_TITLE);
+		setBounds(100, 50, 700, 500);  
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
 	}
 	
 	private void createGui() {
-		this.setSize(600, 400);  
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
+		setLayout(new BorderLayout());
 		  
-		mainPanel = new JPanel();
-		panel = new JPanel(); 
-		mainPanel.setLayout(new BorderLayout()); 
-		scroll = new JScrollBar(); 
-		scroll.add(mainPanel);
-		panel.setLayout(new BorderLayout());   
-		 
-		panel.add(mainPanel,BorderLayout.CENTER);
-		apply_button = new Button("Apply"); 
-		apply_button.setFont(new Font("Font",Font.BOLD,20));
-		apply_button.addActionListener( new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}  
-			
-		}); 
-		panel.add( apply_button,BorderLayout.SOUTH);
+		addMenu();
+		addMainPanel();
+		addButtons();
+		
+		this.setVisible(true);
+	}
 	
-		
-		
-		menubar = new JMenuBar();  
+	private void addMenu() {
+		menubar = new JMenuBar();
 		
 		createTicketMenu();
 		createEmployeeMenu();
@@ -91,10 +75,36 @@ public class Main extends JFrame implements ViewManager {
 		createBookingMenu();
 		createMarathonMenu();
 		
+		add(menubar,BorderLayout.NORTH);
+	}
+
+	private void addMainPanel() {
+		JScrollBar scroll = new JScrollBar(); 
 		
-		panel.add(menubar,BorderLayout.NORTH);
-		this.add(panel);
-		this.setVisible(true);
+		mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout());
+		
+		scroll.add(mainPanel);
+		add(mainPanel, BorderLayout.CENTER);
+	}
+
+	private void addButtons() {
+		JPanel buttonsPanel = new JPanel(new GridLayout(1, 2));
+		buttonsPanel.setBorder(new EmptyBorder(7, 7, 7, 7));
+		
+		applyButton = new Button("Apply");
+		applyButton.setFont(new Font("Font",Font.BOLD,20));
+		applyButton.addActionListener(new ApplyActionListener());
+		applyButton.setVisible(false);
+		buttonsPanel.add(applyButton);
+		
+		cancelButton = new Button("Cancel");
+		cancelButton.setFont(new Font("Font",Font.BOLD,20));
+		cancelButton.addActionListener(new CancelActionListener());
+		cancelButton.setVisible(false);
+		buttonsPanel.add(cancelButton);
+		
+		add(buttonsPanel, BorderLayout.SOUTH);
 	}
 
 	private void createTicketMenu() {
@@ -160,8 +170,38 @@ public class Main extends JFrame implements ViewManager {
 	private void setCurrentView(View<? extends IEntity> view) {
 		mainPanel.removeAll();
 		mainPanel.add(view);
-		panel.repaint();
-		panel.revalidate();
+		
+		applyButton.setLabel(view.getApplyButtonLabel());
+		applyButton.setVisible(true);
+		
+		cancelButton.setLabel(view.getCancelButtonLabel());
+		cancelButton.setVisible(true);
+		
+		repaint();
+		revalidate();
+	}
+	
+	private void removeView() {
+		mainPanel.removeAll();
+		
+		applyButton.setVisible(false);
+		cancelButton.setVisible(false);
+		
+		repaint();
+		revalidate();
+	}
+	
+	private boolean areThereChangesInCurrentView() {
+		return areThereChagesInView(viewStack.getLast());
+	}
+	
+	private boolean areThereChagesInView(View<? extends IEntity> view) {
+		return view.hasAnyChanges();
+	}
+
+	private boolean isUserWillingToDiscardChanges() {
+		return JOptionPane.showConfirmDialog(this, "Any unsaved changes will be discarded.\n Do you want to continue?", "Warning", 
+				JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION;
 	}
 	
 	public static void main(String[] args) {
@@ -169,7 +209,6 @@ public class Main extends JFrame implements ViewManager {
 		main.createGui();
 	}
 	
-
 
 	private class PanelLaunchingListener<T extends View<? extends IEntity>> implements ActionListener {
 		
@@ -182,7 +221,7 @@ public class Main extends JFrame implements ViewManager {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(!viewStack.isEmpty()) {
-				if(isUserWillingToDiscardChanges() == JOptionPane.CANCEL_OPTION) {
+				if(areThereChangesInViews() && !isUserWillingToDiscardChanges()) {
 					return;
 				}
 				viewStack.clear();
@@ -193,9 +232,48 @@ public class Main extends JFrame implements ViewManager {
 			setCurrentView(view);
 		}
 
-		private int isUserWillingToDiscardChanges() {
-			return JOptionPane.showConfirmDialog(Main.this, "Any changes in current view will be discarded.\n Do you want to continue?", "Warning", 
-					JOptionPane.OK_CANCEL_OPTION);
+		private boolean areThereChangesInViews() {
+			for(View<? extends IEntity> view : viewStack) {
+				if(areThereChagesInView(view)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	
+	private class ApplyActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			View<? extends IEntity> view = viewStack.removeLast();
+			
+			if(viewStack.isEmpty()) {
+				view.doApplyAction();
+				removeView();
+			} else {
+				View<? extends IEntity> previousView = viewStack.getLast();
+				
+				IEntity result = view.doGetResultAction();
+				previousView.handleRequestedResult(result);
+				setCurrentView(previousView);
+			}
+		}
+	}
+	
+	private class CancelActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(!areThereChangesInCurrentView() || isUserWillingToDiscardChanges()) {
+				viewStack.removeLast();
+				
+				if(viewStack.isEmpty()) {
+					removeView();
+				} else {
+					setCurrentView(viewStack.getLast());
+				}
+			}
 		}
 	}
 }

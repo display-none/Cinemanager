@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.cinemanager.entity.Booking;
+import org.cinemanager.entity.IEntity;
 
 
 public class AddBookingView extends View<Booking> {
@@ -162,6 +163,12 @@ public class AddBookingView extends View<Booking> {
 	*/
 	
 	@Override
+	public boolean hasAnyChanges() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
 	public void doApplyAction() {
 		// TODO Auto-generated method stub
 		
@@ -174,7 +181,19 @@ public class AddBookingView extends View<Booking> {
 	}
 	
 	@Override
+	public void handleRequestedResult(IEntity result) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public String getApplyButtonLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getCancelButtonLabel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

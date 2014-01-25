@@ -11,17 +11,23 @@ import javax.swing.JTextField;
 import org.cinemanager.common.EmployeePosition;
 import org.cinemanager.controller.EmployeeController;
 import org.cinemanager.entity.Employee;
+import org.cinemanager.entity.IEntity;
 
 
 public class AddEmployeeView extends View<Employee> {
 
 	private static final long serialVersionUID = 1L;
 	private static final String APPLY_BUTTON_LABEL = "Save";
-	private JTextField firstNameTextField, lastNameTextField; 
-	private ButtonGroup employeePositionButtonGroup; 
-	private EmployeeController controller = EmployeeController.getInstance(); 
+	private static final String CANCEL_BUTTON_LABEL = "Cancel";
 	
-	private AddEmployeeView(ViewManager viewManager) {  
+	private JTextField firstNameTextField, lastNameTextField; 
+	private ButtonGroup employeePositionButtonGroup;
+	
+	private final EmployeeController controller = EmployeeController.getInstance(); 
+	private final ViewManager viewManager;
+	
+	private AddEmployeeView(ViewManager viewManager) {
+		this.viewManager = viewManager;
 		this.setLayout(new GridLayout(4,1)); 
 		addLabel(); 
 		addFirstNamePanel(); 
@@ -87,6 +93,12 @@ public class AddEmployeeView extends View<Employee> {
 	}
 	
 	@Override
+	public boolean hasAnyChanges() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
 	public void doApplyAction() {
 		controller.createAndPersistEmployee(this);
 	}
@@ -97,8 +109,19 @@ public class AddEmployeeView extends View<Employee> {
 	}
 	
 	@Override
+	public void handleRequestedResult(IEntity result) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public String getApplyButtonLabel() {
 		return APPLY_BUTTON_LABEL; 
+	}
+	
+	@Override
+	public String getCancelButtonLabel() {
+		return CANCEL_BUTTON_LABEL;
 	}
 	
 	@Override

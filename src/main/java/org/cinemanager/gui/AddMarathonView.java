@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Marathon;
 
 
@@ -69,6 +70,12 @@ public class AddMarathonView extends View<Marathon> {
 	*/
 	
 	@Override
+	public boolean hasAnyChanges() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
 	public void doApplyAction() {
 		// TODO Auto-generated method stub
 		
@@ -81,7 +88,19 @@ public class AddMarathonView extends View<Marathon> {
 	}
 	
 	@Override
+	public void handleRequestedResult(IEntity result) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public String getApplyButtonLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getCancelButtonLabel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

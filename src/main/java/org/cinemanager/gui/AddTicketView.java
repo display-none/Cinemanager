@@ -21,6 +21,7 @@ import org.cinemanager.common.EmployeePosition;
 import org.cinemanager.common.TicketType;
 import org.cinemanager.controller.TicketController;
 import org.cinemanager.controller.TicketPriceHelper;
+import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Seat;
 import org.cinemanager.entity.Showing;
 import org.cinemanager.entity.Ticket;
@@ -30,6 +31,8 @@ public class AddTicketView extends View<Ticket> {
 
 	private static final long serialVersionUID = 1L;
 	private static final String APPLY_BUTTON_LABEL = "Save";
+	private static final String CANCEL_BUTTON_LABEL = "Cancel";
+	
 	private JTextField priceTextField; 
 	private ButtonGroup ticketTypeButtonGroup;  
 	private JButton choose_seat,choose_show;
@@ -140,6 +143,12 @@ public class AddTicketView extends View<Ticket> {
 	}
 	
 	@Override
+	public boolean hasAnyChanges() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
 	public void doApplyAction() {
 		controller.createAndPersistTicket(this);
 	}
@@ -150,8 +159,19 @@ public class AddTicketView extends View<Ticket> {
 	}
 	
 	@Override
+	public void handleRequestedResult(IEntity result) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public String getApplyButtonLabel() {
 		return APPLY_BUTTON_LABEL;
+	}
+	
+	@Override
+	public String getCancelButtonLabel() {
+		return CANCEL_BUTTON_LABEL;
 	}
 	
 	@Override

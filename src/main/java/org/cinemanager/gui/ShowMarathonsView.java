@@ -1,5 +1,6 @@
 package org.cinemanager.gui;
 
+import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Marathon;
 
 public class ShowMarathonsView extends View<Marathon> {
@@ -8,6 +9,12 @@ public class ShowMarathonsView extends View<Marathon> {
 
 	private ShowMarathonsView(ViewManager viewManager) {
 		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public boolean hasAnyChanges() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
@@ -21,9 +28,21 @@ public class ShowMarathonsView extends View<Marathon> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void handleRequestedResult(IEntity result) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public String getApplyButtonLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getCancelButtonLabel() {
 		// TODO Auto-generated method stub
 		return null;
 	}
