@@ -1,187 +1,140 @@
 package org.cinemanager.gui;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.cinemanager.controller.BookingController;
+import org.cinemanager.controller.ShowingController;
 import org.cinemanager.entity.Booking;
+import org.cinemanager.entity.Seat;
+import org.cinemanager.entity.Showing;
 
 
 public class AddBookingView extends View<Booking> {
-	
-	/*
-	private JPanel mainpanel,panel1,panel2,panel4; 
-	private JTextField tf1,tf2,tf3;
-	private JButton choose_showing,choose_seat,search;
-	*/
-	
+
 	private static final long serialVersionUID = 1L;
+	private final ViewManager viewManager; 
+	private final BookingController bookingController = BookingController.getInstance(); 
 	
-	
-	private final ViewManager viewManager;
-	
+	private JTextField showingIdTextField,seatIdTextField,dateTextField; 
+	private JButton showingButton,seatButton; 
+	private Seat seat; 
+	private Showing showing; 
+	private final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT);
+	private static final String DATE_FORMAT = "yyyy-MM-dd";   
+	private static final String APPLY_BUTTON_LABEL = "Save"; 
 	private AddBookingView(ViewManager viewManager) {
-		this.viewManager = viewManager;
+		this.viewManager = viewManager; 
+		this.setLayout(new GridLayout(4,1)); 
+		addTitle(); 
+		addShowingID(); 
+		addSeatID(); 
+		addDate();
+	}  
+	public Seat getSeat(){ 
+		return seat;
+	} 
+	public Showing getShow() { 
+		return showing;
+	} 
+	public Date getDate() { 
+		String date = dateTextField.getText();
+		Date parsedDate = null;
+		if(!(date.equals(""))) {
+			try {
+				parsedDate = dateParser.parse(date);
+			} catch (ParseException e) {
+			}
+		}
+		return parsedDate;
 	}
-	
-	/*
-	public  AddBookingView(JPanel panel ) { 
-		this.mainpanel = panel; 
-		mainpanel.removeAll(); 
-	} 
-	public void add_booking() { 
-		JLabel booking = new JLabel("Add new Booking  ");  
-		JLabel seatID= new JLabel("SeatID : ");  
-		JLabel showId = new JLabel("ShowID :  ");  
-		JLabel date2 = new JLabel("Expiration Date of Booking : "); 
-		JLabel date2_field = new JLabel(" Please choose your booking date previously !");
-		
-		panel1 = new JPanel(); 
-		panel2 = new JPanel();  
-		panel4 = new JPanel(); 
+	public void addTitle() { 
+		JLabel titleLabel = new JLabel("Add new Booking"); 
+		titleLabel.setFont(new Font("Bold",Font.BOLD,15)); 
 		 
-		panel1.setLayout(new GridLayout(1,1)); 
-		panel2.setLayout(new GridLayout(1,1)); 
-		panel4.setLayout(new GridLayout(1,1)); 
+		this.add(titleLabel); 
+	}  
+	public void addDate(){ 
+		JLabel dateLabel = new JLabel(" Date :"); 
+		dateTextField = new JTextField(10); 
 		 
-		tf1 = new JTextField(5); 
-		tf1.setEditable(false);
-		tf2 = new JTextField(5);  
-		tf2.setEditable(false);
-		tf3 = new JTextField(5);
+		JPanel thirdPanel = new JPanel(); 
+		thirdPanel.setLayout(new GridLayout(1,1)); 
 		 
-		choose_seat = new JButton("Choose SEAT"); 
-		choose_seat.addActionListener(new ActionListener() {
+		thirdPanel.add(dateLabel); 
+		thirdPanel.add(dateTextField);
+	}
+	public void addSeatID() {
+		JLabel seatIDLabel = new JLabel("Seat ID : "); 
+		seatIdTextField = new JTextField(5); 
+		seatIdTextField.setEditable(false); 
+		seatButton = new JButton("Choose SeatID "); 
+		seatButton.addActionListener( new ActionListener() { 				/**SeatButton listener **/
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-			}
-		});  
-		 
-		choose_showing = new JButton("Choose SHOWING"); 
-		choose_showing.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});  
-		panel1.add(seatID); 
-		panel1.add(tf1); 
-		panel1.add(choose_seat);  
-		 
-		panel2.add(showId); 
-		panel2.add(tf2); 
-		panel2.add(choose_showing);	  
-		panel4.add(date2); 
-		panel4.add(date2_field); 
-		
-		mainpanel.add(booking); 
-		mainpanel.add(panel1);  
-		mainpanel.add(panel2);  
-		mainpanel.add(panel4); 
-	} 
-	public void canel_booking() { 
-		JLabel booking = new JLabel("Cannel your Booking ");  
-		JLabel date = new JLabel("Date (Format yyyy-MM-dd) : "); 
-		JLabel seatID= new JLabel("SeatID : ");  
-		JLabel showId = new JLabel("ShowID :  ");   
-		 
-		
-		panel1 = new JPanel(); 
-		panel2 = new JPanel();  
-		
-		panel4 = new JPanel(); 
-		 
-		panel1.setLayout(new GridLayout(1,1)); 
-		panel2.setLayout(new GridLayout(1,1)); 
-		panel4.setLayout(new GridLayout(1,1));  
-		 
-		tf1 = new JTextField(5);
-		tf2 = new JTextField(5);   
-		tf2.setEditable(false);
-		tf3 = new JTextField(5); 
-		tf3.setEditable(false);
-		
-		choose_seat = new JButton("Choose SEAT"); 
-		choose_seat.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});  
-		 
-		choose_showing = new JButton("Choose SHOWING"); 
-		choose_showing.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});    
-		 
-		search = new JButton("SEARCH IN DATABASE"); 
-		search.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
 				
 			}
 		});
- 		panel1.add(date); 
-		panel1.add(tf1); 
-		
-		panel2.add(seatID); 
-		panel2.add(tf2); 
-		panel2.add(choose_seat);  
+		JPanel secondPanel = new JPanel(); 
+		secondPanel.setLayout(new GridLayout(1,1)); 
 		 
-		panel4.add(showId); 
-		panel4.add(tf3); 
-		panel4.add(choose_showing);  
-		 
-		panel4.add(search);
-		 
-		
-		mainpanel.add(booking); 
-		mainpanel.add(panel1); 
-		mainpanel.add(panel2);
-		mainpanel.add(panel4); 
-	
-	} 
-	public void display_all_bookings() {
-		
+		secondPanel.add(seatIDLabel); 
+		secondPanel.add(seatIdTextField); 
+		secondPanel.add(seatButton ); 
+		this.add(secondPanel);
 	}
-	
-	*/
-	
+	public void addShowingID(){ 
+		JLabel showindIDLabel = new JLabel("Show ID : "); 
+		showingIdTextField = new JTextField(5); 
+		showingIdTextField.setEditable(false); 
+		showingButton = new JButton("Choose ShowID "); 
+		showingButton.addActionListener( new ActionListener() { 				/**ShowingButton listener **/
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+		});
+		JPanel firstPanel = new JPanel(); 
+		firstPanel.setLayout(new GridLayout(1,1)); 
+		 
+		firstPanel.add(showindIDLabel); 
+		firstPanel.add(showingIdTextField); 
+		firstPanel.add(showingButton); 
+		this.add(firstPanel);
+	}
 	@Override
 	public void doApplyAction() {
-		// TODO Auto-generated method stub
+		bookingController.createAndPersistBooking(this);
 		
 	}
 	
 	@Override
 	public Booking doGetResultAction() {
-		// TODO Auto-generated method stub
-		return null;
+		return bookingController.createBooking(this);
 	}
 	
 	@Override
 	public String getApplyButtonLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return APPLY_BUTTON_LABEL; 
 	}
 	
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
+		dateTextField.setText("");
 		
 	}
 
