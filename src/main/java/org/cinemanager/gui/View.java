@@ -1,12 +1,14 @@
 package org.cinemanager.gui;
 
-public interface View<T> {
+import javax.swing.JPanel;
 
-	void doApplyAction();
+public abstract class View<T> extends JPanel {
+
+	public abstract void doApplyAction();
 	
-	T doGetResultAction();
+	public abstract T doGetResultAction();
 	
-	String getApplyButtonLabel();
+	public abstract String getApplyButtonLabel();
 	
-	void reset();
+	public abstract void reset();
 }
