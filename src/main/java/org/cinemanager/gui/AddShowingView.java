@@ -18,7 +18,6 @@ import org.cinemanager.controller.ShowingController;
 import org.cinemanager.entity.Auditorium;
 import org.cinemanager.entity.Employee;
 import org.cinemanager.entity.IEntity;
-import org.cinemanager.entity.Marathon;
 import org.cinemanager.entity.Movie;
 import org.cinemanager.entity.Showing;
 
@@ -31,9 +30,8 @@ public class AddShowingView extends View<Showing> {
 	private static final String DATE_FORMAT = "yyyy-MM-dd";  
 	private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT);
 	
-	private JTextField  textfieldMovieID,textfieldDate,textfieldAuditorium,textfieldEmployeeID,textfieldMarathonID; 
+	private JTextField  movieTextField,textfieldDate,auditoriumTextField,employeeTextField; 
 	private RadioGroup<ShowingVersion> versionRadioGroup; 
-	private JButton buttonEmploeeID,buttonMarathonID;
 	private Movie movie;  
 	private Auditorium auditorium; 
 	private Employee employee;
@@ -45,12 +43,12 @@ public class AddShowingView extends View<Showing> {
 		this.viewManager = viewManager;
 		this.setLayout(new GridLayout(7,1));  
 		
-		addDate(); 
-		addTitle(); 
-		addMovieID(); 
-		addAuditorium();  
-		addEmployeeID(); 
-		addVersion(); 
+		addTitle();
+		addMovie();
+		addVersion();
+		addAuditorium();
+		addDate();
+		addEmployee();
 	}
 	
 	public void addTitle(){ 
@@ -60,65 +58,66 @@ public class AddShowingView extends View<Showing> {
 		this.add(showingTitleLabel);
 	}
 
-	public void addMovieID() { 
-		JLabel movieIDLabel = new JLabel(" MovieID : ");   		
-		JButton buttonMovieID = new JButton("Choose MovieID");  
-		buttonMovieID.addActionListener( new ActionListener() {					/**ActionListener MovieIDbutton **/
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			
-				
-			}
-		});
-		textfieldMovieID = new JTextField(10); 
-		textfieldMovieID.setEditable(false); 
-		JPanel firstPanelMovieID = new JPanel(); 
-		firstPanelMovieID.setLayout(new GridLayout(1,1)); 
+	public void addMovie() { 
+		JPanel panel = new JPanel(); 
+		panel.setLayout(new GridLayout(1,1));
+		
+		JLabel movieLabel = new JLabel(" Movie : ");   		
+		panel.add(movieLabel); 
+		
+		movieTextField = new JTextField(10); 
+		movieTextField.setEditable(false); 
+		panel.add(movieTextField); 
 		 
-		firstPanelMovieID.add(movieIDLabel); 
-		firstPanelMovieID.add(textfieldMovieID); 
-		firstPanelMovieID.add(buttonMovieID);
+		JButton chooseMovieButton = new JButton("Choose Movie");  
+		chooseMovieButton.addActionListener(new ChooseMovieActionListener());
+		panel.add(chooseMovieButton);
 		 
 		  
-		this.add(firstPanelMovieID);	
+		this.add(panel);	
+	}
+	
+	private void updateMovieDetails() {
+		if(movie != null) {
+			movieTextField.setText(movie.getTitle());
+		}
 	}
 
 	public void addDate() { 
-		JLabel dateLabel = new JLabel(" Show Date (yyyy-MM-dd) : "); 
+		JLabel dateLabel = new JLabel(" Showing Date (yyyy-MM-dd) : "); 
 		textfieldDate = new JTextField(10); 
 		 
-		JPanel secondPanelDate = new JPanel(); 
-		secondPanelDate.setLayout(new GridLayout(1,1)); 
+		JPanel panel = new JPanel(); 
+		panel.setLayout(new GridLayout(1,1)); 
 		 
-		secondPanelDate.add(dateLabel); 
-		secondPanelDate.add(textfieldDate); 
+		panel.add(dateLabel); 
+		panel.add(textfieldDate); 
 		 
-		this.add(secondPanelDate);
+		this.add(panel);
 	}
 
 	public void addAuditorium(){
-		JLabel auditoriumLabel = new JLabel("AuditoriumID : "); 
-		textfieldAuditorium = new JTextField(10); 
-		textfieldAuditorium.setEditable(false); 
-		JButton auditoriumButton = new JButton("Choose Auditorium ID");  
-		auditoriumButton.addActionListener( new ActionListener() {							/** ActionListener AuditoriumButton **/
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				
-			}
-		});
-		 
-		JPanel thirdPanelAuditorium = new JPanel(); 
-		thirdPanelAuditorium.setLayout(new GridLayout(1,1)); 
-		  
-		thirdPanelAuditorium.add(auditoriumLabel); 
-		thirdPanelAuditorium.add(textfieldAuditorium); 
-		thirdPanelAuditorium.add(auditoriumButton);  
+		JPanel panel = new JPanel(); 
+		panel.setLayout(new GridLayout(1,1));
 		
-		this.add(thirdPanelAuditorium); 
+		JLabel auditoriumLabel = new JLabel("Auditorium : "); 
+		panel.add(auditoriumLabel);
+		
+		auditoriumTextField = new JTextField(10); 
+		auditoriumTextField.setEditable(false); 
+		panel.add(auditoriumTextField);
+		
+		JButton auditoriumButton = new JButton("Choose Auditorium");  
+		auditoriumButton.addActionListener(new ChooseAuditoriumActionListener());
+		panel.add(auditoriumButton);  
+		 
+		this.add(panel); 
+	}
+	
+	private void updateAuditoriumDetails() {
+		if(auditorium != null) {
+			auditoriumTextField.setText(auditorium.getName());
+		}
 	}
 
 	public void addVersion() { 
@@ -134,27 +133,28 @@ public class AddShowingView extends View<Showing> {
 		this.add(panel);
 	}
 
-	public void addEmployeeID(){ 
-		JLabel empolyeeLabel = new JLabel("EmployeeID : "); 
-		textfieldEmployeeID = new JTextField(10); 
-		textfieldEmployeeID.setEditable(false); 
-		buttonEmploeeID = new JButton("Choose EmployeeID");  
-		buttonEmploeeID.addActionListener( new ActionListener() {					/**ActionListener EmployeeIDButton **/
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+	public void addEmployee(){ 
+		JPanel panel = new JPanel();  
+		panel.setLayout(new GridLayout(1,1));
+		
+		JLabel empolyeeLabel = new JLabel("Supervising employee : "); 
+		panel.add(empolyeeLabel);
+		
+		employeeTextField = new JTextField(10); 
+		employeeTextField.setEditable(false); 
+		panel.add(employeeTextField);
+		
+		JButton chooseEmployeeButton = new JButton("Choose Employee");  
+		chooseEmployeeButton.addActionListener(new ChooseEmployeeActionListener());
+		panel.add(chooseEmployeeButton); 
 		 
-		JPanel fifthpanelEmployee = new JPanel();  
-		fifthpanelEmployee.setLayout(new GridLayout(1,1)); 
-		fifthpanelEmployee.add(empolyeeLabel); 
-		fifthpanelEmployee.add(textfieldEmployeeID); 
-		fifthpanelEmployee.add(buttonEmploeeID); 
-		 
-		this.add(fifthpanelEmployee);
+		this.add(panel);
+	}
+	
+	private void updateEmployeeDetails() {
+		if(employee != null) {
+			employeeTextField.setText(employee.getFirstName() + " " + employee.getLastName());
+		}
 	}
 	
 	public Date getDate() {    
@@ -204,8 +204,16 @@ public class AddShowingView extends View<Showing> {
 	
 	@Override
 	public void handleRequestedResult(IEntity result) {
-		// TODO Auto-generated method stub
-		
+		if(result instanceof Movie) {
+			movie = (Movie) result;
+			updateMovieDetails();
+		} else if(result instanceof Auditorium) {
+			auditorium = (Auditorium) result;
+			updateAuditoriumDetails();
+		} else if(result instanceof Employee) {
+			employee = (Employee) result;
+			updateEmployeeDetails();
+		}
 	}
 	
 	@Override
@@ -220,9 +228,9 @@ public class AddShowingView extends View<Showing> {
 	
 	@Override
 	public void reset() {
-		 textfieldMovieID.setText(""); 
+		 movieTextField.setText(""); 
 		 textfieldDate.setText(""); 
-		 textfieldAuditorium.setText(""); 
+		 auditoriumTextField.setText(""); 
 		
 	}
 	
@@ -236,6 +244,29 @@ public class AddShowingView extends View<Showing> {
 		public AddShowingView createView(ViewManager viewManager) {
 			return new AddShowingView(viewManager);
 		}
-		
+	}
+	
+	private class ChooseMovieActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			viewManager.requestResultFrom(ShowMoviesView.getCreator());
+		}
+	}
+	
+	private class ChooseAuditoriumActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			viewManager.requestResultFrom(ChooseAuditoriumView.getCreator());
+		}
+	}
+	
+	private class ChooseEmployeeActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			viewManager.requestResultFrom(ShowEmployeesView.getCreator());
+		}
 	}
  }

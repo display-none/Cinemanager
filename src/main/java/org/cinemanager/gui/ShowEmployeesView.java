@@ -1,19 +1,14 @@
 package org.cinemanager.gui;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridLayout;
 import java.util.List;
 
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
-
 import org.cinemanager.controller.EmployeeController;
 import org.cinemanager.entity.Employee;
 import org.cinemanager.entity.IEntity;
@@ -32,7 +27,6 @@ public class ShowEmployeesView extends View<Employee> {
 	} 
 	public DefaultListModel<Employee> createListModel(){ 
 		List<Employee> employees = controller.getAllEmployees();  
-		System.out.println("Size : " + employees.size());
 		DefaultListModel<Employee> listmodel = new DefaultListModel<Employee>();
 		for(Employee employee : employees) { 
 			 

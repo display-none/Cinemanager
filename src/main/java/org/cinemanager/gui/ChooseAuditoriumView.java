@@ -1,13 +1,14 @@
 package org.cinemanager.gui;
 
+import org.cinemanager.entity.Auditorium;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Movie;
 
-public class ShowMoviesView extends View<Movie> {
+public class ChooseAuditoriumView extends View<Auditorium> {
 
 	private static final long serialVersionUID = 1L;
 
-	private ShowMoviesView(ViewManager viewManager) {
+	private ChooseAuditoriumView(ViewManager viewManager) {
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -24,7 +25,7 @@ public class ShowMoviesView extends View<Movie> {
 	}
 
 	@Override
-	public Movie doGetResultAction() {
+	public Auditorium doGetResultAction() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -53,15 +54,15 @@ public class ShowMoviesView extends View<Movie> {
 
 	}
 	
-	public static ViewCreator<ShowMoviesView> getCreator() {
-		return new ShowMoviesViewCreator();
+	public static ViewCreator<ChooseAuditoriumView> getCreator() {
+		return new ChooseAuditoriumViewCreator();
 	}
 	
-	private static class ShowMoviesViewCreator implements ViewCreator<ShowMoviesView> {
+	private static class ChooseAuditoriumViewCreator implements ViewCreator<ChooseAuditoriumView> {
 
 		@Override
-		public ShowMoviesView createView(ViewManager viewManager) {
-			return new ShowMoviesView(viewManager);
+		public ChooseAuditoriumView createView(ViewManager viewManager) {
+			return new ChooseAuditoriumView(viewManager);
 		}
 		
 	}

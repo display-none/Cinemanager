@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.log4j.pattern.DatePatternConverter;
 import org.cinemanager.common.TicketType;
 import org.cinemanager.controller.TicketController;
 import org.cinemanager.controller.TicketPriceHelper;

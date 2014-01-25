@@ -194,8 +194,7 @@ public class AddMovieView extends View<Movie> {
 	
 	@Override
 	public void handleRequestedResult(IEntity result) {
-		// TODO Auto-generated method stub
-		
+		//we do nothing cause this view does not request anything
 	}
 
 	@Override

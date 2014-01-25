@@ -15,6 +15,9 @@ public class Auditorium implements IEntity {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name="name")
+	private String name;
+	
 	@Column(name="air_conditioned")
 	private boolean airConditioned = false;
 	
@@ -27,6 +30,14 @@ public class Auditorium implements IEntity {
 	@Override
 	public Long getId() {
 		return id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public boolean isAirConditioned() {
@@ -52,5 +63,4 @@ public class Auditorium implements IEntity {
 	public void setSupporting3D(boolean supporting3d) {
 		supporting3D = supporting3d;
 	}
-
 }
