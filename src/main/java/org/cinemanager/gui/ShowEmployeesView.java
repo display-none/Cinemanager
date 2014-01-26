@@ -95,23 +95,26 @@ public class ShowEmployeesView extends View<Employee> {
 	private static class ActionListenerCreator implements DeleteActionListenerCreator {
 
 		@Override
-		public ActionListener create(Long id) {
-			return new DeleteActionListener(id);
+		public ActionListener create(Long id, ActionListener deleteSuccessfulCallback) {
+			return new DeleteActionListener(id, deleteSuccessfulCallback);
 		}
 		
 	}
 	
 	private static class DeleteActionListener implements ActionListener {
 		
-		private Long id;
+		private final Long id;
+		private final ActionListener callback;
 		
-		public DeleteActionListener(Long id) {
+		public DeleteActionListener(Long id, ActionListener callback) {
 			this.id = id;
+			this.callback = callback;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			controller.deleteEmployee(id);
+			callback.actionPerformed(null);
 		}
 	}
 } 

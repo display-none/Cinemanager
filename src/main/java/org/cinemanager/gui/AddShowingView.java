@@ -80,6 +80,8 @@ public class AddShowingView extends View<Showing> {
 	private void updateMovieDetails() {
 		if(movie != null) {
 			movieTextField.setText(movie.getTitle());
+		} else {
+			movieTextField.setText("");
 		}
 	}
 
@@ -117,6 +119,8 @@ public class AddShowingView extends View<Showing> {
 	private void updateAuditoriumDetails() {
 		if(auditorium != null) {
 			auditoriumTextField.setText(auditorium.getName());
+		} else {
+			auditoriumTextField.setText("");
 		}
 	}
 
@@ -154,6 +158,8 @@ public class AddShowingView extends View<Showing> {
 	private void updateEmployeeDetails() {
 		if(employee != null) {
 			employeeTextField.setText(employee.getFirstName() + " " + employee.getLastName());
+		} else {
+			employeeTextField.setText("");
 		}
 	}
 	

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JList;
+
 import org.cinemanager.controller.MovieController;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Movie;
@@ -80,37 +81,39 @@ public class ShowMoviesView extends View<Movie> {
 		public ShowMoviesView createView(ViewManager viewManager) {
 			return new ShowMoviesView(viewManager);
 		}
-		
 	} 
+	
 	private static class MovieFormatter implements EntityFormatter<Movie> {
 
 		@Override
 		public String getLabelText(Movie entity) {
-			return entity.getTitle()+ "   " + entity.getReleaseDate().toString() + "   " + entity.getGenre().toString() + "   " + entity.getRuntime() + "   " + entity.getMinimalAge() + "   " + entity.getVersion().toString() ;
+			return entity.getTitle()+ "   " + entity.getReleaseDate().toString() + "   " + entity.getGenre().toString() + "   " + 
+						entity.getRuntime() + "   " + entity.getMinimalAge() + "   " + entity.getVersion().toString() ;
 		}
-		
 	}
 	
 	private static class ActionListenerCreator implements DeleteActionListenerCreator {
 
 		@Override
-		public ActionListener create(Long id) {
-			return new DeleteActionListener(id);
+		public ActionListener create(Long id, ActionListener deleteSuccessfulCallback) {
+			return new DeleteActionListener(id, deleteSuccessfulCallback);
 		}
-		
 	}
+	
 	private static class DeleteActionListener implements ActionListener {
 		
-		private Long id;
+		private final Long id;
+		private final ActionListener callback;
 		
-		public DeleteActionListener(Long id) { 
-			System.out.println("ID# : "+id);
+		public DeleteActionListener(Long id, ActionListener callback) {
 			this.id = id;
+			this.callback = callback;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			controller.deleteMovie(id);
+			callback.actionPerformed(null);
 		}
 	}
 }
