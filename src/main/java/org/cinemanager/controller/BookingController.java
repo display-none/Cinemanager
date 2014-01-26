@@ -1,7 +1,11 @@
 package org.cinemanager.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.cinemanager.dao.BookingDao;
 import org.cinemanager.entity.Booking;
+import org.cinemanager.entity.Employee;
 import org.cinemanager.gui.AddBookingView;
 
 
@@ -12,7 +16,11 @@ public class BookingController {
 		Booking booking= createBooking(addBookingView);
 		dao.persist(booking);
 	}
-	
+	public List<Booking> getAllBookings() {
+		List<Booking> abc = new ArrayList<Booking>(); 
+		 
+		return abc;
+	}
 	public Booking createBooking(AddBookingView addBookingView) {
 		Booking booking = new Booking();
 		booking.setShowing(addBookingView.getShow()); 
@@ -26,5 +34,8 @@ public class BookingController {
 			instance = new  BookingController();
 		}
 		return instance;
+	} 
+	public void deleteBooking(Long id) {
+		dao.remove(id, Booking.class);
 	}
 }

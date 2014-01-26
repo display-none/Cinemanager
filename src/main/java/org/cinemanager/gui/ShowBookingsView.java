@@ -1,14 +1,33 @@
 package org.cinemanager.gui;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+import javax.swing.JList;
+
+import org.cinemanager.controller.BookingController;
 import org.cinemanager.entity.Booking;
 import org.cinemanager.entity.IEntity;
+import org.cinemanager.gui.EntityList.DeleteActionListenerCreator;
+import org.cinemanager.gui.EntityList.EntityFormatter;
 
 public class ShowBookingsView extends View<Booking> {
 
 	private static final long serialVersionUID = 1L;
-
+	 
+	private static final String APPLY_BUTTON_LABEL = "Done";
+	private static final String CANCEL_BUTTON_LABEL = "Back"; 
+	private JList<Booking> bookingList;
+	private static final BookingController controller = BookingController.getInstance();
 	private ShowBookingsView(ViewManager viewManager) {
-		// TODO Auto-generated constructor stub
+		setLayout(new BorderLayout());
+		
+		List<Booking> booking = controller.getAllBookings();
+		
+		bookingList = new EntityList<Booking>(booking, new BookingFormatter(), new ActionListenerCreator());  
+		this.add(bookingList);
 	}
 	
 	@Override
@@ -37,14 +56,12 @@ public class ShowBookingsView extends View<Booking> {
 
 	@Override
 	public String getApplyButtonLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return APPLY_BUTTON_LABEL;
 	}
 	
 	@Override
 	public String getCancelButtonLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return CANCEL_BUTTON_LABEL;
 	}
 
 	@Override
@@ -64,5 +81,37 @@ public class ShowBookingsView extends View<Booking> {
 			return new ShowBookingsView(viewManager);
 		}
 		
+	} 
+	
+	private static class BookingFormatter implements EntityFormatter<Booking> {
+
+		@Override
+		public String getLabelText(Booking entity) {
+			return null;
+		}
+		
+	}
+	
+	private static class ActionListenerCreator implements DeleteActionListenerCreator {
+
+		@Override
+		public ActionListener create(Long id) {
+			return new DeleteActionListener(id);
+		}
+		
+	}
+	
+	private static class DeleteActionListener implements ActionListener {
+		
+		private Long id;
+		
+		public DeleteActionListener(Long id) {
+			this.id = id;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			controller.deleteBooking(id);
+		}
 	}
 }

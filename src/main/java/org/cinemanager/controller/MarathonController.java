@@ -1,5 +1,8 @@
 package org.cinemanager.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.cinemanager.dao.MarathonDao;
 import org.cinemanager.entity.Marathon;
 import org.cinemanager.gui.AddMarathonView;
@@ -28,5 +31,13 @@ public class MarathonController {
 			instance = new MarathonController();
 		}
 		return instance;
+	} 
+	public List<Marathon> getAllMarathons() { 
+		List<Marathon> abc = new ArrayList<Marathon>(); 
+		 
+		return abc;
+	} 
+	public void deleteMarathon(Long id) {
+		dao.remove(id, Marathon.class);
 	}
 }

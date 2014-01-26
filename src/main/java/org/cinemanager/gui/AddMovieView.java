@@ -90,9 +90,9 @@ public class AddMovieView extends View<Movie> {
 	}
 	
 	private void addPanelTitle() {
-		JLabel panelTitle = new JLabel( " Add your new movie ");
-		panelTitle.setFont(new Font(null, Font.BOLD, 15));
-		this.add(panelTitle);
+		JLabel label = new JLabel( " Add your new movie ");
+		label.setFont(new Font(null, Font.BOLD, 15));
+		this.add(label);
 	}
 	
 	private void addTitle() {

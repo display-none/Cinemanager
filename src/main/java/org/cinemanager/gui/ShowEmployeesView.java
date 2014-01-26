@@ -20,7 +20,6 @@ public class ShowEmployeesView extends View<Employee> {
 	private static final String CANCEL_BUTTON_LABEL = "Back";
 	
 	private JList<Employee> employeeList;
-	
 	private static final EmployeeController controller = EmployeeController.getInstance();
 	
 	private ShowEmployeesView(ViewManager viewManager) {
@@ -29,7 +28,7 @@ public class ShowEmployeesView extends View<Employee> {
 		
 		List<Employee> employees = controller.getAllEmployees();
 		
-		employeeList = new EntityList<Employee>(employees, new EmployeeFormatter(), new ActionListenerCreator());
+		employeeList = new EntityList<Employee>(employees, new EmployeeFormatter(), new ActionListenerCreator());  
 		this.add(employeeList);
 	} 
 
