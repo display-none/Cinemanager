@@ -8,19 +8,21 @@ import org.cinemanager.entity.Showing;
 import org.cinemanager.gui.AddShowingView;
 
 
-public class ShowingController { 
-	private static ShowingController instance;
+public class ShowingController {
+	
 	private ShowingDao dao = new ShowingDao();
+	
+	private static ShowingController instance;
 	
 	public void createAndPersistShowing(AddShowingView addShowView) {
 		Showing show = createShowing(addShowView);
 		dao.persist(show);
 	}
+	
 	public List<Showing> getAllShowings() { 
-		List<Showing> abc = new ArrayList<Showing>(); 
-			  
-		return abc;
+		return dao.getAllShowings();
 	}
+	
 	public Showing createShowing(AddShowingView addShowView) {
 		Showing showing = new Showing();
 		showing.setDate(addShowView.getDate()); 
@@ -31,13 +33,14 @@ public class ShowingController {
 		return showing;
 	}
 	
+	public void deleteShowing(Long id) {
+		dao.remove(id, Showing.class);
+	}
+	
 	public static ShowingController getInstance() {
 		if(instance == null) {
 			instance = new ShowingController();
 		}
 		return instance;
 	} 
-	public void deleteShowing(Long id) {
-		dao.remove(id, Showing.class);
-	}
 }
