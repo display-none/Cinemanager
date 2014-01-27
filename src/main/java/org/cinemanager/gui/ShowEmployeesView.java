@@ -119,7 +119,7 @@ public class ShowEmployeesView extends View<Employee> {
 		}
 
 		private boolean isUserSureToDeleteEntry() {
-			return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(employeeList, "Are you sure you want to delete this entry?", "Hê?", JOptionPane.YES_NO_OPTION);
+			return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(employeeList, "Are you sure you want to delete this entry?", null, JOptionPane.YES_NO_OPTION);
 		}
 	}
 } 

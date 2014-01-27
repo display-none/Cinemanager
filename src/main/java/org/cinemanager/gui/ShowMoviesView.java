@@ -113,11 +113,14 @@ public class ShowMoviesView extends View<Movie> {
 
 		@Override
 		public void actionPerformed(ActionEvent e) { 
-			int n = JOptionPane.showOptionDialog(movieList, "Are you sure do you want delete this record ? \n  "+movieList.getSelectedValue().getTitle() +"  "+ movieList.getSelectedValue().getReleaseDate().toString()+"  "+movieList.getSelectedValue().getGenre().toString()+"   " +movieList.getSelectedValue().getRuntime()+"\n"+movieList.getSelectedValue().getMinimalAge() +"   " +movieList.getSelectedValue().getVersion().toString(), "Confirmation",  JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, objects, null); 
-			if (n == JOptionPane.YES_OPTION ) { 
+			if (isUserSureToDeleteEntry() ) { 
 				controller.deleteMovie(id);
 				callback.actionPerformed(null); 
 			} 
+		} 
+
+		private boolean isUserSureToDeleteEntry() {
+			return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(movieList, "Are you sure you want to delete this entry?", null, JOptionPane.YES_NO_OPTION);
 		}
 	}
 }

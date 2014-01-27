@@ -21,9 +21,7 @@ public class ShowBookingsView extends View<Booking> {
 	private static final String APPLY_BUTTON_LABEL = "Done";
 	private static final String CANCEL_BUTTON_LABEL = "Back"; 
 	private static JList<Booking> bookingList;
-	private static final BookingController controller = BookingController.getInstance();  
-	
-	private static final String [] objects= new String[] { "Yes" , "No" }; 
+	private static final BookingController controller = BookingController.getInstance();   
 	
 	private ShowBookingsView(ViewManager viewManager) {
 		setLayout(new BorderLayout());
@@ -115,11 +113,13 @@ public class ShowBookingsView extends View<Booking> {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int n = JOptionPane.showOptionDialog(bookingList, "Are you sure do you want delete this record ? \n  "+"ShowID: "+bookingList.getSelectedValue().getShowing().getId()+" , Row: "+bookingList.getSelectedValue().getSeat().getRow()+" \n Number :"+bookingList.getSelectedValue().getSeat().getNumber()+" Date : "+bookingList.getSelectedValue().getExpirationDate().toString(), "Confirmation",  JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, objects, null); 
-			if (n == JOptionPane.YES_OPTION ) { 
+			if ( isUserSureToDeleteEntry() ) { 
 				controller.deleteBooking(id);
 				callback.actionPerformed(null); 
 			} 
+		} 
+		private boolean isUserSureToDeleteEntry() {
+			return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(bookingList, "Are you sure you want to delete this entry?", null, JOptionPane.YES_NO_OPTION);
 		}
 	}
 }
