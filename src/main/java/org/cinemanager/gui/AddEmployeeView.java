@@ -91,13 +91,15 @@ public class AddEmployeeView extends View<Employee> {
 	}
 	
 	@Override
-	public void doApplyAction() {
-		controller.createAndPersistEmployee(this);
+	public void doApplyAction() {  
+		if( firstNameTextField.getText().length() > 0 && lastNameTextField.getText().length() > 0) {
+			controller.createAndPersistEmployee(this);   
+		}
 	}
 	
 	@Override
-	public Employee doGetResultAction() {
-		return controller.createEmployee(this);
+	public Employee doGetResultAction() {  
+			return controller.createEmployee(this); 
 	}
 	
 	@Override
