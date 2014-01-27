@@ -29,12 +29,9 @@ public class AddTicketView extends View<Ticket> {
 	private static final String SHOWING_DATE_FORMAT = "dd MMM 'at' hh:mm";
 	private final SimpleDateFormat showingDateParser = new SimpleDateFormat(SHOWING_DATE_FORMAT);
 	
-	private JTextField priceTextField; 
+	private JTextField priceTextField,seatTextField,showingTextField; 
 	private RadioGroup<TicketType> ticketTypeRadioGroup;  
 	private JButton chooseSeatButton, chooseShowingButton;
-	private JTextField seatTextField;
-	private JTextField showingTextField;
-	
 	private Seat seat;
 	private Showing showing;
 
@@ -159,8 +156,9 @@ public class AddTicketView extends View<Ticket> {
 	
 	@Override
 	public boolean hasAnyChanges() {
-		// TODO Auto-generated method stub
-		return false;
+		return  !seatTextField.getText().isEmpty() || 
+				!showingTextField.getText().isEmpty() || 
+				!ticketTypeRadioGroup.isFirstSelected();
 	}
 	
 	@Override
@@ -195,7 +193,9 @@ public class AddTicketView extends View<Ticket> {
 	}
 	
 	@Override
-	public void reset() {
+	public void reset() { 
+		seatTextField.setText("");
+		showingTextField.setText("");
 		ticketTypeRadioGroup.setFirstSelected();
 		priceTextField.setText(""); 
 	}
