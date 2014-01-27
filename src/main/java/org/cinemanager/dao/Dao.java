@@ -1,8 +1,6 @@
 package org.cinemanager.dao;
 
 import java.util.Collection;
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -25,9 +23,7 @@ public class Dao<T extends IEntity> {
 		}
 		closeContext();
 	}
-	public List getAllEmployee() { 
-		return null;
-	}
+	
 	public void persist(Collection<T> entities) {
 		createContext();
 		for(T entity : entities) {
@@ -60,8 +56,19 @@ public class Dao<T extends IEntity> {
 	
 	static EntityManager getEntityManager() {
 		if(entityManagerFactory == null) {
-			entityManagerFactory = Persistence.createEntityManagerFactory("openjpa");
+			initialize();
 		}
 		return entityManagerFactory.createEntityManager();
+	}
+	
+	public static void initialize() {
+		entityManagerFactory = Persistence.createEntityManagerFactory("openjpa");
+		entityManagerFactory.createEntityManager();		//to force jpa to crete itself
+	}
+	
+	public static void close() {
+		if(entityManagerFactory != null) {
+			entityManagerFactory.close();
+		}
 	}
 }

@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 
 import javax.swing.JFrame;
@@ -17,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.border.EmptyBorder;
 
+import org.cinemanager.dao.Dao;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.gui.AddBookingView;
 import org.cinemanager.gui.AddEmployeeView;
@@ -204,11 +207,6 @@ public class Main extends JFrame implements ViewManager {
 				JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION;
 	}
 	
-	public static void main(String[] args) {
-		Main main = new Main();
-		main.createGui();
-	}
-	
 	
 	@Override
 	public <T extends View<? extends IEntity>> void requestResultFrom(ViewCreator<T> viewCreator) {
@@ -282,5 +280,30 @@ public class Main extends JFrame implements ViewManager {
 				}
 			}
 		}
+	}
+	
+	public static void main(String[] args) {
+		Main main = new Main();
+		initializeJpa();
+		main.createGui();
+		assureJpaClosedAtShutdown(main);
+	}
+	
+	private static void initializeJpa() {
+		(new Thread() {
+			@Override
+			public void run() {
+				Dao.initialize();
+			}
+		}).start();
+	}
+	
+	private static void assureJpaClosedAtShutdown(Main main) {
+		main.addWindowStateListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				Dao.close();
+			}
+		});
 	}
 }

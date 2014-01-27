@@ -175,10 +175,12 @@ public class EntityList<T extends IEntity> extends JList<T> {
 			
 			private void clickButtonAt(Point point) {
 				int index = EntityList.this.locationToIndex(point);
-				JPanel panel = getPanel(index);
-				Component comp = getComponentAt(panel, new Point(point.x, point.y % CELL_HEIGHT));
-				if(comp instanceof JButton) {
-					((JButton) comp).doClick(50);
+				if(index != -1) {
+					JPanel panel = getPanel(index);
+					Component comp = getComponentAt(panel, new Point(point.x, point.y % CELL_HEIGHT));
+					if(comp instanceof JButton) {
+						((JButton) comp).doClick(50);
+					}
 				}
 			}
 			
