@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 import org.cinemanager.controller.ShowingController;
 import org.cinemanager.entity.IEntity;
@@ -19,8 +20,11 @@ public class ShowShowingsView extends View<Showing> {
 	private static final String APPLY_BUTTON_LABEL = "Done";
 	private static final String CANCEL_BUTTON_LABEL = "Back";
 	
-	private JList<Showing> showingsList;
-	private static final ShowingController controller = ShowingController.getInstance();
+	private static JList<Showing> showingsList;
+	private static final ShowingController controller = ShowingController.getInstance(); 
+	 
+	private static final String [] objects= new String[] { "Yes" , "No" }; 
+	
 	private ShowShowingsView(ViewManager viewManager) {
 		setLayout(new BorderLayout());
 		
@@ -44,7 +48,7 @@ public class ShowShowingsView extends View<Showing> {
 
 	@Override
 	public Showing doGetResultAction() {
-		return null;
+		return  showingsList.getSelectedValue();
 	}
 	
 	@Override
@@ -110,8 +114,11 @@ public class ShowShowingsView extends View<Showing> {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			controller.deleteShowing(id);
-			callback.actionPerformed(null);
+			int n = JOptionPane.showOptionDialog(showingsList, "Are you sure do you want delete this record ? \n  "+"Movie: "+ showingsList.getSelectedValue().getMovie().getTitle() + " , Date: "+showingsList.getSelectedValue().getDate().toString()+ " , AuditoriumID: "+showingsList.getSelectedValue().getAuditorium().getId()+" \n Version: "+ showingsList.getSelectedValue().getVersion().toString()+" , EmployeeID:"+showingsList.getSelectedValue().getSupervisingEmployee().getId(), "Confirmation",  JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, objects, null); 
+			if (n == JOptionPane.YES_OPTION ) { 
+				controller.deleteShowing(id);
+				callback.actionPerformed(null); 
+			} 
 		}
 	}
 }

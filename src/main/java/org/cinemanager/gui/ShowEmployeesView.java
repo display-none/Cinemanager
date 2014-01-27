@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 import org.cinemanager.controller.EmployeeController;
 import org.cinemanager.entity.Employee;
@@ -19,9 +20,10 @@ public class ShowEmployeesView extends View<Employee> {
 	private static final String APPLY_BUTTON_LABEL = "Done";
 	private static final String CANCEL_BUTTON_LABEL = "Back";
 	
-	private JList<Employee> employeeList;
+	private static JList<Employee> employeeList;
 	private static final EmployeeController controller = EmployeeController.getInstance();
-	
+	 
+	private static final String [] objects= new String[] { "Yes" , "No" };
 	private ShowEmployeesView(ViewManager viewManager) {
 		
 		setLayout(new BorderLayout());
@@ -112,9 +114,12 @@ public class ShowEmployeesView extends View<Employee> {
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			controller.deleteEmployee(id);
-			callback.actionPerformed(null);
+		public void actionPerformed(ActionEvent e) { 
+		    int n = JOptionPane.showOptionDialog(employeeList, "Are you sure do you want delete this record ? \n  "+employeeList.getSelectedValue().getFirstName() +"  "+ employeeList.getSelectedValue().getLastName()+"  -  "+employeeList.getSelectedValue().getPosition().toString(), "Confirmation",  JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, objects, null); 
+		    if (n == JOptionPane.YES_OPTION ) { 
+				controller.deleteEmployee(id);
+				callback.actionPerformed(null); 
+		    } 
 		}
 	}
 } 

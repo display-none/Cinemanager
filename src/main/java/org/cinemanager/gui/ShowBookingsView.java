@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 import org.cinemanager.controller.BookingController;
 import org.cinemanager.entity.Booking;
@@ -19,8 +20,11 @@ public class ShowBookingsView extends View<Booking> {
 	 
 	private static final String APPLY_BUTTON_LABEL = "Done";
 	private static final String CANCEL_BUTTON_LABEL = "Back"; 
-	private JList<Booking> bookingList;
-	private static final BookingController controller = BookingController.getInstance();
+	private static JList<Booking> bookingList;
+	private static final BookingController controller = BookingController.getInstance();  
+	
+	private static final String [] objects= new String[] { "Yes" , "No" }; 
+	
 	private ShowBookingsView(ViewManager viewManager) {
 		setLayout(new BorderLayout());
 		
@@ -44,8 +48,7 @@ public class ShowBookingsView extends View<Booking> {
 
 	@Override
 	public Booking doGetResultAction() {
-		// TODO Auto-generated method stub
-		return null;
+		return  bookingList.getSelectedValue();
 	}
 	
 	@Override
@@ -112,8 +115,11 @@ public class ShowBookingsView extends View<Booking> {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			controller.deleteBooking(id);
-			callback.actionPerformed(null);
+			int n = JOptionPane.showOptionDialog(bookingList, "Are you sure do you want delete this record ? \n  "+"ShowID: "+bookingList.getSelectedValue().getShowing().getId()+" , Row: "+bookingList.getSelectedValue().getSeat().getRow()+" \n Number :"+bookingList.getSelectedValue().getSeat().getNumber()+" Date : "+bookingList.getSelectedValue().getExpirationDate().toString(), "Confirmation",  JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, objects, null); 
+			if (n == JOptionPane.YES_OPTION ) { 
+				controller.deleteBooking(id);
+				callback.actionPerformed(null); 
+			} 
 		}
 	}
 }

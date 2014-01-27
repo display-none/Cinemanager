@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 import org.cinemanager.controller.MovieController;
 import org.cinemanager.entity.IEntity;
@@ -19,10 +20,10 @@ public class ShowMoviesView extends View<Movie> {
 	private static final String APPLY_BUTTON_LABEL = "Done";
 	private static final String CANCEL_BUTTON_LABEL = "Back";
 	
-	private JList<Movie> movieList;
+	private static JList<Movie> movieList;
 	private static final MovieController controller = MovieController.getInstance();
 	
-	
+	private static final String [] objects= new String[] { "Yes" , "No" };
 	private ShowMoviesView(ViewManager viewManager) {
 		setLayout(new BorderLayout());
 		
@@ -111,9 +112,12 @@ public class ShowMoviesView extends View<Movie> {
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			controller.deleteMovie(id);
-			callback.actionPerformed(null);
+		public void actionPerformed(ActionEvent e) { 
+			int n = JOptionPane.showOptionDialog(movieList, "Are you sure do you want delete this record ? \n  "+movieList.getSelectedValue().getTitle() +"  "+ movieList.getSelectedValue().getReleaseDate().toString()+"  "+movieList.getSelectedValue().getGenre().toString()+"   " +movieList.getSelectedValue().getRuntime()+"\n"+movieList.getSelectedValue().getMinimalAge() +"   " +movieList.getSelectedValue().getVersion().toString(), "Confirmation",  JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, objects, null); 
+			if (n == JOptionPane.YES_OPTION ) { 
+				controller.deleteMovie(id);
+				callback.actionPerformed(null); 
+			} 
 		}
 	}
 }
