@@ -23,7 +23,6 @@ public class ShowEmployeesView extends View<Employee> {
 	private static JList<Employee> employeeList;
 	private static final EmployeeController controller = EmployeeController.getInstance();
 	 
-	private static final String [] objects= new String[] { "Yes" , "No" };
 	private ShowEmployeesView(ViewManager viewManager) {
 		
 		setLayout(new BorderLayout());
@@ -82,7 +81,6 @@ public class ShowEmployeesView extends View<Employee> {
 		public ShowEmployeesView createView(ViewManager viewManager) {
 			return new ShowEmployeesView(viewManager);
 		}
-		
 	}
 	
 	private static class EmployeeFormatter implements EntityFormatter<Employee> {
@@ -100,7 +98,6 @@ public class ShowEmployeesView extends View<Employee> {
 		public ActionListener create(Long id, ActionListener deleteSuccessfulCallback) {
 			return new DeleteActionListener(id, deleteSuccessfulCallback);
 		}
-		
 	}
 	
 	private static class DeleteActionListener implements ActionListener {
@@ -115,11 +112,14 @@ public class ShowEmployeesView extends View<Employee> {
 
 		@Override
 		public void actionPerformed(ActionEvent e) { 
-		    int n = JOptionPane.showOptionDialog(employeeList, "Are you sure do you want delete this record ? \n  "+employeeList.getSelectedValue().getFirstName() +"  "+ employeeList.getSelectedValue().getLastName()+"  -  "+employeeList.getSelectedValue().getPosition().toString(), "Confirmation",  JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, objects, null); 
-		    if (n == JOptionPane.YES_OPTION ) { 
+		    if (isUserSureToDeleteEntry() ) { 
 				controller.deleteEmployee(id);
 				callback.actionPerformed(null); 
 		    } 
+		}
+
+		private boolean isUserSureToDeleteEntry() {
+			return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(employeeList, "Are you sure you want to delete this entry?", "Hê?", JOptionPane.YES_NO_OPTION);
 		}
 	}
 } 
