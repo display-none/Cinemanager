@@ -38,8 +38,12 @@ public class ShowMarathonsView extends View<Marathon> {
 	}
 
 	@Override
+	public boolean areInputsValid() {
+		throw new RuntimeException("zaimplementuj mnie. Patrz ShowMoviesView");
+	}
+
+	@Override
 	public void doApplyAction() {
-		// TODO Auto-generated method stub
 
 	}
 

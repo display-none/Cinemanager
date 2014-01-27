@@ -160,6 +160,11 @@ public class AddTicketView extends View<Ticket> {
 				!showingTextField.getText().isEmpty() || 
 				!ticketTypeRadioGroup.isFirstSelected();
 	}
+
+	@Override
+	public boolean areInputsValid() {
+		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
+	}
 	
 	@Override
 	public void doApplyAction() {

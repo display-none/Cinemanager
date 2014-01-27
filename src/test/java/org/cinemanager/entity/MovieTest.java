@@ -2,6 +2,8 @@ package org.cinemanager.entity;
 
 import static org.junit.Assert.*;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 

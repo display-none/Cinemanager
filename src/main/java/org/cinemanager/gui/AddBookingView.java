@@ -149,6 +149,11 @@ public class AddBookingView extends View<Booking> {
 	}
 	
 	@Override
+	public boolean areInputsValid() {
+		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
+	}
+	
+	@Override
 	public void doApplyAction() {
 		bookingController.createAndPersistBooking(this);
 		

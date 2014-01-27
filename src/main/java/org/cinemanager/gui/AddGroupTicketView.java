@@ -18,6 +18,11 @@ public class AddGroupTicketView extends View<GroupTicket> {
 	}
 
 	@Override
+	public boolean areInputsValid() {
+		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
+	}
+
+	@Override
 	public void doApplyAction() {
 		// TODO Auto-generated method stub
 

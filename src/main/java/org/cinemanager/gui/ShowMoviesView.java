@@ -3,11 +3,16 @@ package org.cinemanager.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
+import org.cinemanager.common.MovieGenre;
+import org.cinemanager.common.MovieVersion;
 import org.cinemanager.controller.MovieController;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Movie;
@@ -33,13 +38,16 @@ public class ShowMoviesView extends View<Movie> {
 	
 	@Override
 	public boolean hasAnyChanges() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
+	public boolean areInputsValid() {
+		return !movieList.isSelectionEmpty();
+	}
+
+	@Override
 	public void doApplyAction() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -84,10 +92,46 @@ public class ShowMoviesView extends View<Movie> {
 	
 	private static class MovieFormatter implements EntityFormatter<Movie> {
 
+		private static final String DATE_FORMAT = "MMM dd, yyyy";  
+		private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
+		
 		@Override
 		public String getLabelText(Movie entity) {
-			return entity.getTitle()+ "   " + entity.getReleaseDate().toString() + "   " + entity.getGenre().toString() + "   " + 
-						entity.getRuntime() + "   " + entity.getMinimalAge() + "   " + entity.getVersion().toString() ;
+			return entity.getTitle() + " " + 
+						parseVersion(entity.getVersion()) + 
+						" (" + parseGenre(entity.getGenre()) + ")" + 
+						" released " + parseDate(entity.getReleaseDate()) + " " + 
+						" (" + entity.getRuntime() + " minutes" +
+								parseMinimalAge(entity.getMinimalAge()) + 
+						")" ;
+		}
+
+		private String parseMinimalAge(int minimalAge) {
+			return minimalAge != 0 
+						? (", min. age " + minimalAge)
+						: ("");
+		}
+		
+		private String parseDate(Date date) {
+			return dateParser.format(date);
+		}
+		
+		private String parseGenre(MovieGenre genre) {
+			String genreString = genre.toString().toLowerCase();
+			return genreString.replaceAll("_", " ");
+		}
+
+		private String parseVersion(MovieVersion version) {
+			switch(version) {
+			case VERSION_2D:
+				return "2D";
+			case VERSION_3D:
+				return "3D";
+			case BOTH:
+				return "2D and 3D";
+			default:
+				return null;
+			}
 		}
 	}
 	

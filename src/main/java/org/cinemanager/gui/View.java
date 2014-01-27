@@ -9,6 +9,8 @@ public abstract class View<T> extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	public abstract boolean hasAnyChanges();
+	
+	public abstract boolean areInputsValid();
 
 	public abstract void doApplyAction();
 	

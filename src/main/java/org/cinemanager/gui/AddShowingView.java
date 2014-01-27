@@ -199,11 +199,15 @@ public class AddShowingView extends View<Showing> {
 				!employeeTextField.getText().isEmpty() || 
 				!versionRadioGroup.isFirstSelected() ;
 	}
+
+	@Override
+	public boolean areInputsValid() {
+		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
+	}
 	
 	@Override
 	public void doApplyAction() {
 		showingController.createAndPersistShowing(this);
-		
 	}
 	
 	@Override

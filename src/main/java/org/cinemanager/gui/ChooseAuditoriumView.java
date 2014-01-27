@@ -13,6 +13,11 @@ public class ChooseAuditoriumView extends View<Auditorium> {
 	
 	@Override
 	public boolean hasAnyChanges() {
+		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
+	}
+
+	@Override
+	public boolean areInputsValid() {
 		// TODO Auto-generated method stub
 		return false;
 	}

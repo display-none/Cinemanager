@@ -1,5 +1,7 @@
 package org.cinemanager.controller;
 
+import java.util.List;
+
 import org.cinemanager.dao.TicketDao;
 import org.cinemanager.entity.Ticket;
 import org.cinemanager.gui.AddTicketView;
@@ -21,8 +23,11 @@ public class TicketController {
 		ticket.setShowing(addTicketView.getShowing());
 		ticket.setType(addTicketView.getTicketType());
 		ticket.setPrice(ticketPriceHelper.getPriceForTicketType(addTicketView.getTicketType()));
-	//	ticket.setgroupticket(addTicketView.getgroupticket());    /** Piter : dobrze ta linia ? **/
 		return ticket;
+	}
+	
+	public List<Ticket> getAllTickets() {
+		return dao.getAllTickets();
 	}
 	
 	public static TicketController getInstance() {

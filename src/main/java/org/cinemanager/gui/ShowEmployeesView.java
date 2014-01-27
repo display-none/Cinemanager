@@ -35,13 +35,16 @@ public class ShowEmployeesView extends View<Employee> {
 
 	@Override
 	public boolean hasAnyChanges() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
+	public boolean areInputsValid() {
+		throw new RuntimeException("zaimplementuj mnie. Patrz ShowMoviesView");
+	}
+
+	@Override
 	public void doApplyAction() {
-		// TODO Auto-generated method stub
 
 	}
 

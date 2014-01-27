@@ -9,8 +9,9 @@ import org.cinemanager.gui.AddMarathonView;
 
 public class MarathonController {
 
-	private static MarathonController instance;
 	private MarathonDao dao = new MarathonDao();
+	
+	private static MarathonController instance;
 	
 	public void createAndPersistMarathon(AddMarathonView addMarathonView) {
 		Marathon marathon = createMarathon(addMarathonView);
@@ -26,18 +27,18 @@ public class MarathonController {
 		return marathon;
 	}
 	
+	public List<Marathon> getAllMarathons() { 
+		return dao.getAllMarathons();
+	} 
+	
+	public void deleteMarathon(Long id) {
+		dao.remove(id, Marathon.class);
+	}
+	
 	public static MarathonController getInstance() {
 		if(instance == null) {
 			instance = new MarathonController();
 		}
 		return instance;
 	} 
-	public List<Marathon> getAllMarathons() { 
-		List<Marathon> abc = new ArrayList<Marathon>(); 
-		 
-		return abc;
-	} 
-	public void deleteMarathon(Long id) {
-		dao.remove(id, Marathon.class);
-	}
 }
