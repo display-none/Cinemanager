@@ -85,8 +85,9 @@ public class AddEmployeeView extends View<Employee> {
 	
 	@Override
 	public boolean hasAnyChanges() {
-		// TODO Auto-generated method stub
-		return false;
+		return  !firstNameTextField.getText().isEmpty() || 
+				!lastNameTextField.getText().isEmpty() || 
+				!employeePositionRadioGroup.isFirstSelected();
 	}
 	
 	@Override

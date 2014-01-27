@@ -84,8 +84,10 @@ public class AddBookingView extends View<Booking> {
 		panel.setLayout(new GridLayout(1,1)); 
 		 
 		panel.add(dateLabel); 
-		panel.add(dateTextField);
-	}
+		panel.add(dateTextField); 
+		 
+		this.add(panel);
+	} 
 	
 	public void addSeat() {
 		JPanel panel = new JPanel(); 
@@ -141,8 +143,9 @@ public class AddBookingView extends View<Booking> {
 	
 	@Override
 	public boolean hasAnyChanges() {
-		// TODO Auto-generated method stub
-		return false;
+		return !showingTextField.getText().isEmpty() || 
+			   !seatTextField.getText().isEmpty() ||  
+			   !dateTextField.getText().isEmpty();
 	}
 	
 	@Override
@@ -179,7 +182,9 @@ public class AddBookingView extends View<Booking> {
 	
 	@Override
 	public void reset() {
-		dateTextField.setText("");
+		showingTextField.setText(""); 
+		seatTextField.setText(""); 
+		dateTextField.setText("");  
 		
 	}
 

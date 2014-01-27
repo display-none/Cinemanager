@@ -19,7 +19,7 @@ public class AddMarathonView extends View<Marathon> {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private final ViewManager viewManager;
+	//private final ViewManager viewManager;
 	private Employee employee;  
 	private JTextField marathonNameTextField,employeeIDTextField,showingIDTextField;  
 	private static final String APPLY_BUTTON_LABEL = "Save";
@@ -27,7 +27,7 @@ public class AddMarathonView extends View<Marathon> {
 	 
 	private final MarathonController controller = MarathonController.getInstance(); 
 	private AddMarathonView(ViewManager viewManager) {
-		this.viewManager = viewManager; 
+		//this.viewManager = viewManager; 
 		this.setLayout(new GridLayout(4,1));
 		addTitle(); 
 		addName(); 
@@ -104,8 +104,9 @@ public class AddMarathonView extends View<Marathon> {
 	}
 	@Override
 	public boolean hasAnyChanges() {
-		// TODO Auto-generated method stub
-		return false;
+		return 	!marathonNameTextField.getText().isEmpty() || 
+				!employeeIDTextField.getText().isEmpty() || 
+				!showingIDTextField.getText().isEmpty();  
 	}
 	
 	@Override
@@ -137,7 +138,9 @@ public class AddMarathonView extends View<Marathon> {
 	
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
+		marathonNameTextField.setText("");
+		employeeIDTextField.setText("");
+		showingIDTextField.setText("");
 		
 	}
 	

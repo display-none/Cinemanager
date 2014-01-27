@@ -47,8 +47,8 @@ public class AddShowingView extends View<Showing> {
 		addMovie();
 		addVersion();
 		addAuditorium();
+		addEmployee(); 
 		addDate();
-		addEmployee();
 	}
 	
 	public void addTitle(){ 
@@ -193,8 +193,11 @@ public class AddShowingView extends View<Showing> {
 	
 	@Override
 	public boolean hasAnyChanges() {
-		// TODO Auto-generated method stub
-		return false;
+		return !movieTextField.getText().isEmpty() || 
+				!textfieldDate.getText().isEmpty() ||  
+				!auditoriumTextField.getText().isEmpty() || 
+				!employeeTextField.getText().isEmpty() || 
+				!versionRadioGroup.isFirstSelected() ;
 	}
 	
 	@Override

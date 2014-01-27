@@ -1,11 +1,8 @@
 package org.cinemanager.gui;
 
 import org.cinemanager.entity.Auditorium;
-import org.cinemanager.entity.Booking;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Seat;
-
-import com.google.common.base.CaseFormat;
 
 public class ChooseSeatView extends View<Seat> {
 

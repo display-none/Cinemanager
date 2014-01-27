@@ -2,7 +2,6 @@ package org.cinemanager.gui;
 
 import org.cinemanager.entity.Auditorium;
 import org.cinemanager.entity.IEntity;
-import org.cinemanager.entity.Movie;
 
 public class ChooseAuditoriumView extends View<Auditorium> {
 

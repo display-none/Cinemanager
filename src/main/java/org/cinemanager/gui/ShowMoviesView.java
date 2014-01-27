@@ -22,8 +22,6 @@ public class ShowMoviesView extends View<Movie> {
 	
 	private static JList<Movie> movieList;
 	private static final MovieController controller = MovieController.getInstance();
-	
-	private static final String [] objects= new String[] { "Yes" , "No" };
 	private ShowMoviesView(ViewManager viewManager) {
 		setLayout(new BorderLayout());
 		
