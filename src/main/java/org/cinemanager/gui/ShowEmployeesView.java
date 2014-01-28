@@ -40,7 +40,7 @@ public class ShowEmployeesView extends View<Employee> {
 
 	@Override
 	public boolean areInputsValid() {
-		throw new RuntimeException("zaimplementuj mnie. Patrz ShowMoviesView");
+		return !employeeList.isSelectionEmpty();
 	}
 
 	@Override
@@ -86,10 +86,14 @@ public class ShowEmployeesView extends View<Employee> {
 		}
 	}
 	
-	private static class EmployeeFormatter implements EntityFormatter<Employee> {
+	public static class EmployeeFormatter implements EntityFormatter<Employee> {
 
 		@Override
 		public String getLabelText(Employee entity) {
+			return getLabelTextStatic(entity);
+		}
+		
+		public static String getLabelTextStatic(Employee entity) {
 			return entity.getFirstName() + " " + entity.getLastName() + " - " + entity.getPosition().toString();
 		}
 		

@@ -90,38 +90,42 @@ public class ShowMoviesView extends View<Movie> {
 		}
 	} 
 	
-	private static class MovieFormatter implements EntityFormatter<Movie> {
+	public static class MovieFormatter implements EntityFormatter<Movie> {
 
 		private static final String DATE_FORMAT = "MMM dd, yyyy";  
 		private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
 		
 		@Override
 		public String getLabelText(Movie entity) {
+			return getLabelTextStatic(entity);
+		}
+		
+		public static String getLabelTextStatic(Movie entity) {
 			return entity.getTitle() + " " + 
-						parseVersion(entity.getVersion()) + 
-						" (" + parseGenre(entity.getGenre()) + ")" + 
-						" released " + parseDate(entity.getReleaseDate()) + " " + 
-						" (" + entity.getRuntime() + " minutes" +
-								parseMinimalAge(entity.getMinimalAge()) + 
-						")" ;
+					parseVersion(entity.getVersion()) + 
+					" (" + parseGenre(entity.getGenre()) + ")" + 
+					" released " + parseDate(entity.getReleaseDate()) + " " + 
+					" (" + entity.getRuntime() + " minutes" +
+							parseMinimalAge(entity.getMinimalAge()) + 
+					")" ;
 		}
 
-		private String parseMinimalAge(int minimalAge) {
+		private static String parseMinimalAge(int minimalAge) {
 			return minimalAge != 0 
 						? (", min. age " + minimalAge)
 						: ("");
 		}
 		
-		private String parseDate(Date date) {
+		private static String parseDate(Date date) {
 			return dateParser.format(date);
 		}
 		
-		private String parseGenre(MovieGenre genre) {
+		private static String parseGenre(MovieGenre genre) {
 			String genreString = genre.toString().toLowerCase();
 			return genreString.replaceAll("_", " ");
 		}
 
-		private String parseVersion(MovieVersion version) {
+		private static String parseVersion(MovieVersion version) {
 			switch(version) {
 			case VERSION_2D:
 				return "2D";

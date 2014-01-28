@@ -24,12 +24,21 @@ public class Seat implements IEntity {
 	@Column(name="number", nullable=false)
 	private int number;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(nullable=false)
-	private Auditorium auditorium;
+//	@ManyToOne(fetch=FetchType.LAZY)
+//	@JoinColumn(nullable=false)
+//	private Auditorium auditorium;
 	
 	@Column(name="vip")
 	private boolean vip = false;
+	
+	public Seat() {
+		//JPA needs a default constructor
+	}
+	
+	public Seat(int row, int number) {
+		this.row = row;
+		this.number = number;
+	}
 	
 	@Override
 	public Long getId() {
@@ -52,13 +61,13 @@ public class Seat implements IEntity {
 		this.number = number;
 	}
 
-	public Auditorium getAuditorium() {
-		return auditorium;
-	}
-
-	public void setAuditorium(Auditorium auditorium) {
-		this.auditorium = auditorium;
-	}
+//	public Auditorium getAuditorium() {
+//		return auditorium;
+//	}
+//
+//	public void setAuditorium(Auditorium auditorium) {
+//		this.auditorium = auditorium;
+//	}
 
 	public boolean isVip() {
 		return vip;
