@@ -29,7 +29,7 @@ public class Booking implements IEntity {
 	@JoinColumn(nullable=false)
 	private Seat seat;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIME)
 	@Column(name="expiration_date", nullable=false)
 	private Date expirationDate;
 

@@ -43,24 +43,23 @@ public class AddMarathonView extends View<Marathon> {
 	private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT); 
 	
 	private Employee employee;
-	private Showing showing = null; 
 	
 	private final static MarathonController controller = MarathonController.getInstance();   
 	private final static ShowingController showingcontroller = ShowingController.getInstance();  
-	private static JList<Showing> showingList; 
+	private static EntityList<Showing> showingList; 
 	private JScrollPane scroll;   
-	private List<Showing> records;
+	private List<Showing> chosenShowings;
 	private AddMarathonView(ViewManager viewManager) {
 		this.viewManager = viewManager; 
-		this.setLayout(new GridLayout(6,1));
+		this.setLayout(new GridLayout(5,1));
 		addTitle(); 
 		addName(); 
 		addEmployee();  
 		addShowing();  
-		records= new ArrayList<Showing>(); 
-		showingList = new EntityList<Showing>(records, new ShowingsFormatter(), new ActionListenerCreator());
-		//scroll = new JScrollPane(showingList);
-		//this.add(scroll);
+		chosenShowings= new ArrayList<Showing>(); 
+		showingList = new EntityList<Showing>(chosenShowings, new ShowingsFormatter(), new ActionListenerCreator());
+		scroll = new JScrollPane(showingList);
+		this.add(scroll);
 	}  
 	public void addTitle(){ 
 		JLabel titleLabel = new JLabel(" Add new marathon"); 
@@ -116,16 +115,9 @@ public class AddMarathonView extends View<Marathon> {
 		 
 		this.add(showingPanel );
 	} 
-	private void updateShowingDetails() {																	/** TUTAJ **/
-		if(showing != null) {
-			 records.add(showing);  
-			 this.remove(showingList);
-			 showingList.add(new EntityList<Showing>(records, new ShowingsFormatter(), new ActionListenerCreator())); 
-			 this.add(showingList); 
-			
-		} else {
-			//showingList.add( new JLabel(""));
-		}
+	private void addShowingToList(Showing showing) {																	/** TUTAJ **/
+		 chosenShowings.add(showing);
+		 showingList.addElement(showing);
 	}
 	public String getName() { 
 		return marathonNameTextField.getText();
@@ -141,7 +133,7 @@ public class AddMarathonView extends View<Marathon> {
 
 	@Override
 	public boolean areInputsValid() {
-		return isMarathonFieldValid() && isEmployeeFieldValid() && isShowingFieldValid(); 
+		return isMarathonFieldValid() && isEmployeeFieldValid() && areShowingsChosen(); 
 	}  
 	public boolean isMarathonFieldValid() {
 		if( marathonNameTextField.getText().isEmpty()) { 
@@ -153,8 +145,8 @@ public class AddMarathonView extends View<Marathon> {
 	public boolean isEmployeeFieldValid(){ 
 		return employee != null;
 	}
-	public boolean isShowingFieldValid(){ 
-		return showing != null;
+	public boolean areShowingsChosen(){ 
+		return !chosenShowings.isEmpty();
 	}
 	@Override
 	public void doApplyAction() {
@@ -170,8 +162,7 @@ public class AddMarathonView extends View<Marathon> {
 	@Override
 	public void handleRequestedResult(IEntity result) {
 		if(result instanceof Showing) {
-			showing = (Showing) result; 
-			updateShowingDetails();
+			addShowingToList((Showing) result);
 		} else if(result instanceof Employee) {
 			employee = (Employee) result;
 			updateEmployeeDetails();

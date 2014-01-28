@@ -1,15 +1,9 @@
 package org.cinemanager.gui;
 
-import static org.cinemanager.common.ValidatingHelper.isValidDate;
-
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,20 +15,16 @@ import org.cinemanager.entity.Booking;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Seat;
 import org.cinemanager.entity.Showing;
+import org.cinemanager.gui.ShowShowingsView.ShowingsFormatter;
 
 
 public class AddBookingView extends View<Booking> {
 
 	private static final long serialVersionUID = 1L;
-	private static final String DATE_FORMAT = "yyyy-MM-dd";   
-	private final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT);
 	private static final String APPLY_BUTTON_LABEL = "Save";
 	private static final String CANCEL_BUTTON_LABEL = "Cancel";
-	private static final String SHOWING_DATE_FORMAT = "dd MMM 'at' hh:mm";
-	private final SimpleDateFormat showingDateParser = new SimpleDateFormat(SHOWING_DATE_FORMAT);
 
 	private JTextField showingTextField, seatTextField; 
-	private JButton chooseShowingButton, chooseSeatButton; 
 	private Seat seat; 
 	private Showing showing; 
 	
@@ -76,7 +66,7 @@ public class AddBookingView extends View<Booking> {
 		seatTextField.setEditable(false);
 		panel.add(seatTextField);
 		
-		chooseSeatButton = new JButton("Choose seat");
+		JButton chooseSeatButton = new JButton("Choose seat");
 		chooseSeatButton.addActionListener(new ChooseSeatActionListener());
 		panel.add(chooseSeatButton);	 
 		 
@@ -104,7 +94,7 @@ public class AddBookingView extends View<Booking> {
 		showingTextField.setEditable(false);
 		panel.add(showingTextField);
 		
-		chooseShowingButton = new JButton("Choose Showing ");
+		JButton chooseShowingButton = new JButton("Choose Showing ");
 		chooseShowingButton.addActionListener(new ChooseShowingActionListener());
 		panel.add(chooseShowingButton);	 
 		 
@@ -113,7 +103,7 @@ public class AddBookingView extends View<Booking> {
 	
 	private void updateShowingDetails() {
 		if(showing != null) {
-			showingTextField.setText(showing.getMovie().getTitle() + " on " + showingDateParser.format(showing.getDate()));
+			showingTextField.setText(ShowingsFormatter.getLabelTextStatic(showing));
 		}
 	}
 	
@@ -202,7 +192,7 @@ public class AddBookingView extends View<Booking> {
 			if(showing == null) {
 				JOptionPane.showMessageDialog(AddBookingView.this, "Select showing first");
 			} else {
-				viewManager.requestResultFrom(ChooseSeatView.getCreator(showing.getAuditorium()));
+				viewManager.requestResultFrom(ChooseSeatView.getCreator(showing));
 			}
 		}
 	}

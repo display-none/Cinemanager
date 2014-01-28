@@ -253,7 +253,7 @@ public class AddTicketView extends View<Ticket> {
 			if(showing == null) {
 				JOptionPane.showMessageDialog(AddTicketView.this, "Select showing first");
 			} else {
-				viewManager.requestResultFrom(ChooseSeatView.getCreator(showing.getAuditorium()));
+				viewManager.requestResultFrom(ChooseSeatView.getCreator(showing));
 			}
 		}
 	}

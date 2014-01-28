@@ -5,7 +5,11 @@ import java.util.List;
 
 import org.cinemanager.dao.BookingDao;
 import org.cinemanager.entity.Booking;
+import org.cinemanager.entity.Seat;
+import org.cinemanager.entity.Ticket;
 import org.cinemanager.gui.AddBookingView;
+
+import com.google.common.collect.Lists;
 
 
 public class BookingController {
@@ -28,6 +32,14 @@ public class BookingController {
 		booking.setShowing(addBookingView.getShow()); 
 		booking.setSeat(addBookingView.getSeat()); 
 		return booking;
+	}
+	
+	public List<Seat> getBookedSeatsForShowing(Long showingId) {
+		List<Seat> takenSeats = Lists.newArrayList();
+		for(Booking booking : dao.getNotExpiredBookingsForShowing(showingId)) {
+			takenSeats.add(booking.getSeat());
+		}
+		return takenSeats;
 	}
 	
 	public void deleteBooking(Long id) {

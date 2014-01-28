@@ -17,4 +17,14 @@ public class TicketDao extends Dao<Ticket> {
 		return result;
 	}
 
+	public List<Ticket> getTicketsForShowing(Long showingId) {
+		EntityManager em = createContext();
+		TypedQuery<Ticket> query = em.createQuery("select t from Ticket t where t.showing.id = :showingId", 
+				Ticket.class);
+		query.setParameter("showingId", showingId);
+		List<Ticket> result = query.getResultList();
+		closeContext();
+		return result;
+	}
+
 }

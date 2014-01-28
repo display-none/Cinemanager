@@ -7,6 +7,7 @@ import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,11 +15,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.cinemanager.controller.BookingController;
+import org.cinemanager.controller.TicketController;
 import org.cinemanager.entity.Auditorium;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Seat;
+import org.cinemanager.entity.Showing;
 
 import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Sets;
 import com.google.common.collect.Table;
 
 public class ChooseSeatView extends View<Seat> {
@@ -32,11 +37,15 @@ public class ChooseSeatView extends View<Seat> {
 	
 	private int selectedRow = -1;
 	private int selectedColumn = -1;
+	
+	private final TicketController ticketController = TicketController.getInstance();
+	private final BookingController bookingController = BookingController.getInstance();
 
-	private ChooseSeatView(ViewManager viewManager, Auditorium auditorium) {
+	private ChooseSeatView(ViewManager viewManager, Showing showing) {
 		setLayout(new BorderLayout());
 		
-		List<Seat> seats = auditorium.getSeats();
+		List<Seat> seats = showing.getAuditorium().getSeats();
+		Set<Pair<Integer>> takenSeats = getTakenSeats(showing);
 		
 		int rows = getMaxRow(seats);
 		int columns = getMaxNumber(seats);
@@ -44,8 +53,16 @@ public class ChooseSeatView extends View<Seat> {
 		seatTable = createSeatTable(seats, rows, columns);
 		
 		addScreenLabel();
-		addSeatGrid(rows, columns, seatTable);
+		addSeatGrid(rows, columns, seatTable, takenSeats);
 		addSelectedIndicator();
+	}
+
+	private Set<Pair<Integer>> getTakenSeats(Showing showing) {
+		Set<Pair<Integer>> takenSeats = Sets.newHashSet();
+//		fo
+//		takenSeats.addAll(ticketController.getSeatsTakenForShowing(showing.getId()));
+//		takenSeats.addAll(bookingController.getBookedSeatsForShowing(showing.getId()));
+		return takenSeats;
 	}
 
 	private void addScreenLabel() {
@@ -54,7 +71,7 @@ public class ChooseSeatView extends View<Seat> {
 		add(panel, BorderLayout.NORTH);
 	}
 
-	private void addSeatGrid(int rows, int columns, Table<Integer, Integer, Seat> seatTable) {
+	private void addSeatGrid(int rows, int columns, Table<Integer, Integer, Seat> seatTable, Set<Pair<Integer>> takenSeats) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(rows, columns, 2, 2));
 		
@@ -62,9 +79,9 @@ public class ChooseSeatView extends View<Seat> {
 			for(int j = 0; j < columns; j++) {
 				if(seatTable.contains(i, j)) {
 					if(seatTable.get(i, j).isVip()) {
-						panel.add(createChooseSeatButtonVip(i, j));
+						panel.add(createChooseSeatButtonVip(i, j, takenSeats));
 					} else {
-						panel.add(createChooseSeatButton(i, j));
+						panel.add(createChooseSeatButton(i, j, takenSeats));
 					}
 				} else {
 					panel.add(new JLabel());
@@ -96,15 +113,18 @@ public class ChooseSeatView extends View<Seat> {
 		return seatTable;
 	}
 	
-	private JButton createChooseSeatButtonVip(int row, int column) {
-		JButton button = createChooseSeatButton(row, column);
+	private JButton createChooseSeatButtonVip(int row, int column, Set<Pair<Integer>> takenSeats) {
+		JButton button = createChooseSeatButton(row, column, takenSeats);
 		button.setForeground(Color.red);
 		return button;
 	}
 	
-	private JButton createChooseSeatButton(int row, int column) {
+	private JButton createChooseSeatButton(Integer row, Integer column, Set<Pair<Integer>> takenSeats) {
 		JButton button = new JButton(convertNumberToLetter(row) + column);
 		button.addActionListener(new ChooseSeatListener(row, column));
+		if(takenSeats.contains(new Pair(row, column))) {
+			button.setEnabled(false);
+		}
 		return button;
 	}
 
@@ -177,21 +197,21 @@ public class ChooseSeatView extends View<Seat> {
 
 	}
 	
-	public static ViewCreator<ChooseSeatView> getCreator(Auditorium auditorium) {
-		return new ChooseSeatViewCreator(auditorium);
+	public static ViewCreator<ChooseSeatView> getCreator(Showing showing) {
+		return new ChooseSeatViewCreator(showing);
 	}
 	
 	private static class ChooseSeatViewCreator implements ViewCreator<ChooseSeatView> {
 
-		private Auditorium auditorium;
+		private Showing showing;
 		
-		public ChooseSeatViewCreator(Auditorium auditorium) {
-			this.auditorium = auditorium;
+		public ChooseSeatViewCreator(Showing showing) {
+			this.showing = showing;
 		}
 		
 		@Override
 		public ChooseSeatView createView(ViewManager viewManager) {
-			return new ChooseSeatView(viewManager, auditorium);
+			return new ChooseSeatView(viewManager, showing);
 		}
 		
 	}
@@ -211,6 +231,17 @@ public class ChooseSeatView extends View<Seat> {
 			selectedRow = row;
 			selectedColumn = column;
 			updateSelectedSeatIndicator();
+		}
+	}
+	
+	private static class Pair<T> {
+		
+		private final T x;
+		private final T y;
+		
+		public Pair(T x, T y) {
+			this.x = x;
+			this.y = y;
 		}
 	}
 }

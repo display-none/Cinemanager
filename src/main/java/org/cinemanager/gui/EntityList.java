@@ -50,6 +50,12 @@ public class EntityList<T extends IEntity> extends JList<T> {
 		setCellRenderer(new EntityListCellRenderer(elements.size(), this));
 	}
 	
+	public void addElement(T element) {
+		((DefaultListModel<T>) getModel()).addElement(element);
+		this.invalidate();
+		setCellRenderer(new EntityListCellRenderer(getModel().getSize(), this));
+	}
+	
 	@Override
 	public T getSelectedValue() {
 		if(isItemDeleted()) {
