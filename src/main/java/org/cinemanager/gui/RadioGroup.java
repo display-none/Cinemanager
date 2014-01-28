@@ -3,6 +3,7 @@ package org.cinemanager.gui;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -38,6 +39,10 @@ public class RadioGroup<T> extends JPanel {
 	public void setFirstSelected() {
 		buttonGroup.setFirstSelected();
 	}
+	
+	public void setSelected(int index) {
+		buttonGroup.setSelected(index);
+	}
 
 	public T getSelected() {
 		return elements[buttonGroup.getSelectedIndex()];
@@ -45,6 +50,14 @@ public class RadioGroup<T> extends JPanel {
 	
 	public boolean isFirstSelected() {
 		return buttonGroup.getSelectedIndex() == 0;
+	}
+	
+	public void enableRadios() {
+		buttonGroup.enableRadios();
+	}
+	
+	public void disableRadios() {
+		buttonGroup.disableRadios();
 	}
 	
 	private class HackedButtonGroup extends ButtonGroup {
@@ -62,6 +75,22 @@ public class RadioGroup<T> extends JPanel {
 
 		public void setFirstSelected() {
 			setSelected(buttons.get(0).getModel(), true);
+		}
+		
+		public void setSelected(int index) {
+			setSelected(buttons.get(index).getModel(), true);
+		}
+		
+		public void enableRadios() {
+			for(AbstractButton button : buttons) {
+				button.setEnabled(true);
+			}
+		}
+		
+		public void disableRadios() {
+			for(AbstractButton button : buttons) {
+				button.setEnabled(false);
+			}
 		}
 	}
 	

@@ -144,11 +144,15 @@ public class AddShowingView extends View<Showing> {
 	}
 	
 	private void updateVersion() {
-		versionRadioGroup.setEnabled(true);
+		versionRadioGroup.enableRadios();
 		if( (auditorium != null && !auditorium.isSupporting3D()) ||
-				(movie != null && movie.isIn3D()) ) {
+				(movie != null && !movie.isIn3D()) ) {
 			versionRadioGroup.setFirstSelected();
-			versionRadioGroup.setEnabled(false);
+			versionRadioGroup.disableRadios();
+		}
+		if(movie != null && movie.is3DOnly()) {
+			versionRadioGroup.setSelected(1);		//selects version 3D
+			versionRadioGroup.disableRadios();
 		}
 	}
 
