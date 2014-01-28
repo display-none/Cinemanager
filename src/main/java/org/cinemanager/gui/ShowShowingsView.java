@@ -30,10 +30,15 @@ public class ShowShowingsView extends View<Showing> {
 	  
 	private JScrollPane scroll; 
 	
-	private ShowShowingsView(ViewManager viewManager, boolean withDeleteOption) {
+	private ShowShowingsView(ViewManager viewManager, boolean withDeleteOption, boolean forBooking) {
 		setLayout(new BorderLayout());
 		
-		List<Showing> showings = controller.getAllShowings();
+		List<Showing> showings;
+		if(forBooking) {
+			showings = controller.getAllBookableShowings();
+		} else {
+			showings = controller.getAllFutureShowings();
+		}
 		
 		if(withDeleteOption) {
 			showingsList = new EntityList<Showing>(showings, new ShowingsFormatter(), new ActionListenerCreator());
@@ -86,21 +91,23 @@ public class ShowShowingsView extends View<Showing> {
 
 	}
 	
-	public static ViewCreator<ShowShowingsView> getCreator(boolean withDeleteOption) {
-		return new ShowShowingsViewCreator(withDeleteOption);
+	public static ViewCreator<ShowShowingsView> getCreator(boolean withDeleteOption, boolean forBooking) {
+		return new ShowShowingsViewCreator(withDeleteOption, forBooking);
 	}
 	
 	private static class ShowShowingsViewCreator implements ViewCreator<ShowShowingsView> {
 
 		private boolean withDeleteOption;
+		private boolean forBooking;
 		
-		public ShowShowingsViewCreator(boolean withDeleteOption) {
+		public ShowShowingsViewCreator(boolean withDeleteOption, boolean forBooking) {
 			this.withDeleteOption = withDeleteOption;
+			this.forBooking = forBooking;
 		}
 
 		@Override
 		public ShowShowingsView createView(ViewManager viewManager) {
-			return new ShowShowingsView(viewManager, withDeleteOption);
+			return new ShowShowingsView(viewManager, withDeleteOption, forBooking);
 		}
 		
 	}

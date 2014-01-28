@@ -44,7 +44,7 @@ public class AddBookingView extends View<Booking> {
 		return seat;
 	}
 	
-	public Showing getShow() { 
+	public Showing getShowing() { 
 		return showing;
 	}
 	
@@ -201,7 +201,7 @@ public class AddBookingView extends View<Booking> {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			viewManager.requestResultFrom(ShowShowingsView.getCreator(false));
+			viewManager.requestResultFrom(ShowShowingsView.getCreator(false, true));
 		}
 	}
 }

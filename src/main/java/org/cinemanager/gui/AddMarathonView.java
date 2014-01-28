@@ -210,7 +210,7 @@ public class AddMarathonView extends View<Marathon> {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			viewManager.requestResultFrom(ShowShowingsView.getCreator(false));
+			viewManager.requestResultFrom(ShowShowingsView.getCreator(false, false));
 		}
 	} 
 	private static class ActionListenerCreator implements DeleteActionListenerCreator {

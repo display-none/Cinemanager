@@ -1,6 +1,8 @@
 package org.cinemanager.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.cinemanager.dao.BookingDao;
@@ -14,6 +16,8 @@ import com.google.common.collect.Lists;
 
 public class BookingController {
 	
+	private static final long HALF_HOUR_IN_MILISECONDS = 30*60*1000;
+
 	private BookingDao dao = new BookingDao(); 
 	
 	private static  BookingController instance;	
@@ -29,8 +33,9 @@ public class BookingController {
 	
 	public Booking createBooking(AddBookingView addBookingView) {
 		Booking booking = new Booking();
-		booking.setShowing(addBookingView.getShow()); 
+		booking.setShowing(addBookingView.getShowing()); 
 		booking.setSeat(addBookingView.getSeat()); 
+		booking.setExpirationDate(new Date(booking.getShowing().getDate().getTime() - HALF_HOUR_IN_MILISECONDS));
 		return booking;
 	}
 	
@@ -40,6 +45,10 @@ public class BookingController {
 			takenSeats.add(booking.getSeat());
 		}
 		return takenSeats;
+	}
+	
+	public long getNoBookingAfterDateTime() {
+		return HALF_HOUR_IN_MILISECONDS;
 	}
 	
 	public void deleteBooking(Long id) {

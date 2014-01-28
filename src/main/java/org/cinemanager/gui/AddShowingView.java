@@ -185,7 +185,7 @@ public class AddShowingView extends View<Showing> {
 	public Date getDate() {    
 		String date = textfieldDate.getText();
 		Date parsedDate = null;
-		if(!(date.equals(""))) {
+		if(!date.isEmpty()) {
 			try {
 				parsedDate = dateParser.parse(date);
 			} catch (ParseException e) {

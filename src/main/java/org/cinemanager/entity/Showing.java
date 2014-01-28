@@ -30,7 +30,7 @@ public class Showing implements IEntity {
 	@JoinColumn(nullable=false)
 	private Movie movie;
 	
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date", nullable=false)
 	private Date date;
 	

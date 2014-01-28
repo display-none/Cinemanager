@@ -1,5 +1,6 @@
 package org.cinemanager.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.cinemanager.dao.ShowingDao;
@@ -13,13 +14,20 @@ public class ShowingController {
 	
 	private static ShowingController instance;
 	
+	private final BookingController bookingController = BookingController.getInstance();
+	
 	public void createAndPersistShowing(AddShowingView addShowView) {
 		Showing show = createShowing(addShowView);
 		dao.persist(show);
 	}
 	
-	public List<Showing> getAllShowings() { 
-		return dao.getAllShowings();
+	public List<Showing> getAllFutureShowings() { 
+		return dao.getAllShowings(new Date());
+	}
+	
+	public List<Showing> getAllBookableShowings() {
+		Date minimalDateForShowingToBeBookable = new Date(new Date().getTime() + bookingController.getNoBookingAfterDateTime());
+		return dao.getAllShowings(minimalDateForShowingToBeBookable);
 	}
 	
 	public Showing createShowing(AddShowingView addShowView) {

@@ -59,9 +59,12 @@ public class ChooseSeatView extends View<Seat> {
 
 	private Set<Pair<Integer>> getTakenSeats(Showing showing) {
 		Set<Pair<Integer>> takenSeats = Sets.newHashSet();
-//		fo
-//		takenSeats.addAll(ticketController.getSeatsTakenForShowing(showing.getId()));
-//		takenSeats.addAll(bookingController.getBookedSeatsForShowing(showing.getId()));
+		for(Seat seat : ticketController.getSeatsTakenForShowing(showing.getId())) {
+			takenSeats.add(new Pair<Integer>(seat.getRow(), seat.getNumber()));
+		}
+		for(Seat seat : bookingController.getBookedSeatsForShowing(showing.getId())) {
+			takenSeats.add(new Pair<Integer>(seat.getRow(), seat.getNumber()));
+		}
 		return takenSeats;
 	}
 
@@ -122,7 +125,7 @@ public class ChooseSeatView extends View<Seat> {
 	private JButton createChooseSeatButton(Integer row, Integer column, Set<Pair<Integer>> takenSeats) {
 		JButton button = new JButton(convertNumberToLetter(row) + column);
 		button.addActionListener(new ChooseSeatListener(row, column));
-		if(takenSeats.contains(new Pair(row, column))) {
+		if(takenSeats.contains(new Pair<Integer>(row, column))) {
 			button.setEnabled(false);
 		}
 		return button;
@@ -242,6 +245,19 @@ public class ChooseSeatView extends View<Seat> {
 		public Pair(T x, T y) {
 			this.x = x;
 			this.y = y;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if (obj == null) return false;
+			if (!(obj instanceof Pair)) return false;
+			Pair pair = (Pair)obj;
+			return this.x.equals(pair.x) && this.y.equals(pair.y); 
+		}
+		
+		@Override
+		public int hashCode() {
+			return 23 * this.x.hashCode() + this.y.hashCode();
 		}
 	}
 }

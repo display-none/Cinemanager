@@ -96,17 +96,17 @@ public class AuditoriumController {
 		auditorium.setName("screen 1");
 		auditorium.setSupporting3D(true);
 		List<Seat> seats = Lists.newArrayList();
-		for(int i = 0; i < 25; i++) {
+		for(int i = 0; i < 18; i++) {
 			for(int j = 0; j < 10; j = j+2) {
 				seats.add(new Seat(j, i));
 			}
 		}
-		for(int i = 1; i < 24; i++) {
+		for(int i = 1; i < 17; i++) {
 			for(int j = 1; j < 10; j = j+2) {
 				seats.add(new Seat(j, i));
 			}
 		}
-		for(int i = 26; i < 30; i++) {
+		for(int i = 20; i < 24; i++) {
 			for(int j = 7; j < 10; j++) {
 				seats.add(new Seat(j, i));
 			}
@@ -122,9 +122,9 @@ public class AuditoriumController {
 		auditorium.setName("screen 2 - regular");
 		auditorium.setSupporting3D(true);
 		List<Seat> seats = Lists.newArrayList();
-		for(int i = 0; i < 30; i++) {
+		for(int i = 0; i < 22; i++) {
 			for(int j = 0; j < 13; j++) {
-				if(i != 14 && i != 15 && i != 16) {
+				if(i != 10 && i != 11 && i != 12) {
 					seats.add(new Seat(j, i));
 				}
 			}

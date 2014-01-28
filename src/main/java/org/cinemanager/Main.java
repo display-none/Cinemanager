@@ -63,7 +63,7 @@ public class Main extends JFrame implements ViewManager {
 	
 	public Main() {
 		super(FRAME_TITLE);
-		setBounds(100, 50, 1000, 500);  
+		setBounds(2, 50, 1360, 600);  
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
@@ -155,7 +155,7 @@ public class Main extends JFrame implements ViewManager {
 		JMenu menu = new JMenu("Showing");
 		
 		menu.add(getMenuItem("Add new showing", AddShowingView.getCreator()));
-		menu.add(getMenuItem("Show all showings", ShowShowingsView.getCreator(true)));
+		menu.add(getMenuItem("Show all showings", ShowShowingsView.getCreator(true, false)));
 		
 		menubar.add(menu);
 	}
