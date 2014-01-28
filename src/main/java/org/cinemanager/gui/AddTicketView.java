@@ -1,5 +1,7 @@
 package org.cinemanager.gui;
 
+import static org.cinemanager.common.ViewUtils.*;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import org.cinemanager.common.TicketType;
 import org.cinemanager.controller.TicketController;
@@ -41,7 +44,7 @@ public class AddTicketView extends View<Ticket> {
 	
 	private AddTicketView(ViewManager viewManager) { 
 		this.viewManager = viewManager;
-		this.setLayout(new GridLayout(6,1));
+		this.setLayout(new GridLayout(8,1));
 		
 		addPanelTitle(); 
 		addShowing(); 
@@ -51,14 +54,15 @@ public class AddTicketView extends View<Ticket> {
 	}  
 	
 	private void addPanelTitle() {
-		JLabel panelTitle = new JLabel( " Add your new Ticket ");
-		panelTitle.setFont(new Font(null, Font.BOLD, 15));
-		this.add(panelTitle);
+		JPanel panel = createNicePanel(1);
+		JLabel titleLabel = new JLabel( " Add your new Ticket ");
+		titleLabel.setFont(new Font(null, Font.BOLD, 15));
+		panel.add(titleLabel);
+		this.add(panel);
 	}
 	
 	private void addSeat() { 
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1)); 
+		JPanel panel = createNicePanel(3);
 		 
 		JLabel seatLabel = new JLabel(" Seat ");  
 		panel.add(seatLabel);
@@ -85,12 +89,12 @@ public class AddTicketView extends View<Ticket> {
 	}
 	
 	private void addPrice() { 
+		JPanel panel = createNicePanel(2);
+		
 		JLabel priceLabel = new JLabel(" Ticket Price "); 
 		priceTextField = new JTextField(5); 
 		priceTextField.setEditable(false); 
 		 
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1)); 
 		panel.add(priceLabel); 
 		panel.add(priceTextField);
 		
@@ -110,8 +114,7 @@ public class AddTicketView extends View<Ticket> {
 	}
 	
 	private void addType() {  
-		JPanel panel = new JPanel();  
-		panel.setLayout(new GridLayout(1,1));
+		JPanel panel = createNicePanel(2);
 		
 		JLabel ticketTypeLabel = new JLabel("Type : ");
 		panel.add(ticketTypeLabel);
@@ -123,8 +126,7 @@ public class AddTicketView extends View<Ticket> {
 	}
 
 	private void addShowing() { 
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1));
+		JPanel panel = createNicePanel(3);
 		
 		JLabel showingLabel = new JLabel(" Showing "); 	 
 		panel.add(showingLabel); 

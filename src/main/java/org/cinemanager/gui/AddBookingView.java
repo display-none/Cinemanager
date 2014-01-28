@@ -1,9 +1,12 @@
 package org.cinemanager.gui;
 
+import static org.cinemanager.common.ViewUtils.*;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,7 +36,7 @@ public class AddBookingView extends View<Booking> {
 	
 	private AddBookingView(ViewManager viewManager) {
 		this.viewManager = viewManager; 
-		this.setLayout(new GridLayout(4,1));
+		this.setLayout(new GridLayout(8, 1));
 		
 		addTitle();
 		addShowing();
@@ -48,16 +51,17 @@ public class AddBookingView extends View<Booking> {
 		return showing;
 	}
 	
-	public void addTitle() { 
+	public void addTitle() {
+		JPanel panel = createNicePanel(1);
 		JLabel titleLabel = new JLabel("Add new Booking"); 
 		titleLabel.setFont(new Font("Bold",Font.BOLD,15)); 
-		 
-		this.add(titleLabel); 
+		
+		panel.add(titleLabel);
+		this.add(panel); 
 	}
 	
 	public void addSeat() {
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1)); 
+		JPanel panel = createNicePanel(3);
 		 
 		JLabel seatLabel = new JLabel(" Seat ");  
 		panel.add(seatLabel);
@@ -84,8 +88,7 @@ public class AddBookingView extends View<Booking> {
 	}
 	
 	public void addShowing(){ 
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1));
+		JPanel panel = createNicePanel(3);
 		
 		JLabel showingLabel = new JLabel(" Showing "); 	 
 		panel.add(showingLabel); 
