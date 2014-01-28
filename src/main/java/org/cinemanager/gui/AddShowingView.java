@@ -1,5 +1,7 @@
 package org.cinemanager.gui;
 
+import static org.cinemanager.common.ValidatingHelper.*;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,6 +12,7 @@ import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -20,6 +23,9 @@ import org.cinemanager.entity.Employee;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Movie;
 import org.cinemanager.entity.Showing;
+import org.cinemanager.gui.ChooseAuditoriumView.AuditoriumFormatter;
+import org.cinemanager.gui.ShowEmployeesView.EmployeeFormatter;
+import org.cinemanager.gui.ShowMoviesView.MovieFormatter;
 
 
 public class AddShowingView extends View<Showing> {
@@ -32,7 +38,7 @@ public class AddShowingView extends View<Showing> {
 	
 	private JTextField  movieTextField,textfieldDate,auditoriumTextField,employeeTextField; 
 	private RadioGroup<ShowingVersion> versionRadioGroup; 
-	private Movie movie;  
+	private Movie movie;
 	private Auditorium auditorium; 
 	private Employee employee;
 	
@@ -44,9 +50,9 @@ public class AddShowingView extends View<Showing> {
 		this.setLayout(new GridLayout(7,1));  
 		
 		addTitle();
+		addAuditorium();
 		addMovie();
 		addVersion();
-		addAuditorium();
 		addEmployee(); 
 		addDate();
 	}
@@ -79,7 +85,7 @@ public class AddShowingView extends View<Showing> {
 	
 	private void updateMovieDetails() {
 		if(movie != null) {
-			movieTextField.setText(movie.getTitle());
+			movieTextField.setText(MovieFormatter.getLabelTextStatic(movie));
 		} else {
 			movieTextField.setText("");
 		}
@@ -118,7 +124,7 @@ public class AddShowingView extends View<Showing> {
 	
 	private void updateAuditoriumDetails() {
 		if(auditorium != null) {
-			auditoriumTextField.setText(auditorium.getName());
+			auditoriumTextField.setText(AuditoriumFormatter.getLabelTextStatic(auditorium));
 		} else {
 			auditoriumTextField.setText("");
 		}
@@ -135,6 +141,15 @@ public class AddShowingView extends View<Showing> {
 		panel.add(versionRadioGroup);
 		
 		this.add(panel);
+	}
+	
+	private void updateVersion() {
+		versionRadioGroup.setEnabled(true);
+		if( (auditorium != null && !auditorium.isSupporting3D()) ||
+				(movie != null && movie.isIn3D()) ) {
+			versionRadioGroup.setFirstSelected();
+			versionRadioGroup.setEnabled(false);
+		}
 	}
 
 	public void addEmployee(){ 
@@ -157,7 +172,7 @@ public class AddShowingView extends View<Showing> {
 	
 	private void updateEmployeeDetails() {
 		if(employee != null) {
-			employeeTextField.setText(employee.getFirstName() + " " + employee.getLastName());
+			employeeTextField.setText(EmployeeFormatter.getLabelTextStatic(employee));
 		} else {
 			employeeTextField.setText("");
 		}
@@ -202,9 +217,37 @@ public class AddShowingView extends View<Showing> {
 
 	@Override
 	public boolean areInputsValid() {
-		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
+		return isAuditoriumChosen() && isMovieChosen() && isEmployeeChosen() && isDateValid();
 	}
 	
+	private boolean isDateValid() {
+		String date = textfieldDate.getText();
+		if(date.isEmpty() || !isValidDate(date, DATE_FORMAT)) {
+			JOptionPane.showMessageDialog(this, "Incorrect showing date");
+			return false;
+		}
+		try {
+			Date parsedDate = dateParser.parse(date);
+			if(movie != null && parsedDate.before(movie.getReleaseDate())) {
+				JOptionPane.showMessageDialog(this, "The showing date must be after movie's release date");
+				return false;
+			}
+		} catch (ParseException e) { }	//impossibru
+		return true;
+	}
+
+	private boolean isEmployeeChosen() {
+		return employee != null;
+	}
+
+	private boolean isMovieChosen() {
+		return movie != null;
+	}
+
+	private boolean isAuditoriumChosen() {
+		return auditorium != null;
+	}
+
 	@Override
 	public void doApplyAction() {
 		showingController.createAndPersistShowing(this);
@@ -218,17 +261,39 @@ public class AddShowingView extends View<Showing> {
 	@Override
 	public void handleRequestedResult(IEntity result) {
 		if(result instanceof Movie) {
-			movie = (Movie) result;
-			updateMovieDetails();
+			if(isMovieCompatibleWithAuditorium((Movie) result)) {
+				movie = (Movie) result;
+				updateMovieDetails();
+				updateVersion();
+			}
 		} else if(result instanceof Auditorium) {
-			auditorium = (Auditorium) result;
-			updateAuditoriumDetails();
+			if(isAuditoriumCompatibleWithMovie((Auditorium) result)) {
+				auditorium = (Auditorium) result;
+				updateAuditoriumDetails();
+				updateVersion();
+			}
 		} else if(result instanceof Employee) {
 			employee = (Employee) result;
 			updateEmployeeDetails();
 		}
 	}
 	
+	private boolean isMovieCompatibleWithAuditorium(Movie movie) {
+		if(auditorium != null && movie.is3DOnly() && !auditorium.isSupporting3D()) {
+			JOptionPane.showMessageDialog(this, "You have selected a 3D movie and the auditorium does not support 3D");
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean isAuditoriumCompatibleWithMovie(Auditorium auditorium) {
+		if(movie != null && movie.is3DOnly() && !auditorium.isSupporting3D()) {
+			JOptionPane.showMessageDialog(this, "You have selected an auditorium that does not support 3D and an 3D-only movie.");
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public String getApplyButtonLabel() {
 		return APPLY_BUTTON_LABEL; 

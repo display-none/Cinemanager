@@ -96,4 +96,12 @@ public class Movie implements IEntity {
 	public void setVersion(MovieVersion version) {
 		this.version = version;
 	}
+
+	public boolean isIn3D() {
+		return version == MovieVersion.VERSION_3D || version == MovieVersion.BOTH;
+	}
+
+	public boolean is3DOnly() {
+		return version == MovieVersion.VERSION_3D;
+	}
 }

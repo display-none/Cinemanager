@@ -83,24 +83,28 @@ public class ChooseAuditoriumView extends View<Auditorium> {
 		
 	}
 	
-	private static class AuditoriumFormatter implements EntityFormatter<Auditorium> {
+	public static class AuditoriumFormatter implements EntityFormatter<Auditorium> {
 
 		@Override
 		public String getLabelText(Auditorium entity) {
+			return getLabelTextStatic(entity);
+		}
+		
+		public static String getLabelTextStatic(Auditorium entity) {
 			return entity.getName() + parseIsAirConditioned(entity.isAirConditioned()) + 
 					parseIsSupporting3D(entity.isSupporting3D()) + 
 					parseHasAccessabilityFeatures(entity.hasAccessabilityFeatures());
 		}
 
-		private String parseIsAirConditioned(boolean isAirConditioned) {
+		private static String parseIsAirConditioned(boolean isAirConditioned) {
 			return isAirConditioned ? ", air conditioned" : "";
 		}
 		
-		private String parseIsSupporting3D(boolean isSupporting3D) {
+		private static String parseIsSupporting3D(boolean isSupporting3D) {
 			return isSupporting3D ? ", with 3D" : "";
 		}
 		
-		private String parseHasAccessabilityFeatures(boolean hasAccessabilityFeatures) {
+		private static String parseHasAccessabilityFeatures(boolean hasAccessabilityFeatures) {
 			return hasAccessabilityFeatures ? ", with accessability features" : "";
 		}
 		
