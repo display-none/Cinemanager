@@ -104,29 +104,31 @@ public class ShowShowingsView extends View<Showing> {
 		}
 		
 	}
-	private static class ShowingsFormatter implements EntityFormatter<Showing> {
+	public static class ShowingsFormatter implements EntityFormatter<Showing> {
 		
 		private static final String DATE_FORMAT = "HH:mm 'on' dd MMM yyyy";  
 		private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
 
 		@Override
 		public String getLabelText(Showing entity) {
-			return entity.getMovie().getTitle() + 
-					parseVersion(entity.getVersion()) +
-					", " + parseDate(entity.getDate()) + 
-					" on " + entity.getAuditorium().getName();
+			return getLabelTextStatic(entity);
 		}
-
-		private String parseDate(Date date) {
+		private static String parseDate(Date date) {
 			return dateParser.format(date);
 		}
 
-		private String parseVersion(ShowingVersion version) {
+		private static String parseVersion(ShowingVersion version) {
 			if(version == ShowingVersion.VERSION_2D) {
 				return " 2D";
 			} else {
 				return " 3D";
 			}
+		} 
+		public static String getLabelTextStatic(Showing entity) { 
+			return entity.getMovie().getTitle() + 
+					parseVersion(entity.getVersion()) +
+					", " + parseDate(entity.getDate()) + 
+					" on " + entity.getAuditorium().getName();
 		}
 		
 	}

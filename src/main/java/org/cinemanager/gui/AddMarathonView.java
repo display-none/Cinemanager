@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,24 +13,35 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.cinemanager.controller.MarathonController;
+import org.cinemanager.entity.Auditorium;
 import org.cinemanager.entity.Employee;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Marathon;
+import org.cinemanager.entity.Movie;
+import org.cinemanager.entity.Showing;
+import org.cinemanager.gui.ShowShowingsView.ShowingsFormatter; 
+import org.cinemanager.gui.ShowEmployeesView.EmployeeFormatter;
+import org.cinemanager.gui.ShowMoviesView.MovieFormatter; 
 
 
 public class AddMarathonView extends View<Marathon> { 
 	
 	private static final long serialVersionUID = 1L;
 	
-	//private final ViewManager viewManager;
-	private Employee employee;  
+	private final ViewManager viewManager;
 	private JTextField marathonNameTextField,employeeIDTextField,showingIDTextField;  
 	private static final String APPLY_BUTTON_LABEL = "Save";
-	private static final String CANCEL_BUTTON_LABEL = "Cancel"; 
+	private static final String CANCEL_BUTTON_LABEL = "Cancel";  
 	 
+	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";  
+	private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT); 
+	
+	private Employee employee;
+	private Showing showing; 
+	
 	private final MarathonController controller = MarathonController.getInstance(); 
 	private AddMarathonView(ViewManager viewManager) {
-		//this.viewManager = viewManager; 
+		this.viewManager = viewManager; 
 		this.setLayout(new GridLayout(4,1));
 		addTitle(); 
 		addName(); 
@@ -59,14 +71,8 @@ public class AddMarathonView extends View<Marathon> {
 		employeeIDTextField = new JTextField(5); 
 		employeeIDTextField.setEditable(false); 
 		JButton chooseEmployeeButton = new JButton("Choose EmployeeID"); 
-		chooseEmployeeButton.addActionListener(new ActionListener() {					/**ChooseEmployeeIDButton ActionListner **/
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				
-			}
-		});
+		chooseEmployeeButton.addActionListener(new ChooseEmployeeActionListener());
+
 		JPanel employeePanel = new JPanel(); 
 		employeePanel.setLayout(new GridLayout(1,1));   
 		 
@@ -75,20 +81,21 @@ public class AddMarathonView extends View<Marathon> {
 		employeePanel.add(chooseEmployeeButton);
 		 
 		this.add(employeePanel);
+	} 
+	private void updateEmployeeDetails() {
+		if(employee != null) {
+			employeeIDTextField.setText(EmployeeFormatter.getLabelTextStatic(employee));
+		} else {
+			employeeIDTextField.setText("");
+		}
 	}
 	public void addShowing() { 
 		JLabel showingLabel = new JLabel(" ShowingID : "); 
 		showingIDTextField= new JTextField(5); 
 		showingIDTextField.setEditable(false);  
 		JButton chooseShow = new JButton("Choose ShowingID");
-		chooseShow.addActionListener(new ActionListener() {   				/** ChooseShowButton actionlistner **/
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		chooseShow.addActionListener(new ChooseShowingActionListener());				
 		
-				
-			}
-		});
 		JPanel showingPanel = new JPanel(); 
 		showingPanel .setLayout(new GridLayout(1,1));   
 		 
@@ -97,6 +104,13 @@ public class AddMarathonView extends View<Marathon> {
 		showingPanel.add(chooseShow);
 		 
 		this.add(showingPanel );
+	} 
+	private void updateShowingDetails() {
+		if(showing != null) {
+			showingIDTextField.setText(ShowingsFormatter.getLabelTextStatic(showing));
+		} else {
+			showingIDTextField.setText("");
+		}
 	}
 	public String getName() { 
 		return marathonNameTextField.getText();
@@ -117,28 +131,17 @@ public class AddMarathonView extends View<Marathon> {
 	}  
 	public boolean isMarathonFieldValid() {
 		if( marathonNameTextField.getText().isEmpty()) { 
-			JOptionPane.showMessageDialog(this, "Choose Marathon !"); 
+			JOptionPane.showMessageDialog(this, "Choose marathon name !"); 
 			return false;
 		}
 		return true;
 	}
-	 
-	public boolean isEmployeeFieldValid(){
-		if( employeeIDTextField.getText().isEmpty()) { 
-			JOptionPane.showMessageDialog(this, "Choose any Employeer !"); 
-			return false;
-		}
-		return true;
+	public boolean isEmployeeFieldValid(){ 
+		return employee != null;
 	}
-	 
-	public boolean isShowingFieldValid() {
-		if( showingIDTextField.getText().isEmpty() ) {  	 
-			JOptionPane.showMessageDialog(this, "Choose Show !"); 
-			return false;
-		}
-		return true;
+	public boolean isShowingFieldValid(){ 
+		return showing != null;
 	}
-	
 	@Override
 	public void doApplyAction() {
 		 controller.createAndPersistMarathon(this);
@@ -152,8 +155,13 @@ public class AddMarathonView extends View<Marathon> {
 	
 	@Override
 	public void handleRequestedResult(IEntity result) {
-		// TODO Auto-generated method stub
-		
+		if(result instanceof Showing) {
+			showing = (Showing) result; 
+			updateShowingDetails();
+		} else if(result instanceof Employee) {
+			employee = (Employee) result;
+			updateEmployeeDetails();
+		}
 	}
 	
 	@Override
@@ -186,5 +194,20 @@ public class AddMarathonView extends View<Marathon> {
 			return new AddMarathonView(viewManager);
 		}
 		
+	} 
+	private class ChooseEmployeeActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			viewManager.requestResultFrom(ShowEmployeesView.getCreator(false));
+		}
+	}
+	
+	private class ChooseShowingActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			viewManager.requestResultFrom(ShowShowingsView.getCreator(false));
+		}
 	}
 }

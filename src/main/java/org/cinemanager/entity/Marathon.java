@@ -25,7 +25,6 @@ public class Marathon implements IEntity {
 	@Column(name="name", nullable=false)
 	private String name;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="supervising_employee_id", nullable=false)
 	private Employee supervisingEmployee;
 	

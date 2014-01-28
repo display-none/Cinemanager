@@ -93,8 +93,14 @@ public class ShowMarathonsView extends View<Marathon> {
 	private static class MarathonFormatter implements EntityFormatter<Marathon> {
 
 		@Override
-		public String getLabelText(Marathon entity) {						/** Dopisaæ **/
-			return null;
+		public String getLabelText(Marathon entity) {
+			return getLabelTextStatic(entity);
+		}
+		
+		public static String getLabelTextStatic(Marathon entity) {
+			return entity.getName() + " :  " + entity.getSupervisingEmployee().getFirstName() + " - " 
+								    + entity.getSupervisingEmployee().getLastName()  
+								    + " - " + entity.getSupervisingEmployee().getPosition().toString();
 		}
 		
 	}
