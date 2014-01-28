@@ -13,22 +13,26 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.cinemanager.common.ShowingVersion;
+import org.cinemanager.common.TicketType;
 import org.cinemanager.controller.TicketController;
 import org.cinemanager.entity.IEntity;
+import org.cinemanager.entity.Seat;
 import org.cinemanager.entity.Ticket;
 import org.cinemanager.gui.EntityList.DeleteActionListenerCreator;
 import org.cinemanager.gui.EntityList.EntityFormatter; 
 
 
-public class ShowTicketsView extends View<Ticket>{  
+public class ShowTicketsView extends View<Ticket> {
+	
 	private static final long serialVersionUID = 1L;
-	 
 	private static final String APPLY_BUTTON_LABEL = "Done";
-	private static final String CANCEL_BUTTON_LABEL = "Back"; 
+	private static final String CANCEL_BUTTON_LABEL = "Back";
+	
 	private static JList<Ticket> ticketList;
+	private JScrollPane scroll;
+	
 	private static final TicketController controller = TicketController.getInstance();    
 	
-	private JScrollPane scroll;
 	public ShowTicketsView(ViewManager viewManager) { 
 		setLayout(new BorderLayout());
 		
@@ -45,7 +49,7 @@ public class ShowTicketsView extends View<Ticket>{
 
 	@Override
 	public boolean areInputsValid() {
-		throw new RuntimeException("zaimplementuj mnie. Patrz ShowMoviesView");
+		return true;
 	}
 
 	@Override
@@ -60,7 +64,6 @@ public class ShowTicketsView extends View<Ticket>{
 	
 	@Override
 	public void handleRequestedResult(IEntity result) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -97,19 +100,29 @@ public class ShowTicketsView extends View<Ticket>{
 		
 		@Override
 		public String getLabelText(Ticket entity) {
-			/** 
-			 *  
-			 *   
-			 *   Wyswietlanie
-			 *     
-			 *      
-			 *      
-			 */ 
-			return null;
+			return parseType(entity.getType()) + 
+					" for " + entity.getShowing().getMovie().getTitle() + parseVersion(entity.getShowing().getVersion()) + 
+					" at " + parseDate(entity.getShowing().getDate()) + 
+					" seat " + parseSeat(entity.getSeat()) +
+					" costing " + parsePrice(entity.getPrice());
 		} 
+		
+		private String parseSeat(Seat seat) {
+			return convertNumberToLetter(seat.getRow()) + seat.getNumber() + (seat.isVip() ? " vip" : "");
+		}
+		
+		private String parsePrice(int price) {
+			return String.valueOf((int)price/100) + "." + String.valueOf(price % 100 - price % 10) + String.valueOf(price % 10);
+		}
+		
+		private String parseType(TicketType type) {
+			return type.toString().toLowerCase();
+		}
+		
 		private String parseDate(Date date) {
 			return dateParser.format(date);
 		}
+		
 		private String parseVersion(ShowingVersion version) {
 			if(version == ShowingVersion.VERSION_2D) {
 				return " 2D";
@@ -118,6 +131,9 @@ public class ShowTicketsView extends View<Ticket>{
 			}
 		}
 		
+		private static String convertNumberToLetter(int i) {
+			return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".substring(i, i+1);
+		}
 	}
 	private static class ActionListenerCreator implements DeleteActionListenerCreator {
 
@@ -143,7 +159,8 @@ public class ShowTicketsView extends View<Ticket>{
 				controller.deleteTicket(id);
 				callback.actionPerformed(null); 
 			} 
-		} 
+		}
+		
 		private boolean isUserSureToDeleteTicket() {
 			return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(ticketList, "Are you sure you want to delete this entry?", null, JOptionPane.YES_NO_OPTION);
 		}

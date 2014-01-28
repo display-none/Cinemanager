@@ -198,9 +198,13 @@ public class AddTicketView extends View<Ticket> {
 		if(result instanceof Showing) {
 			showing = (Showing) result;
 			updateShowingDetails();
+			seat = null;
+			updateSeatDetails();
+			updatePrice();
 		} else if (result instanceof Seat) {
 			seat = (Seat) result;
 			updateSeatDetails();
+			updatePrice();
 		}
 	}
 

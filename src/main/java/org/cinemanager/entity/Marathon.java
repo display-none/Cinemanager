@@ -25,6 +25,7 @@ public class Marathon implements IEntity {
 	@Column(name="name", nullable=false)
 	private String name;
 	
+	@ManyToOne
 	@JoinColumn(name="supervising_employee_id", nullable=false)
 	private Employee supervisingEmployee;
 	

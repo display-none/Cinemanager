@@ -27,7 +27,6 @@ public class BookingController {
 		Booking booking = new Booking();
 		booking.setShowing(addBookingView.getShow()); 
 		booking.setSeat(addBookingView.getSeat()); 
-		booking.setExpirationDate(addBookingView.getDate());
 		return booking;
 	}
 	

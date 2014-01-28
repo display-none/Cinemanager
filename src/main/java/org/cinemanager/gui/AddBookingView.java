@@ -33,7 +33,7 @@ public class AddBookingView extends View<Booking> {
 	private static final String SHOWING_DATE_FORMAT = "dd MMM 'at' hh:mm";
 	private final SimpleDateFormat showingDateParser = new SimpleDateFormat(SHOWING_DATE_FORMAT);
 
-	private JTextField showingTextField, seatTextField, dateTextField; 
+	private JTextField showingTextField, seatTextField; 
 	private JButton chooseShowingButton, chooseSeatButton; 
 	private Seat seat; 
 	private Showing showing; 
@@ -48,7 +48,6 @@ public class AddBookingView extends View<Booking> {
 		addTitle();
 		addShowing();
 		addSeat();
-		addDate();
 	}
 	
 	public Seat getSeat(){ 
@@ -59,37 +58,12 @@ public class AddBookingView extends View<Booking> {
 		return showing;
 	}
 	
-	public Date getDate() { 
-		String date = dateTextField.getText();
-		Date parsedDate = null;
-		if(!(date.equals(""))) {
-			try {
-				parsedDate = dateParser.parse(date);
-			} catch (ParseException e) {
-			}
-		}
-		return parsedDate;
-	}
-	
 	public void addTitle() { 
 		JLabel titleLabel = new JLabel("Add new Booking"); 
 		titleLabel.setFont(new Font("Bold",Font.BOLD,15)); 
 		 
 		this.add(titleLabel); 
 	}
-	
-	public void addDate() { 
-		JLabel dateLabel = new JLabel(" Date (Format yyyy-MM-dd) :"); 
-		dateTextField = new JTextField(10); 
-		 
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1)); 
-		 
-		panel.add(dateLabel); 
-		panel.add(dateTextField); 
-		 
-		this.add(panel);
-	} 
 	
 	public void addSeat() {
 		JPanel panel = new JPanel(); 
@@ -146,13 +120,12 @@ public class AddBookingView extends View<Booking> {
 	@Override
 	public boolean hasAnyChanges() {
 		return !showingTextField.getText().isEmpty() || 
-			   !seatTextField.getText().isEmpty() ||  
-			   !dateTextField.getText().isEmpty();
+			   !seatTextField.getText().isEmpty();
 	}
 	
 	@Override
 	public boolean areInputsValid() {
-		return isShowingFieldValid() && isSeatFieldValid() && isDateFieldValid();
+		return isShowingFieldValid() && isSeatFieldValid();
 	}
 	
 	public boolean isShowingFieldValid() { 
@@ -170,15 +143,7 @@ public class AddBookingView extends View<Booking> {
 		}
 		return true;
 	}
-	
-	public boolean isDateFieldValid() { 
-		if(dateTextField.getText().isEmpty()  || !isValidDate(dateTextField.getText(), DATE_FORMAT)) {
-			JOptionPane.showMessageDialog(this, "DateField has incorrect data");
-			return false;
-		}
-		return true;
-		
-	}
+
 	@Override
 	public void doApplyAction() {
 		bookingController.createAndPersistBooking(this);
@@ -215,8 +180,6 @@ public class AddBookingView extends View<Booking> {
 	public void reset() {
 		showingTextField.setText(""); 
 		seatTextField.setText(""); 
-		dateTextField.setText("");  
-		
 	}
 
 	public static ViewCreator<AddBookingView> getCreator() {

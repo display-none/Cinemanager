@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,17 +22,17 @@ public class Ticket implements IEntity {
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name="type")
+	@Column(name="type", nullable=false)
 	private TicketType type;
 	
 	@Column(name="price")
-	private float price;
+	private int price;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="showing_id")
 	private Showing showing;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="seat_id")
 	private Seat seat;
 	
@@ -50,11 +49,11 @@ public class Ticket implements IEntity {
 		this.type = type;
 	}
 
-	public float getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 
