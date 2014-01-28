@@ -5,22 +5,28 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.cinemanager.controller.MarathonController;
+import org.cinemanager.controller.ShowingController;
 import org.cinemanager.entity.Auditorium;
 import org.cinemanager.entity.Employee;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Marathon;
 import org.cinemanager.entity.Movie;
 import org.cinemanager.entity.Showing;
-import org.cinemanager.gui.ShowShowingsView.ShowingsFormatter; 
+import org.cinemanager.gui.EntityList.DeleteActionListenerCreator;
 import org.cinemanager.gui.ShowEmployeesView.EmployeeFormatter;
+import org.cinemanager.gui.ShowShowingsView.ShowingsFormatter; 
 import org.cinemanager.gui.ShowMoviesView.MovieFormatter; 
 
 
@@ -29,7 +35,7 @@ public class AddMarathonView extends View<Marathon> {
 	private static final long serialVersionUID = 1L;
 	
 	private final ViewManager viewManager;
-	private JTextField marathonNameTextField,employeeIDTextField,showingIDTextField;  
+	private JTextField marathonNameTextField,employeeIDTextField; 
 	private static final String APPLY_BUTTON_LABEL = "Save";
 	private static final String CANCEL_BUTTON_LABEL = "Cancel";  
 	 
@@ -37,16 +43,24 @@ public class AddMarathonView extends View<Marathon> {
 	private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT); 
 	
 	private Employee employee;
-	private Showing showing; 
+	private Showing showing = null; 
 	
-	private final MarathonController controller = MarathonController.getInstance(); 
+	private final static MarathonController controller = MarathonController.getInstance();   
+	private final static ShowingController showingcontroller = ShowingController.getInstance();  
+	private static JList<Showing> showingList; 
+	private JScrollPane scroll;   
+	private List<Showing> records;
 	private AddMarathonView(ViewManager viewManager) {
 		this.viewManager = viewManager; 
-		this.setLayout(new GridLayout(4,1));
+		this.setLayout(new GridLayout(6,1));
 		addTitle(); 
 		addName(); 
 		addEmployee();  
-		addShowing();
+		addShowing();  
+		records= new ArrayList<Showing>(); 
+		showingList = new EntityList<Showing>(records, new ShowingsFormatter(), new ActionListenerCreator());
+		//scroll = new JScrollPane(showingList);
+		//this.add(scroll);
 	}  
 	public void addTitle(){ 
 		JLabel titleLabel = new JLabel(" Add new marathon"); 
@@ -91,8 +105,6 @@ public class AddMarathonView extends View<Marathon> {
 	}
 	public void addShowing() { 
 		JLabel showingLabel = new JLabel(" ShowingID : "); 
-		showingIDTextField= new JTextField(5); 
-		showingIDTextField.setEditable(false);  
 		JButton chooseShow = new JButton("Choose ShowingID");
 		chooseShow.addActionListener(new ChooseShowingActionListener());				
 		
@@ -100,16 +112,19 @@ public class AddMarathonView extends View<Marathon> {
 		showingPanel .setLayout(new GridLayout(1,1));   
 		 
 		showingPanel.add(showingLabel); 
-		showingPanel.add(showingIDTextField);   
 		showingPanel.add(chooseShow);
 		 
 		this.add(showingPanel );
 	} 
-	private void updateShowingDetails() {
+	private void updateShowingDetails() {																	/** TUTAJ **/
 		if(showing != null) {
-			showingIDTextField.setText(ShowingsFormatter.getLabelTextStatic(showing));
+			 records.add(showing);  
+			 this.remove(showingList);
+			 showingList.add(new EntityList<Showing>(records, new ShowingsFormatter(), new ActionListenerCreator())); 
+			 this.add(showingList); 
+			
 		} else {
-			showingIDTextField.setText("");
+			//showingList.add( new JLabel(""));
 		}
 	}
 	public String getName() { 
@@ -121,8 +136,7 @@ public class AddMarathonView extends View<Marathon> {
 	@Override
 	public boolean hasAnyChanges() {
 		return 	!marathonNameTextField.getText().isEmpty() || 
-				!employeeIDTextField.getText().isEmpty() || 
-				!showingIDTextField.getText().isEmpty();  
+				!employeeIDTextField.getText().isEmpty() ;
 	}
 
 	@Override
@@ -177,9 +191,7 @@ public class AddMarathonView extends View<Marathon> {
 	@Override
 	public void reset() {
 		marathonNameTextField.setText("");
-		employeeIDTextField.setText("");
-		showingIDTextField.setText("");
-		
+		employeeIDTextField.setText("");	
 	}
 	
 
@@ -209,5 +221,35 @@ public class AddMarathonView extends View<Marathon> {
 		public void actionPerformed(ActionEvent e) {
 			viewManager.requestResultFrom(ShowShowingsView.getCreator(false));
 		}
+	} 
+	private static class ActionListenerCreator implements DeleteActionListenerCreator {
+
+		@Override
+		public ActionListener create(Long id, ActionListener deleteSuccessfulCallback) {
+			return new DeleteActionListener(id, deleteSuccessfulCallback);
+		}
 	}
+	
+	private static class DeleteActionListener implements ActionListener {
+		
+		private final Long id;
+		private final ActionListener callback;
+		
+		public DeleteActionListener(Long id, ActionListener callback) {
+			this.id = id;
+			this.callback = callback;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (isUserSureToDeleteEntry()) { 
+				showingcontroller.deleteShowing(id);
+				callback.actionPerformed(null); 
+			} 
+		} 
+		private boolean isUserSureToDeleteEntry() {
+			return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(showingList, "Are you sure you want to delete this entry?", null, JOptionPane.YES_NO_OPTION);
+		}
+	} 
+	
 }
