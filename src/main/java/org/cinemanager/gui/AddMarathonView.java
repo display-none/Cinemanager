@@ -116,30 +116,27 @@ public class AddMarathonView extends View<Marathon> {
 		return isMarathonFieldValid() && isEmployeeFieldValid() && isShowingFieldValid(); 
 	}  
 	public boolean isMarathonFieldValid() {
-		boolean result = false; 
-		if( marathonNameTextField.getText().length() > 0 ) { result = true; }  
-		else { 	 
-			JOptionPane.showConfirmDialog(this, "Choose Marathon !");
+		if( marathonNameTextField.getText().isEmpty()) { 
+			JOptionPane.showMessageDialog(this, "Choose Marathon !"); 
+			return false;
 		}
-		return result;
+		return true;
 	}
 	 
 	public boolean isEmployeeFieldValid(){
-		boolean result = false; 
-		if( employeeIDTextField.getText().length() > 0 ) { result = true; }  
-		else { 	 
-			JOptionPane.showConfirmDialog(this, "Choose any Employeer !");
+		if( employeeIDTextField.getText().isEmpty()) { 
+			JOptionPane.showMessageDialog(this, "Choose any Employeer !"); 
+			return false;
 		}
-		return result;
+		return true;
 	}
 	 
 	public boolean isShowingFieldValid() {
-		boolean result = false; 
-		if( showingIDTextField.getText().length() > 0 ) { result = true; }  
-		else { 	 
-			JOptionPane.showConfirmDialog(this, "Choose Show !");
+		if( showingIDTextField.getText().isEmpty() ) {  	 
+			JOptionPane.showMessageDialog(this, "Choose Show !"); 
+			return false;
 		}
-		return result;
+		return true;
 	}
 	
 	@Override

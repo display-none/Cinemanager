@@ -91,20 +91,19 @@ public class AddEmployeeView extends View<Employee> {
 				!employeePositionRadioGroup.isFirstSelected();
 	}
 	public boolean isFirstNameValid() { 
-		boolean result = false; 
-		if( firstNameTextField.getText().length() > 0 ) { result = true; }  
-		else { 	 
-			JOptionPane.showConfirmDialog(this, "First name field cannot be empty");
+	
+		if( firstNameTextField.getText().length() > 0 ) {
+			JOptionPane.showMessageDialog(this, "First name field cannot be empty"); 
+			return false;
 		}
-		return result;
+		return true;
 	} 
 	public boolean isLastNameValid() { 
-		boolean result = false; 
-		if( lastNameTextField.getText().length() > 0 ) { result = true; }  
-		else { 	 
-			JOptionPane.showConfirmDialog(this, "Last name field cannot be empty");
+		if( lastNameTextField.getText().length() > 0 ) {  
+			JOptionPane.showMessageDialog(this, "Last name field cannot be empty"); 
+			return false;
 		}
-		return result;
+		return true;
 	}
 	@Override
 	public boolean areInputsValid() {

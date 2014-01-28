@@ -1,5 +1,7 @@
 package org.cinemanager.gui;
 
+import static org.cinemanager.common.ValidatingHelper.isValidDate;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,6 +12,7 @@ import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -193,7 +196,7 @@ public class AddShowingView extends View<Showing> {
 	
 	@Override
 	public boolean hasAnyChanges() {
-		return !movieTextField.getText().isEmpty() || 
+		return  !movieTextField.getText().isEmpty() || 
 				!textfieldDate.getText().isEmpty() ||  
 				!auditoriumTextField.getText().isEmpty() || 
 				!employeeTextField.getText().isEmpty() || 
@@ -202,9 +205,37 @@ public class AddShowingView extends View<Showing> {
 
 	@Override
 	public boolean areInputsValid() {
-		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
+		return isMovieField() && isDateField() && isAuditoriumField() && isEmployeeField();
 	}
-	
+	public boolean isMovieField() { 
+		if(movieTextField.getText().isEmpty() ) {
+			JOptionPane.showMessageDialog(this, "You must choose Movie"); 
+			return false;
+		} 
+		return true;
+	} 
+	public boolean isDateField() { 
+		String releaseDate = textfieldDate.getText();
+		if(releaseDate.isEmpty() || !isValidDate(releaseDate, DATE_FORMAT)) {
+			JOptionPane.showMessageDialog(this, "Incorrect release date");
+			return false;
+		}
+		return true;
+	} 
+	public boolean isAuditoriumField() { 
+		if(auditoriumTextField.getText().isEmpty() ) {
+			JOptionPane.showMessageDialog(this, "You must choose Auditorium"); 
+			return false;
+		} 
+		return true;
+	} 
+	public boolean isEmployeeField() { 
+		if(employeeTextField.getText().isEmpty() ) {
+			JOptionPane.showMessageDialog(this, "You must choose Employeer"); 
+			return false;
+		} 
+		return true;
+	}
 	@Override
 	public void doApplyAction() {
 		showingController.createAndPersistShowing(this);
