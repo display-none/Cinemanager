@@ -166,20 +166,18 @@ public class AddTicketView extends View<Ticket> {
 		return isSeatFieldValid() && isShowingFieldValid() ;
 	} 
 	public boolean isSeatFieldValid(){ 
-		boolean result = false; 
-		if( seatTextField.getText().length() > 0 ) { result = true; } 
-		else { 
-			JOptionPane.showConfirmDialog(this, "You must choose Seat ID");
+		if( seatTextField.getText().isEmpty() ) {
+			JOptionPane.showMessageDialog(this, "You must choose Seat ID"); 
+			return false;
 		} 
-		return result;
+		return true;
 	} 
 	public boolean isShowingFieldValid() {
-		boolean result = false; 
-		if( showingTextField.getText().length() > 0 ) { result = true; } 
-		else { 
-			JOptionPane.showConfirmDialog(this, "You must choose Showing ID");
+		if( showingTextField.getText().isEmpty() ) {
+			JOptionPane.showMessageDialog(this, "You must choose Showing ID"); 
+			return false;
 		} 
-		return result;
+		return true;
 	} 
 	@Override
 	public void doApplyAction() {

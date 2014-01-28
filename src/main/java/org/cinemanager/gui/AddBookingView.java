@@ -155,28 +155,25 @@ public class AddBookingView extends View<Booking> {
 		return isShowingFieldValid() && isSeatFieldValid() && isDateFieldValid();
 	}
 	public boolean isShowingFieldValid() { 
-		boolean result = false; 
-		if( showingTextField.getText().length() > 0 ) { result = true; }  
-		else { 	 
-			JOptionPane.showConfirmDialog(this, "You must choose Showing");
+		if( showingTextField.getText().isEmpty()) { 
+			JOptionPane.showMessageDialog(this, "You must choose Showing"); 
+			return false;
 		}
-		return result;
+		return true;
 	} 
 	public boolean isSeatFieldValid() {    
-		boolean result = false; 
-		if( seatTextField.getText().length() > 0 ) { result = true; }  
-		else { 	 
-			JOptionPane.showConfirmDialog(this, "You must choose Seat");
+		if( seatTextField.getText().isEmpty() ) { 
+			JOptionPane.showMessageDialog(this, "You must choose Seat"); 
+			return false;
 		}
-		return result;
+		return true;
 	} 
 	public boolean isDateFieldValid() { 
-		boolean result = false; 
 		if(dateTextField.getText().length() > 0  || !isValidDate(dateTextField.getText(), DATE_FORMAT)) {
 			JOptionPane.showMessageDialog(this, "DateField has incorrect data");
 			return false;
 		}
-		return result;
+		return true;
 		
 	}
 	@Override
