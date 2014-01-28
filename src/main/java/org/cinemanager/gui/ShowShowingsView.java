@@ -10,6 +10,7 @@ import java.util.Locale;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import org.cinemanager.common.ShowingVersion;
 import org.cinemanager.controller.ShowingController;
@@ -26,7 +27,9 @@ public class ShowShowingsView extends View<Showing> {
 	
 	private static JList<Showing> showingsList;
 	private static final ShowingController controller = ShowingController.getInstance(); 
-	 
+	  
+	private JScrollPane scroll; 
+	
 	private ShowShowingsView(ViewManager viewManager, boolean withDeleteOption) {
 		setLayout(new BorderLayout());
 		
@@ -36,8 +39,9 @@ public class ShowShowingsView extends View<Showing> {
 			showingsList = new EntityList<Showing>(showings, new ShowingsFormatter(), new ActionListenerCreator());
 		} else {
 			showingsList = new EntityList<Showing>(showings, new ShowingsFormatter());
-		}
-		this.add(showingsList);
+		} 
+		scroll = new JScrollPane(showingsList);
+		this.add(scroll);
 	}
 	
 	@Override

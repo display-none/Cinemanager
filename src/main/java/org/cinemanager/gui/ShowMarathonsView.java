@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import org.cinemanager.controller.MarathonController;
 import org.cinemanager.entity.IEntity;
@@ -21,14 +22,16 @@ public class ShowMarathonsView extends View<Marathon> {
 	private static final String CANCEL_BUTTON_LABEL = "Back";  
 	private static JList<Marathon> marathonList;
 	private static final MarathonController controller = MarathonController.getInstance(); 
-
+ 
+	private JScrollPane scroll;  
 	private ShowMarathonsView(ViewManager viewManager) {
 	setLayout(new BorderLayout());
 		
 		List<Marathon> marathon = controller.getAllMarathons();
 		
 		marathonList = new EntityList<Marathon>(marathon, new MarathonFormatter(), new ActionListenerCreator());  
-		this.add(marathonList);
+		scroll = new JScrollPane(marathonList);
+		this.add(scroll);
 	}
 	
 	@Override

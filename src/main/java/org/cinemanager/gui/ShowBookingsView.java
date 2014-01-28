@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import org.cinemanager.controller.BookingController;
 import org.cinemanager.entity.Booking;
@@ -22,14 +23,16 @@ public class ShowBookingsView extends View<Booking> {
 	private static final String CANCEL_BUTTON_LABEL = "Back"; 
 	private static JList<Booking> bookingList;
 	private static final BookingController controller = BookingController.getInstance();   
-	
+	 
+	private JScrollPane scroll;  
 	private ShowBookingsView(ViewManager viewManager) {
 		setLayout(new BorderLayout());
 		
 		List<Booking> booking = controller.getAllBookings();
 		
 		bookingList = new EntityList<Booking>(booking, new BookingFormatter(), new ActionListenerCreator());  
-		this.add(bookingList);
+		scroll = new JScrollPane(bookingList);
+		this.add(scroll);
 	}
 	
 	@Override

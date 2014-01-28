@@ -1,6 +1,5 @@
 package org.cinemanager.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.cinemanager.dao.ShowingDao;

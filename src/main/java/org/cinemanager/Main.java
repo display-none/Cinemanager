@@ -35,7 +35,8 @@ import org.cinemanager.gui.AddGroupTicketView;
 import org.cinemanager.gui.AddMarathonView;
 import org.cinemanager.gui.AddMovieView;
 import org.cinemanager.gui.AddShowingView;
-import org.cinemanager.gui.AddTicketView;
+import org.cinemanager.gui.AddTicketView; 
+import org.cinemanager.gui.ShowTicketsView;
 import org.cinemanager.gui.ShowBookingsView;
 import org.cinemanager.gui.ShowEmployeesView;
 import org.cinemanager.gui.ShowMarathonsView;
@@ -125,7 +126,8 @@ public class Main extends JFrame implements ViewManager {
 	private void createTicketMenu() {
 		JMenu menu = new JMenu("Ticket");
 		
-		menu.add(getMenuItem("Add new ticket", AddTicketView.getCreator()));
+		menu.add(getMenuItem("Add new ticket", AddTicketView.getCreator())); 
+		menu.add(getMenuItem("Show Tickets", ShowTicketsView.getCreator())); 
 		menu.add(getMenuItem("Add new group ticket", AddGroupTicketView.getCreator()));  
 		
 		menubar.add(menu);

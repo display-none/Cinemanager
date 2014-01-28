@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import org.cinemanager.controller.EmployeeController;
 import org.cinemanager.entity.Employee;
@@ -22,7 +23,8 @@ public class ShowEmployeesView extends View<Employee> {
 	
 	private static JList<Employee> employeeList;
 	private static final EmployeeController controller = EmployeeController.getInstance();
-	 
+	  
+	private JScrollPane scroll;  
 	private ShowEmployeesView(ViewManager viewManager, boolean withDeleteOption) {
 		
 		setLayout(new BorderLayout());
@@ -34,7 +36,8 @@ public class ShowEmployeesView extends View<Employee> {
 		} else {
 			employeeList = new EntityList<Employee>(employees, new EmployeeFormatter());
 		}
-		this.add(employeeList);
+		scroll = new JScrollPane(employeeList);
+		this.add(scroll);
 	} 
 
 	@Override
