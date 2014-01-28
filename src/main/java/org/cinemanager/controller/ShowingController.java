@@ -27,7 +27,7 @@ public class ShowingController {
 		Showing showing = new Showing();
 		showing.setDate(addShowView.getDate()); 
 		showing.setMovie(addShowView.getMovie()); 
-		showing.setVersion(addShowView.getVersion()); 
+		showing.setVersion(addShowView.getVersion());
 		showing.setAuditorium(addShowView.getAuditorium()); 
 		showing.setSupervisingEmployee(addShowView.getEmployee()); 
 		return showing;

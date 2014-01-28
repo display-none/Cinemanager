@@ -15,6 +15,7 @@ import javax.persistence.Query;
 import org.cinemanager.common.MovieGenre;
 import org.cinemanager.common.MovieVersion;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MovieTest {
@@ -29,6 +30,7 @@ public class MovieTest {
 		em.getTransaction().begin();
 	}
 	
+	@Ignore
 	@Test
 	public void test_shouldPersistMovie() throws Exception {
 		//given

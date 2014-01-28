@@ -2,6 +2,7 @@ package org.cinemanager.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -34,7 +35,7 @@ public class Showing implements IEntity {
 	@Column(name="date", nullable=false)
 	private Date date;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(nullable=false)
 	private Auditorium auditorium;
 	

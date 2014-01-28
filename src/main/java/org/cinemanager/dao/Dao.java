@@ -1,10 +1,12 @@
 package org.cinemanager.dao;
 
 import java.util.Collection;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import org.cinemanager.entity.IEntity;
 
@@ -43,18 +45,21 @@ public class Dao<T extends IEntity> {
 		closeContext();
 	}
 	
-	protected void createContext() {
+	protected EntityManager createContext() {
+		if(em != null) throw new RuntimeException("cannot start new transaction if another is still active");
 		em = getEntityManager();
 		et = em.getTransaction();
 		et.begin();
+		return em;
 	}
 	
 	protected void closeContext() {
 		et.commit();
 		em.close();
+		em = null;
 	}
 	
-	static EntityManager getEntityManager() {
+	private static EntityManager getEntityManager() {
 		if(entityManagerFactory == null) {
 			initialize();
 		}
@@ -67,8 +72,17 @@ public class Dao<T extends IEntity> {
 	}
 	
 	public static void close() {
+		shutDownDatabase();
 		if(entityManagerFactory != null) {
 			entityManagerFactory.close();
 		}
+	}
+
+	private static void shutDownDatabase() {
+		Dao dao = new Dao();
+		dao.createContext();
+		Query query = getEntityManager().createNativeQuery("shutdown");
+		query.executeUpdate();
+		dao.closeContext();
 	}
 }

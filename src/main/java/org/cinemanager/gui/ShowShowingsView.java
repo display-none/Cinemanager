@@ -3,11 +3,15 @@ package org.cinemanager.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
+import org.cinemanager.common.ShowingVersion;
 import org.cinemanager.controller.ShowingController;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Showing;
@@ -80,7 +84,7 @@ public class ShowShowingsView extends View<Showing> {
 	}
 	
 	private static class ShowShowingsViewCreator implements ViewCreator<ShowShowingsView> {
-
+		
 		@Override
 		public ShowShowingsView createView(ViewManager viewManager) {
 			return new ShowShowingsView(viewManager);
@@ -88,10 +92,28 @@ public class ShowShowingsView extends View<Showing> {
 		
 	}
 	private static class ShowingsFormatter implements EntityFormatter<Showing> {
+		
+		private static final String DATE_FORMAT = "hh:mm on dd MMM yyyy";  
+		private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
 
 		@Override
 		public String getLabelText(Showing entity) {
-			return null;
+			return entity.getMovie().getTitle() + 
+					parseVersion(entity.getVersion()) +
+					", " + parseDate(entity.getDate()) + 
+					" on " + entity.getAuditorium().getName();
+		}
+
+		private String parseDate(Date date) {
+			return dateParser.format(date);
+		}
+
+		private String parseVersion(ShowingVersion version) {
+			if(version == ShowingVersion.VERSION_2D) {
+				return " 2D";
+			} else {
+				return " 3D";
+			}
 		}
 		
 	}
