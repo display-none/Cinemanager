@@ -19,7 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.border.EmptyBorder;
 
+import org.cinemanager.controller.AuditoriumController;
+import org.cinemanager.dao.AuditoriumDao;
 import org.cinemanager.dao.Dao;
+import org.cinemanager.entity.Auditorium;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.gui.AddBookingView;
 import org.cinemanager.gui.AddEmployeeView;
@@ -64,7 +67,9 @@ public class Main extends JFrame implements ViewManager {
 		addMenu();
 		addMainPanel();
 		addButtons();
-		
+	}
+
+	public void showGui() {
 		this.setVisible(true);
 	}
 	
@@ -286,16 +291,22 @@ public class Main extends JFrame implements ViewManager {
 	
 	public static void main(String[] args) {
 		Main main = new Main();
-		initializeJpa();
+		initializeJpa(main);
 		main.createGui();
 		assureJpaClosedAtShutdown(main);
 	}
 	
-	private static void initializeJpa() {
+	private static void insertDataIntoDatabaseIfNeeded() {
+		AuditoriumController.getInstance().insertAuditoriaIfDbEmpty();
+	}
+
+	private static void initializeJpa(final Main main) {
 		(new Thread() {
 			@Override
 			public void run() {
 				Dao.initialize();
+				main.showGui();
+				insertDataIntoDatabaseIfNeeded();
 			}
 		}).start();
 	}

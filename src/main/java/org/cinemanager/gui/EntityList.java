@@ -33,6 +33,13 @@ public class EntityList<T extends IEntity> extends JList<T> {
 	private EntityFormatter<T> entityFormatter;
 	private DeleteActionListenerCreator deleteActionListenerCreator;
 	private BitSet deletedItems;
+	
+	/**
+	 *	Creates an EntityList without delete button 
+	 */
+	public EntityList(List<T> elements, EntityFormatter<T> entityFormatter) {
+		this(elements, entityFormatter, null);
+	}
 
 	public EntityList(List<T> elements, EntityFormatter<T> entityFormatter, DeleteActionListenerCreator deleteActionListenerCreator) {
 		this.entityFormatter = entityFormatter;
@@ -124,9 +131,11 @@ public class EntityList<T extends IEntity> extends JList<T> {
 			
 			panel.add(new JLabel(entityFormatter.getLabelText(element)));
 			
-			JButton deleteButton = new JButton("delete");
-			deleteButton.addActionListener(deleteActionListenerCreator.create(element.getId(), new DeleteSuccessfulCallback(index)));
-			panel.add(deleteButton, BorderLayout.EAST);
+			if(deleteActionListenerCreator != null) {
+				JButton deleteButton = new JButton("delete");
+				deleteButton.addActionListener(deleteActionListenerCreator.create(element.getId(), new DeleteSuccessfulCallback(index)));
+				panel.add(deleteButton, BorderLayout.EAST);
+			}
 			return panel;
 		}
 		

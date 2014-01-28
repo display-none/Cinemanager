@@ -40,7 +40,7 @@ public class ShowEmployeesView extends View<Employee> {
 
 	@Override
 	public boolean areInputsValid() {
-		throw new RuntimeException("zaimplementuj mnie. Patrz ShowMoviesView");
+		return !employeeList.isSelectionEmpty();
 	}
 
 	@Override

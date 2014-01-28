@@ -1,14 +1,32 @@
 package org.cinemanager.gui;
 
+import java.awt.BorderLayout;
+import java.util.List;
+
+import javax.swing.JList;
+
+import org.cinemanager.controller.AuditoriumController;
 import org.cinemanager.entity.Auditorium;
 import org.cinemanager.entity.IEntity;
+import org.cinemanager.gui.EntityList.EntityFormatter;
 
 public class ChooseAuditoriumView extends View<Auditorium> {
 
 	private static final long serialVersionUID = 1L;
+	private static final String APPLY_BUTTON_LABEL = "Done";
+	private static final String CANCEL_BUTTON_LABEL = "Back";
+	
+	private JList<Auditorium> auditoriumList;
+	
+	private static final AuditoriumController controller = AuditoriumController.getInstance();
 
 	private ChooseAuditoriumView(ViewManager viewManager) {
-		// TODO Auto-generated constructor stub
+		setLayout(new BorderLayout());
+		
+		List<Auditorium> auditoria = controller.getAuditoria();
+		
+		auditoriumList = new EntityList<Auditorium>(auditoria, new AuditoriumFormatter());  
+		this.add(auditoriumList);
 	}
 	
 	@Override
@@ -18,38 +36,32 @@ public class ChooseAuditoriumView extends View<Auditorium> {
 
 	@Override
 	public boolean areInputsValid() {
-		// TODO Auto-generated method stub
-		return false;
+		return !auditoriumList.isSelectionEmpty();
 	}
 
 	@Override
 	public void doApplyAction() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public Auditorium doGetResultAction() {
-		// TODO Auto-generated method stub
-		return null;
+		return auditoriumList.getSelectedValue();
 	}
 	
 	@Override
 	public void handleRequestedResult(IEntity result) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public String getApplyButtonLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return APPLY_BUTTON_LABEL;
 	}
 	
 	@Override
 	public String getCancelButtonLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return CANCEL_BUTTON_LABEL;
 	}
 
 	@Override
@@ -67,6 +79,29 @@ public class ChooseAuditoriumView extends View<Auditorium> {
 		@Override
 		public ChooseAuditoriumView createView(ViewManager viewManager) {
 			return new ChooseAuditoriumView(viewManager);
+		}
+		
+	}
+	
+	private static class AuditoriumFormatter implements EntityFormatter<Auditorium> {
+
+		@Override
+		public String getLabelText(Auditorium entity) {
+			return entity.getName() + parseIsAirConditioned(entity.isAirConditioned()) + 
+					parseIsSupporting3D(entity.isSupporting3D()) + 
+					parseHasAccessabilityFeatures(entity.hasAccessabilityFeatures());
+		}
+
+		private String parseIsAirConditioned(boolean isAirConditioned) {
+			return isAirConditioned ? ", air conditioned" : "";
+		}
+		
+		private String parseIsSupporting3D(boolean isSupporting3D) {
+			return isSupporting3D ? ", with 3D" : "";
+		}
+		
+		private String parseHasAccessabilityFeatures(boolean hasAccessabilityFeatures) {
+			return hasAccessabilityFeatures ? ", with accessability features" : "";
 		}
 		
 	}
