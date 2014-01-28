@@ -103,7 +103,7 @@ public class ShowShowingsView extends View<Showing> {
 	}
 	private static class ShowingsFormatter implements EntityFormatter<Showing> {
 		
-		private static final String DATE_FORMAT = "hh:mm on dd MMM yyyy";  
+		private static final String DATE_FORMAT = "HH:mm 'on' dd MMM yyyy";  
 		private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
 
 		@Override

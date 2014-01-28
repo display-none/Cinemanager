@@ -33,7 +33,7 @@ public class AddShowingView extends View<Showing> {
 	private static final long serialVersionUID = 1L;
 	private static final String APPLY_BUTTON_LABEL = "Save"; 
 	private static final String CANCEL_BUTTON_LABEL = "Cancel";
-	private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm";  
+	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";  
 	private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT);
 	
 	private JTextField  movieTextField,textfieldDate,auditoriumTextField,employeeTextField; 
@@ -92,7 +92,7 @@ public class AddShowingView extends View<Showing> {
 	}
 
 	public void addDate() { 
-		JLabel dateLabel = new JLabel(" Showing Date (yyyy-MM-dd hh:mm) : "); 
+		JLabel dateLabel = new JLabel(" Showing Date (yyyy-MM-dd HH:mm) : "); 
 		textfieldDate = new JTextField(10); 
 		 
 		JPanel panel = new JPanel(); 

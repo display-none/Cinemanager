@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +26,7 @@ public class Showing implements IEntity {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(nullable=false)
 	private Movie movie;
 	
@@ -35,7 +34,7 @@ public class Showing implements IEntity {
 	@Column(name="date", nullable=false)
 	private Date date;
 	
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(nullable=false)
 	private Auditorium auditorium;
 	
@@ -43,7 +42,7 @@ public class Showing implements IEntity {
 	@Column(name="version", nullable=false)
 	private ShowingVersion version;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="supervising_employee_id", nullable=false)
 	private Employee supervisingEmployee;
 	
