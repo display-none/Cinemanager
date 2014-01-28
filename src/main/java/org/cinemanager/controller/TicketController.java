@@ -25,7 +25,9 @@ public class TicketController {
 		ticket.setPrice(ticketPriceHelper.getPriceForTicketType(addTicketView.getTicketType()));
 		return ticket;
 	}
-	
+	public void deleteTicket(Long id) {
+		dao.remove(id,Ticket.class);
+	}
 	public List<Ticket> getAllTickets() {
 		return dao.getAllTickets();
 	}
