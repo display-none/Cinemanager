@@ -27,12 +27,16 @@ public class ShowShowingsView extends View<Showing> {
 	private static JList<Showing> showingsList;
 	private static final ShowingController controller = ShowingController.getInstance(); 
 	 
-	private ShowShowingsView(ViewManager viewManager) {
+	private ShowShowingsView(ViewManager viewManager, boolean withDeleteOption) {
 		setLayout(new BorderLayout());
 		
-		List<Showing> showings= controller.getAllShowings();
+		List<Showing> showings = controller.getAllShowings();
 		
-		showingsList = new EntityList<Showing>( showings, new ShowingsFormatter(), new ActionListenerCreator());  
+		if(withDeleteOption) {
+			showingsList = new EntityList<Showing>(showings, new ShowingsFormatter(), new ActionListenerCreator());
+		} else {
+			showingsList = new EntityList<Showing>(showings, new ShowingsFormatter());
+		}
 		this.add(showingsList);
 	}
 	
@@ -79,15 +83,21 @@ public class ShowShowingsView extends View<Showing> {
 
 	}
 	
-	public static ViewCreator<ShowShowingsView> getCreator() {
-		return new ShowShowingsViewCreator();
+	public static ViewCreator<ShowShowingsView> getCreator(boolean withDeleteOption) {
+		return new ShowShowingsViewCreator(withDeleteOption);
 	}
 	
 	private static class ShowShowingsViewCreator implements ViewCreator<ShowShowingsView> {
+
+		private boolean withDeleteOption;
 		
+		public ShowShowingsViewCreator(boolean withDeleteOption) {
+			this.withDeleteOption = withDeleteOption;
+		}
+
 		@Override
 		public ShowShowingsView createView(ViewManager viewManager) {
-			return new ShowShowingsView(viewManager);
+			return new ShowShowingsView(viewManager, withDeleteOption);
 		}
 		
 	}

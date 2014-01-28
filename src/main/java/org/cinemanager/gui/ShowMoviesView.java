@@ -27,12 +27,17 @@ public class ShowMoviesView extends View<Movie> {
 	
 	private static JList<Movie> movieList;
 	private static final MovieController controller = MovieController.getInstance();
-	private ShowMoviesView(ViewManager viewManager) {
+	
+	private ShowMoviesView(ViewManager viewManager, boolean withDeleteOption) {
 		setLayout(new BorderLayout());
 		
 		List<Movie> movies = controller.getAllMovies();
 		
-		movieList = new EntityList<Movie>(movies, new MovieFormatter(), new ActionListenerCreator()); 
+		if(withDeleteOption) {
+			movieList = new EntityList<Movie>(movies, new MovieFormatter(), new ActionListenerCreator());
+		} else {
+			movieList = new EntityList<Movie>(movies, new MovieFormatter());
+		}
 		this.add(movieList);
 	}
 	
@@ -78,15 +83,21 @@ public class ShowMoviesView extends View<Movie> {
 
 	}
 	
-	public static ViewCreator<ShowMoviesView> getCreator() {
-		return new ShowMoviesViewCreator();
+	public static ViewCreator<ShowMoviesView> getCreator(boolean withDeleteOption) {
+		return new ShowMoviesViewCreator(withDeleteOption);
 	}
 	
 	private static class ShowMoviesViewCreator implements ViewCreator<ShowMoviesView> {
 
+		private boolean withDeleteOption;
+		
+		public ShowMoviesViewCreator(boolean withDeleteOption) {
+			this.withDeleteOption = withDeleteOption;
+		}
+
 		@Override
 		public ShowMoviesView createView(ViewManager viewManager) {
-			return new ShowMoviesView(viewManager);
+			return new ShowMoviesView(viewManager, withDeleteOption);
 		}
 	} 
 	

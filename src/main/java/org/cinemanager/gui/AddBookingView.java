@@ -248,7 +248,7 @@ public class AddBookingView extends View<Booking> {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			viewManager.requestResultFrom(ShowShowingsView.getCreator());
+			viewManager.requestResultFrom(ShowShowingsView.getCreator(false));
 		}
 	}
 }

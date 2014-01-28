@@ -332,7 +332,7 @@ public class AddShowingView extends View<Showing> {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			viewManager.requestResultFrom(ShowMoviesView.getCreator());
+			viewManager.requestResultFrom(ShowMoviesView.getCreator(false));
 		}
 	}
 	
@@ -348,7 +348,7 @@ public class AddShowingView extends View<Showing> {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			viewManager.requestResultFrom(ShowEmployeesView.getCreator());
+			viewManager.requestResultFrom(ShowEmployeesView.getCreator(false));
 		}
 	}
  }

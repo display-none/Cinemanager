@@ -254,7 +254,7 @@ public class AddTicketView extends View<Ticket> {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			viewManager.requestResultFrom(ShowShowingsView.getCreator());
+			viewManager.requestResultFrom(ShowShowingsView.getCreator(false));
 		}
 	}
 }

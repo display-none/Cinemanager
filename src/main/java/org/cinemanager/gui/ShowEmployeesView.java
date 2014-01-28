@@ -23,13 +23,17 @@ public class ShowEmployeesView extends View<Employee> {
 	private static JList<Employee> employeeList;
 	private static final EmployeeController controller = EmployeeController.getInstance();
 	 
-	private ShowEmployeesView(ViewManager viewManager) {
+	private ShowEmployeesView(ViewManager viewManager, boolean withDeleteOption) {
 		
 		setLayout(new BorderLayout());
 		
 		List<Employee> employees = controller.getAllEmployees();
 		
-		employeeList = new EntityList<Employee>(employees, new EmployeeFormatter(), new ActionListenerCreator());  
+		if(withDeleteOption) {
+			employeeList = new EntityList<Employee>(employees, new EmployeeFormatter(), new ActionListenerCreator());
+		} else {
+			employeeList = new EntityList<Employee>(employees, new EmployeeFormatter());
+		}
 		this.add(employeeList);
 	} 
 
@@ -74,15 +78,21 @@ public class ShowEmployeesView extends View<Employee> {
 
 	}
 	
-	public static ViewCreator<ShowEmployeesView> getCreator() {
-		return new ShowEmployeesViewCreator();
+	public static ViewCreator<ShowEmployeesView> getCreator(boolean withDeleteOption) {
+		return new ShowEmployeesViewCreator(withDeleteOption);
 	}
 	
 	private static class ShowEmployeesViewCreator implements ViewCreator<ShowEmployeesView> {
 
+		private boolean withDeleteOption;
+		
+		public ShowEmployeesViewCreator(boolean withDeleteOption) {
+			this.withDeleteOption = withDeleteOption;
+		}
+
 		@Override
 		public ShowEmployeesView createView(ViewManager viewManager) {
-			return new ShowEmployeesView(viewManager);
+			return new ShowEmployeesView(viewManager, withDeleteOption);
 		}
 	}
 	

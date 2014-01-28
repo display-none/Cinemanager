@@ -128,7 +128,7 @@ public class Main extends JFrame implements ViewManager {
 		JMenu menu = new JMenu("Emplyoee");
 		
 		menu.add(getMenuItem("Add new employee", AddEmployeeView.getCreator()));
-		menu.add(getMenuItem("Show all employees", ShowEmployeesView.getCreator()));
+		menu.add(getMenuItem("Show all employees", ShowEmployeesView.getCreator(true)));
 		
 		menubar.add(menu);
 	}
@@ -137,7 +137,7 @@ public class Main extends JFrame implements ViewManager {
 		JMenu menu = new JMenu("Movie");
 		
 		menu.add(getMenuItem("Add new movie", AddMovieView.getCreator()));
-		menu.add(getMenuItem("Show all movies", ShowMoviesView.getCreator()));
+		menu.add(getMenuItem("Show all movies", ShowMoviesView.getCreator(true)));
 		
 		menubar.add(menu);
 	}
@@ -146,7 +146,7 @@ public class Main extends JFrame implements ViewManager {
 		JMenu menu = new JMenu("Showing");
 		
 		menu.add(getMenuItem("Add new showing", AddShowingView.getCreator()));
-		menu.add(getMenuItem("Show all showings", ShowShowingsView.getCreator()));
+		menu.add(getMenuItem("Show all showings", ShowShowingsView.getCreator(true)));
 		
 		menubar.add(menu);
 	}
