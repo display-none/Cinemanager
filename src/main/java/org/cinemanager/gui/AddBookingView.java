@@ -1,5 +1,7 @@
 package org.cinemanager.gui;
 
+import static org.cinemanager.common.ValidatingHelper.isValidDate;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -77,7 +79,7 @@ public class AddBookingView extends View<Booking> {
 	}
 	
 	public void addDate() { 
-		JLabel dateLabel = new JLabel(" Date :"); 
+		JLabel dateLabel = new JLabel(" Date (Format yyyy-MM-dd) :"); 
 		dateTextField = new JTextField(10); 
 		 
 		JPanel panel = new JPanel(); 
@@ -150,9 +152,33 @@ public class AddBookingView extends View<Booking> {
 	
 	@Override
 	public boolean areInputsValid() {
-		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
+		return isShowingFieldValid() && isSeatFieldValid() && isDateFieldValid();
 	}
-	
+	public boolean isShowingFieldValid() { 
+		boolean result = false; 
+		if( showingTextField.getText().length() > 0 ) { result = true; }  
+		else { 	 
+			JOptionPane.showConfirmDialog(this, "You must choose Showing");
+		}
+		return result;
+	} 
+	public boolean isSeatFieldValid() {    
+		boolean result = false; 
+		if( seatTextField.getText().length() > 0 ) { result = true; }  
+		else { 	 
+			JOptionPane.showConfirmDialog(this, "You must choose Seat");
+		}
+		return result;
+	} 
+	public boolean isDateFieldValid() { 
+		boolean result = false; 
+		if(dateTextField.getText().length() > 0  || !isValidDate(dateTextField.getText(), DATE_FORMAT)) {
+			JOptionPane.showMessageDialog(this, "DateField has incorrect data");
+			return false;
+		}
+		return result;
+		
+	}
 	@Override
 	public void doApplyAction() {
 		bookingController.createAndPersistBooking(this);

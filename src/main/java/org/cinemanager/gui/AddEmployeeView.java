@@ -3,6 +3,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -89,17 +90,30 @@ public class AddEmployeeView extends View<Employee> {
 				!lastNameTextField.getText().isEmpty() || 
 				!employeePositionRadioGroup.isFirstSelected();
 	}
-
+	public boolean isFirstNameValid() { 
+		boolean result = false; 
+		if( firstNameTextField.getText().length() > 0 ) { result = true; }  
+		else { 	 
+			JOptionPane.showConfirmDialog(this, "First name field cannot be empty");
+		}
+		return result;
+	} 
+	public boolean isLastNameValid() { 
+		boolean result = false; 
+		if( lastNameTextField.getText().length() > 0 ) { result = true; }  
+		else { 	 
+			JOptionPane.showConfirmDialog(this, "Last name field cannot be empty");
+		}
+		return result;
+	}
 	@Override
 	public boolean areInputsValid() {
-		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
+		return isFirstNameValid() && isLastNameValid();
 	}
 	
 	@Override
 	public void doApplyAction() {  
-		if( firstNameTextField.getText().length() > 0 && lastNameTextField.getText().length() > 0) {
-			controller.createAndPersistEmployee(this);   
-		}
+			controller.createAndPersistEmployee(this);  
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -112,7 +113,33 @@ public class AddMarathonView extends View<Marathon> {
 
 	@Override
 	public boolean areInputsValid() {
-		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
+		return isMarathonFieldValid() && isEmployeeFieldValid() && isShowingFieldValid(); 
+	}  
+	public boolean isMarathonFieldValid() {
+		boolean result = false; 
+		if( marathonNameTextField.getText().length() > 0 ) { result = true; }  
+		else { 	 
+			JOptionPane.showConfirmDialog(this, "Choose Marathon !");
+		}
+		return result;
+	}
+	 
+	public boolean isEmployeeFieldValid(){
+		boolean result = false; 
+		if( employeeIDTextField.getText().length() > 0 ) { result = true; }  
+		else { 	 
+			JOptionPane.showConfirmDialog(this, "Choose any Employeer !");
+		}
+		return result;
+	}
+	 
+	public boolean isShowingFieldValid() {
+		boolean result = false; 
+		if( showingIDTextField.getText().length() > 0 ) { result = true; }  
+		else { 	 
+			JOptionPane.showConfirmDialog(this, "Choose Show !");
+		}
+		return result;
 	}
 	
 	@Override

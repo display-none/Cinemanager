@@ -163,9 +163,24 @@ public class AddTicketView extends View<Ticket> {
 
 	@Override
 	public boolean areInputsValid() {
-		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
-	}
-	
+		return isSeatFieldValid() && isShowingFieldValid() ;
+	} 
+	public boolean isSeatFieldValid(){ 
+		boolean result = false; 
+		if( seatTextField.getText().length() > 0 ) { result = true; } 
+		else { 
+			JOptionPane.showConfirmDialog(this, "You must choose Seat ID");
+		} 
+		return result;
+	} 
+	public boolean isShowingFieldValid() {
+		boolean result = false; 
+		if( showingTextField.getText().length() > 0 ) { result = true; } 
+		else { 
+			JOptionPane.showConfirmDialog(this, "You must choose Showing ID");
+		} 
+		return result;
+	} 
 	@Override
 	public void doApplyAction() {
 		controller.createAndPersistTicket(this);
