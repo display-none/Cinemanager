@@ -34,13 +34,16 @@ public class ShowBookingsView extends View<Booking> {
 	
 	@Override
 	public boolean hasAnyChanges() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
+	public boolean areInputsValid() {
+		throw new RuntimeException("zaimplementuj mnie. Patrz ShowMoviesView");
+	}
+
+	@Override
 	public void doApplyAction() {
-		// TODO Auto-generated method stub
 
 	}
 

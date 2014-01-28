@@ -251,17 +251,19 @@ public class Main extends JFrame implements ViewManager {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			View<? extends IEntity> view = viewStack.removeLast();
-			
-			if(viewStack.isEmpty()) {
-				view.doApplyAction();
-				removeView();
-			} else {
-				View<? extends IEntity> previousView = viewStack.getLast();
+			if(viewStack.getLast().areInputsValid()) {
+				View<? extends IEntity> view = viewStack.removeLast();
 				
-				IEntity result = view.doGetResultAction();
-				previousView.handleRequestedResult(result);
-				setCurrentView(previousView);
+				if(viewStack.isEmpty()) {
+					view.doApplyAction();
+					removeView();
+				} else {
+					View<? extends IEntity> previousView = viewStack.getLast();
+					
+					IEntity result = view.doGetResultAction();
+					previousView.handleRequestedResult(result);
+					setCurrentView(previousView);
+				}
 			}
 		}
 	}

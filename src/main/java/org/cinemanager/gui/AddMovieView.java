@@ -1,4 +1,7 @@
 package org.cinemanager.gui;
+
+import static org.cinemanager.common.ValidatingHelper.*;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.text.ParseException;
@@ -7,6 +10,7 @@ import java.util.Date;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -15,7 +19,6 @@ import org.cinemanager.common.MovieVersion;
 import org.cinemanager.controller.MovieController;
 import org.cinemanager.entity.IEntity;
 import org.cinemanager.entity.Movie;
-
 
 public class AddMovieView extends View<Movie> { 
 
@@ -75,10 +78,8 @@ public class AddMovieView extends View<Movie> {
 	public int getMinimalAge() {
 		try {
 			return Integer.parseInt(minimalAgeTextField.getText());
-		} catch(NumberFormatException e) {
-			//TODO: throw or show sth
-			throw e;
-		}
+		} catch(NumberFormatException e) { }
+		return 0;
 	}
 	
 	public MovieGenre getGenre() {
@@ -180,6 +181,49 @@ public class AddMovieView extends View<Movie> {
 				!minimalAgeTextField.getText().isEmpty() ||
 				genreComboBox.getSelectedIndex() != 0 ||
 				!versionRadioGroup.isFirstSelected();
+	}
+
+	@Override
+	public boolean areInputsValid() {
+		return isTitleValid() &&
+				isReleaseDateValid() &&
+				isRuntimeValid() &&
+				isMinimalAgeValid();
+	}
+
+	private boolean isTitleValid() {
+		if(titleTextField.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(this, "Title cannot be empty");
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isReleaseDateValid() {
+		String releaseDate = releaseDateTextField.getText();
+		if(releaseDate.isEmpty() || !isValidDate(releaseDate, DATE_FORMAT)) {
+			JOptionPane.showMessageDialog(this, "Incorrect release date");
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isRuntimeValid() {
+		String runtime = runtimeTextField.getText();
+		if(!isNonNegativeInteger(runtime)) {
+			JOptionPane.showMessageDialog(this, "Runtime has to be a non-negative integer");
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isMinimalAgeValid() {
+		String minimalAge = minimalAgeTextField.getText();
+		if(!minimalAge.isEmpty() && !isNonNegativeInteger(minimalAge)) {
+			JOptionPane.showMessageDialog(this, "Minimal age has to be a non-negative integer");
+			return false;
+		}
+		return true;
 	}
 
 	@Override

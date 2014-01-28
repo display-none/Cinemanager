@@ -89,6 +89,11 @@ public class AddEmployeeView extends View<Employee> {
 				!lastNameTextField.getText().isEmpty() || 
 				!employeePositionRadioGroup.isFirstSelected();
 	}
+
+	@Override
+	public boolean areInputsValid() {
+		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
+	}
 	
 	@Override
 	public void doApplyAction() {  

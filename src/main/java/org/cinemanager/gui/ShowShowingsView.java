@@ -39,9 +39,13 @@ public class ShowShowingsView extends View<Showing> {
 	}
 
 	@Override
-	public void doApplyAction() {
-		// TODO Auto-generated method stub
+	public boolean areInputsValid() {
+		throw new RuntimeException("zaimplementuj mnie. Patrz ShowMoviesView");
+	}
 
+	@Override
+	public void doApplyAction() {
+		
 	}
 
 	@Override

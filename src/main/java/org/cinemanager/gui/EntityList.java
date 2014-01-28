@@ -45,11 +45,16 @@ public class EntityList<T extends IEntity> extends JList<T> {
 	
 	@Override
 	public T getSelectedValue() {
-		if(deletedItems.get(getSelectedIndex())) {
+		if(isItemDeleted()) {
 			JOptionPane.showMessageDialog(this, "This item was deleted and cannot be returned");
 			return null;
 		}
 		return super.getSelectedValue();
+	}
+
+	private boolean isItemDeleted() {
+		int index = getSelectedIndex();
+		return index != -1 ? deletedItems.get(index) : false;
 	}
 
 	private void createModel(List<T> elements) {

@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import org.cinemanager.controller.MarathonController;
 import org.cinemanager.entity.Employee;
 import org.cinemanager.entity.IEntity;
@@ -107,6 +108,11 @@ public class AddMarathonView extends View<Marathon> {
 		return 	!marathonNameTextField.getText().isEmpty() || 
 				!employeeIDTextField.getText().isEmpty() || 
 				!showingIDTextField.getText().isEmpty();  
+	}
+
+	@Override
+	public boolean areInputsValid() {
+		throw new RuntimeException("zaimplementuj mnie. Patrz AddMovieView");
 	}
 	
 	@Override
