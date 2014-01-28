@@ -33,7 +33,7 @@ public class Auditorium implements IEntity {
 	@Column(name="3d_support")
 	private boolean supporting3D = false;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name="auditorium_id", referencedColumnName="id")
 	private List<Seat> seats;
 	

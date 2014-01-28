@@ -68,11 +68,14 @@ public class ChooseSeatView extends View<Seat> {
 	}
 	
 	private void addSelectedIndicator() {
-		add(new JLabel("selected: "));
+		JPanel panel = new JPanel();
+		panel.add(new JLabel("selected: "));
 		
 		selectedSeatTextArea = new TextArea();
 		selectedSeatTextArea.setEditable(false);
-		add(selectedSeatTextArea);
+		panel.add(selectedSeatTextArea);
+		
+		add(panel, BorderLayout.SOUTH);
 	}
 	
 	private void updateSelectedSeatIndicator() {

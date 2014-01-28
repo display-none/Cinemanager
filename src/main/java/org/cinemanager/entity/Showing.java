@@ -30,11 +30,11 @@ public class Showing implements IEntity {
 	@JoinColumn(nullable=false)
 	private Movie movie;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIME)
 	@Column(name="date", nullable=false)
 	private Date date;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(nullable=false)
 	private Auditorium auditorium;
 	

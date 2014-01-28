@@ -42,13 +42,12 @@ public class ShowShowingsView extends View<Showing> {
 	
 	@Override
 	public boolean hasAnyChanges() {
-		// TODO Auto-generated method stub
-		return false;
+		return !showingsList.isSelectionEmpty();
 	}
 
 	@Override
 	public boolean areInputsValid() {
-		throw new RuntimeException("zaimplementuj mnie. Patrz ShowMoviesView");
+		return true;
 	}
 
 	@Override
