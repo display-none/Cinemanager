@@ -1,6 +1,7 @@
 package org.cinemanager.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
@@ -26,7 +27,7 @@ public class ChooseSeatView extends View<Seat> {
 	private static final String APPLY_BUTTON_LABEL = "Done";
 	private static final String CANCEL_BUTTON_LABEL = "Back";
 	
-	private TextArea selectedSeatTextArea;
+	private JLabel selectedSeatLabel;
 	private final Table<Integer, Integer, Seat> seatTable;
 	
 	private int selectedRow = -1;
@@ -48,17 +49,23 @@ public class ChooseSeatView extends View<Seat> {
 	}
 
 	private void addScreenLabel() {
-		add(new JLabel("screen"), BorderLayout.NORTH);
+		JPanel panel = new JPanel();
+		panel.add(new JLabel("screen"));
+		add(panel, BorderLayout.NORTH);
 	}
 
 	private void addSeatGrid(int rows, int columns, Table<Integer, Integer, Seat> seatTable) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(rows, columns));
 		
-		for(int i = 0; i < columns; i++) {
-			for(int j = 0; j < rows; j++) {
-				if(seatTable.contains(j, i)) {
-					panel.add(createChooseSeatButton(j, i));
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < columns; j++) {
+				if(seatTable.contains(i, j)) {
+					if(seatTable.get(i, j).isVip()) {
+						panel.add(createChooseSeatButtonVip(i, j));
+					} else {
+						panel.add(createChooseSeatButton(i, j));
+					}
 				} else {
 					panel.add(new JLabel());
 				}
@@ -71,15 +78,14 @@ public class ChooseSeatView extends View<Seat> {
 		JPanel panel = new JPanel();
 		panel.add(new JLabel("selected: "));
 		
-		selectedSeatTextArea = new TextArea();
-		selectedSeatTextArea.setEditable(false);
-		panel.add(selectedSeatTextArea);
+		selectedSeatLabel = new JLabel();
+		panel.add(selectedSeatLabel);
 		
 		add(panel, BorderLayout.SOUTH);
 	}
 	
 	private void updateSelectedSeatIndicator() {
-		selectedSeatTextArea.setText(convertNumberToLetter(selectedRow) + selectedColumn);
+		selectedSeatLabel.setText(convertNumberToLetter(selectedRow) + selectedColumn);
 	}
 
 	private Table<Integer, Integer, Seat> createSeatTable(List<Seat> seats, int rows, int columns) {
@@ -88,6 +94,12 @@ public class ChooseSeatView extends View<Seat> {
 			seatTable.put(seat.getRow(), seat.getNumber(), seat);
 		}
 		return seatTable;
+	}
+	
+	private JButton createChooseSeatButtonVip(int row, int column) {
+		JButton button = createChooseSeatButton(row, column);
+		button.setBackground(Color.darkGray);
+		return button;
 	}
 	
 	private JButton createChooseSeatButton(int row, int column) {

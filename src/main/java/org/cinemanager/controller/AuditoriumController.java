@@ -46,13 +46,13 @@ public class AuditoriumController {
 		auditorium.setSupporting3D(false);
 		List<Seat> seats = Lists.newArrayList();
 		for(int i = 0; i < 15; i++) {
-			if(i != 6 && i != 7 && i != 8 && i != 9) {
+			if(i != 5 && i != 6 && i != 7 && i != 8) {
 				seats.add(new Seat(0, i));
 			}
 		}
 		for(int i = 0; i < 15; i++) {
 			for(int j = 1; j < 8; j++) {
-				if(i != 7 && i != 8) {
+				if(i != 6 && i != 7) {
 					seats.add(new Seat(j, i));
 				}
 			}
@@ -77,6 +77,7 @@ public class AuditoriumController {
 		for(int i = 1; i < 10; i = i+2) {
 			Seat seat = new Seat(10, i);
 			seat.setVip(true);
+			seats.add(seat);
 		}
 		
 		for(int i = 0; i < 10; i++) {
