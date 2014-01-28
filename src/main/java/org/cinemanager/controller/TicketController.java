@@ -22,7 +22,7 @@ public class TicketController {
 		ticket.setSeat(addTicketView.getSeat());
 		ticket.setShowing(addTicketView.getShowing());
 		ticket.setType(addTicketView.getTicketType());
-		ticket.setPrice(ticketPriceHelper.getPriceForTicketType(addTicketView.getTicketType()));
+		ticket.setPrice(ticketPriceHelper.getPriceForTicketType(addTicketView.getTicketType(), addTicketView.getSeat().isVip()));
 		return ticket;
 	}
 	

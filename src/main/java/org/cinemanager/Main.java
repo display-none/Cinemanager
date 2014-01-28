@@ -6,10 +6,14 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -17,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
+import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 
 import org.cinemanager.controller.AuditoriumController;
@@ -58,15 +63,17 @@ public class Main extends JFrame implements ViewManager {
 	public Main() {
 		super(FRAME_TITLE);
 		setBounds(100, 50, 1000, 500);  
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
+
 	private void createGui() {
 		setLayout(new BorderLayout());
 		  
 		addMenu();
 		addMainPanel();
 		addButtons();
+		
+		bindEnterKeyToApplyAction();
 	}
 
 	public void showGui() {
@@ -197,6 +204,21 @@ public class Main extends JFrame implements ViewManager {
 		
 		repaint();
 		revalidate();
+	}
+
+	private void bindEnterKeyToApplyAction() {
+		mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false), "enter pressed");
+		mainPanel.getActionMap().put("enter pressed", new AbstractAction() {
+			
+			private ApplyActionListener listener = new ApplyActionListener();
+			
+	        @Override
+	        public void actionPerformed(ActionEvent ae) {
+	            if(!viewStack.isEmpty()) {
+	            	listener.actionPerformed(null);
+	            }
+	        }
+	    });
 	}
 	
 	private boolean areThereChangesInCurrentView() {

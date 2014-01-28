@@ -56,7 +56,7 @@ public class ChooseSeatView extends View<Seat> {
 
 	private void addSeatGrid(int rows, int columns, Table<Integer, Integer, Seat> seatTable) {
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(rows, columns));
+		panel.setLayout(new GridLayout(rows, columns, 2, 2));
 		
 		for(int i = 0; i < rows; i++) {
 			for(int j = 0; j < columns; j++) {
@@ -98,14 +98,13 @@ public class ChooseSeatView extends View<Seat> {
 	
 	private JButton createChooseSeatButtonVip(int row, int column) {
 		JButton button = createChooseSeatButton(row, column);
-		button.setBackground(Color.darkGray);
+		button.setForeground(Color.red);
 		return button;
 	}
 	
 	private JButton createChooseSeatButton(int row, int column) {
 		JButton button = new JButton(convertNumberToLetter(row) + column);
 		button.addActionListener(new ChooseSeatListener(row, column));
-		button.setBorder(new EmptyBorder(3, 3, 3, 3));
 		return button;
 	}
 

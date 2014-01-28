@@ -100,7 +100,11 @@ public class AddTicketView extends View<Ticket> {
 	}
 	
 	private void updatePrice() {
-		int newPriceInt = ticketPriceHelper.getPriceForTicketType(ticketTypeRadioGroup.getSelected());
+		boolean vip = false;
+		if(seat != null && seat.isVip()) {
+			vip = true;
+		}
+		int newPriceInt = ticketPriceHelper.getPriceForTicketType(ticketTypeRadioGroup.getSelected(), vip);
 		String newPrice = String.valueOf((int)newPriceInt/100) + "." + String.valueOf(newPriceInt % 100 - newPriceInt % 10) + String.valueOf(newPriceInt % 10);
 		priceTextField.setText(newPrice);
 	}

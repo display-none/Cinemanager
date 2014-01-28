@@ -4,17 +4,23 @@ import org.cinemanager.common.TicketType;
 
 public class TicketPriceHelper {
 
-	public int getPriceForTicketType(TicketType ticketType) {
+	public int getPriceForTicketType(TicketType ticketType, boolean vip) {
+		int price;
 		switch(ticketType) {
-		case NORMAL:
-			return 2500;
-		case STUDENT:
-		case SENIOR:
-			return 2000;
-		case CHILD:
-			return 1500;
-		default:
-			throw new RuntimeException("some bullshit");
+			case NORMAL:
+				price = 2500;
+				break;
+			case STUDENT:
+			case SENIOR:
+				price = 2000;
+				break;
+			case CHILD:
+				price = 1500;
+				break;
+			default:
+				throw new RuntimeException("some bullshit");
 		}
+		if(vip) price = price * 2;
+		return price;
 	}
 }
