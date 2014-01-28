@@ -57,7 +57,7 @@ public class Main extends JFrame implements ViewManager {
 	
 	public Main() {
 		super(FRAME_TITLE);
-		setBounds(100, 50, 800, 500);  
+		setBounds(100, 50, 1000, 500);  
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
 	}
 	
