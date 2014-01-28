@@ -90,21 +90,23 @@ public class AddEmployeeView extends View<Employee> {
 				!lastNameTextField.getText().isEmpty() || 
 				!employeePositionRadioGroup.isFirstSelected();
 	}
-	public boolean isFirstNameValid() { 
 	
-		if( firstNameTextField.getText().length() > 0 ) {
+	public boolean isFirstNameValid() { 
+		if(firstNameTextField.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(this, "First name field cannot be empty"); 
 			return false;
 		}
 		return true;
-	} 
+	}
+	
 	public boolean isLastNameValid() { 
-		if( lastNameTextField.getText().length() > 0 ) {  
+		if(lastNameTextField.getText().isEmpty()) {  
 			JOptionPane.showMessageDialog(this, "Last name field cannot be empty"); 
 			return false;
 		}
 		return true;
 	}
+	
 	@Override
 	public boolean areInputsValid() {
 		return isFirstNameValid() && isLastNameValid();

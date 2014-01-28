@@ -163,18 +163,18 @@ public class AddTicketView extends View<Ticket> {
 
 	@Override
 	public boolean areInputsValid() {
-		return isSeatFieldValid() && isShowingFieldValid() ;
+		return isSeatChosen() && isShowingChosen() ;
 	} 
-	public boolean isSeatFieldValid(){ 
-		if( seatTextField.getText().isEmpty() ) {
-			JOptionPane.showMessageDialog(this, "You must choose Seat ID"); 
+	public boolean isSeatChosen(){ 
+		if(seat == null) {
+			JOptionPane.showMessageDialog(this, "You must choose a seat"); 
 			return false;
 		} 
 		return true;
 	} 
-	public boolean isShowingFieldValid() {
-		if( showingTextField.getText().isEmpty() ) {
-			JOptionPane.showMessageDialog(this, "You must choose Showing ID"); 
+	public boolean isShowingChosen() {
+		if(showing == null) {
+			JOptionPane.showMessageDialog(this, "You must choose showing"); 
 			return false;
 		} 
 		return true;
