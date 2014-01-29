@@ -80,7 +80,7 @@ public class AddTicketView extends View<Ticket> {
 	
 	private void updateSeatDetails() {
 		if(seat != null) {
-			seatTextField.setText("seat " + convertNumberToLetter(seat.getRow()) + " " + seat.getNumber());
+			seatTextField.setText("seat " + convertNumberToLetter(seat.getRow()) + " " + seat.getNumber() + (seat.isVip() ? " vip" : ""));
 		}
 	}
 	

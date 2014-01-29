@@ -3,15 +3,20 @@ package org.cinemanager.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import org.cinemanager.common.ShowingVersion;
 import org.cinemanager.controller.BookingController;
 import org.cinemanager.entity.Booking;
 import org.cinemanager.entity.IEntity;
+import org.cinemanager.entity.Seat;
 import org.cinemanager.gui.EntityList.DeleteActionListenerCreator;
 import org.cinemanager.gui.EntityList.EntityFormatter;
 
@@ -91,12 +96,35 @@ public class ShowBookingsView extends View<Booking> {
 	} 
 	
 	private static class BookingFormatter implements EntityFormatter<Booking> {
-
+		private static final String DATE_FORMAT = "HH:mm 'on' dd MMM yyyy";  
+		private static final SimpleDateFormat dateParser = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH); 
+		
 		@Override
 		public String getLabelText(Booking entity) {
-			return null;
+			return "booking for " + entity.getShowing().getMovie().getTitle() + parseVersion(entity.getShowing().getVersion()) + 
+					" at " + parseDate(entity.getShowing().getDate()) + 
+					" seat " + parseSeat(entity.getSeat());
 		}
 		
+		private String parseVersion(ShowingVersion version) {
+			if(version == ShowingVersion.VERSION_2D) {
+				return " 2D";
+			} else {
+				return " 3D";
+			}
+		}
+
+		private String parseDate(Date date) {
+			return dateParser.format(date);
+		}
+
+		private String parseSeat(Seat seat) {
+			return convertNumberToLetter(seat.getRow()) + seat.getNumber() + (seat.isVip() ? " vip" : "");
+		}
+		
+		private static String convertNumberToLetter(int i) {
+			return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".substring(i, i+1);
+		}
 	}
 	
 	private static class ActionListenerCreator implements DeleteActionListenerCreator {
