@@ -22,7 +22,7 @@ public class BookingDao extends Dao<Booking> {
 	public List<Booking> getNotExpiredBookingsForShowing(Long showingId) {
 		EntityManager em = createContext();
 		TypedQuery<Booking> query = em.createQuery("select b from Booking b where b.showing.id = :showingId and b.expirationDate > :now", Booking.class);
-		query.setParameter("showingId", showingId).setParameter("now", new Date(), TemporalType.TIME);
+		query.setParameter("showingId", showingId).setParameter("now", new Date(), TemporalType.TIMESTAMP);
 		List<Booking> result = query.getResultList();
 		closeContext();
 		return result;

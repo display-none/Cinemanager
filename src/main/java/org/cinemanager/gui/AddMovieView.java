@@ -1,6 +1,7 @@
 package org.cinemanager.gui;
 
 import static org.cinemanager.common.ValidatingHelper.*;
+import static org.cinemanager.common.ViewUtils.*;
 
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -38,7 +39,7 @@ public class AddMovieView extends View<Movie> {
 	private MovieController controller = MovieController.getInstance();
 	
 	private AddMovieView() {
-		this.setLayout(new GridLayout(7, 2));
+		this.setLayout(new GridLayout(8, 2));
 		
 		addPanelTitle(); 
 		addTitle(); 
@@ -91,58 +92,59 @@ public class AddMovieView extends View<Movie> {
 	}
 	
 	private void addPanelTitle() {
+		JPanel panel = createNicePanel(1);
 		JLabel label = new JLabel( " Add your new movie ");
 		label.setFont(new Font(null, Font.BOLD, 15));
-		this.add(label);
+		panel.add(label);
+		this.add(panel);
 	}
 	
 	private void addTitle() {
+		JPanel panel = createNicePanel(2);
+
 		JLabel title = new JLabel(" Title : "); 
 		titleTextField = new JTextField(10); 
 		
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,2));  
 		panel.add(title); 
 		panel.add(titleTextField); 
 		this.add(panel);
 	}
 	
 	private void addReleaseDate() {
+		JPanel panel = createNicePanel(2);
+
 		JLabel releaseDate = new JLabel( " Release Date (Format yyyy-MM-dd ):  "); 
 		releaseDateTextField = new JTextField(10);
 		
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,2)); 
 		panel.add(releaseDate);  
 		panel.add(releaseDateTextField); 
 		this.add(panel);
 	}
 	
 	private void addRuntime() {
+		JPanel panel = createNicePanel(2);
+
 		JLabel runtime = new JLabel( " Runtime (minutes) :  "); 
 		runtimeTextField = new JTextField(10); 
 		
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,2)); 
 		panel.add(runtime); 
 		panel.add(runtimeTextField);
 		this.add(panel);
 	}
 	
 	private void addMinimalAge() {
+		JPanel panel = createNicePanel(1);
+
 		JLabel age = new JLabel( " Minimal Age :  "); 
 		minimalAgeTextField = new JTextField(10); 
 		
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,2));
 		panel.add(age); 
 		panel.add(minimalAgeTextField);
 		this.add(panel);
 	}
 	
 	private void addVersion() {
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1));
+		JPanel panel = createNicePanel(2);
 		
 		JLabel version = new JLabel( " Version :  "); 
 		panel.add(version);
@@ -153,11 +155,11 @@ public class AddMovieView extends View<Movie> {
 	}
 	
 	private void addGenre() {
+		JPanel panel = createNicePanel(2);
+
 		JLabel genreLabel = new JLabel( " Genre :  "); 
 		genreComboBox = new JComboBox<MovieGenre>(MovieGenre.values()); 
 		
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1)); 
 		panel.add(genreLabel); 
 		panel.add(genreComboBox);
 		this.add(panel);

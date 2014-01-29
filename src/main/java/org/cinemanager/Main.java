@@ -128,7 +128,6 @@ public class Main extends JFrame implements ViewManager {
 		
 		menu.add(getMenuItem("Add new ticket", AddTicketView.getCreator())); 
 		menu.add(getMenuItem("Show Tickets", ShowTicketsView.getCreator())); 
-		menu.add(getMenuItem("Add new group ticket", AddGroupTicketView.getCreator()));  
 		
 		menubar.add(menu);
 	}

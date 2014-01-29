@@ -1,6 +1,7 @@
 package org.cinemanager.gui;
 
 import static org.cinemanager.common.ValidatingHelper.*;
+import static org.cinemanager.common.ViewUtils.*;
 
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -47,7 +48,7 @@ public class AddShowingView extends View<Showing> {
 	
 	private AddShowingView(ViewManager viewManager) {
 		this.viewManager = viewManager;
-		this.setLayout(new GridLayout(7,1));  
+		this.setLayout(new GridLayout(8,1));  
 		
 		addTitle();
 		addAuditorium();
@@ -57,16 +58,17 @@ public class AddShowingView extends View<Showing> {
 		addDate();
 	}
 	
-	public void addTitle(){ 
+	public void addTitle() {
+		JPanel panel = createNicePanel(1);
 		JLabel showingTitleLabel = new JLabel("Add new Showing"); 
 		showingTitleLabel.setFont(new Font("Bold",Font.BOLD,15)); 
 		 
-		this.add(showingTitleLabel);
+		panel.add(showingTitleLabel);
+		this.add(panel);
 	}
 
 	public void addMovie() { 
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1));
+		JPanel panel = createNicePanel(3);
 		
 		JLabel movieLabel = new JLabel(" Movie : ");   		
 		panel.add(movieLabel); 
@@ -92,11 +94,10 @@ public class AddShowingView extends View<Showing> {
 	}
 
 	public void addDate() { 
+		JPanel panel = createNicePanel(2);
+		
 		JLabel dateLabel = new JLabel(" Showing Date (yyyy-MM-dd HH:mm) : "); 
 		textfieldDate = new JTextField(10); 
-		 
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1)); 
 		 
 		panel.add(dateLabel); 
 		panel.add(textfieldDate); 
@@ -105,8 +106,7 @@ public class AddShowingView extends View<Showing> {
 	}
 
 	public void addAuditorium(){
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1));
+		JPanel panel = createNicePanel(3);
 		
 		JLabel auditoriumLabel = new JLabel("Auditorium : "); 
 		panel.add(auditoriumLabel);
@@ -131,8 +131,7 @@ public class AddShowingView extends View<Showing> {
 	}
 
 	public void addVersion() { 
-		JPanel panel = new JPanel(); 
-		panel.setLayout(new GridLayout(1,1));
+		JPanel panel = createNicePanel(2);
 		
 		JLabel versionLabel = new JLabel("Version: ");
 		panel.add(versionLabel);
@@ -157,8 +156,7 @@ public class AddShowingView extends View<Showing> {
 	}
 
 	public void addEmployee(){ 
-		JPanel panel = new JPanel();  
-		panel.setLayout(new GridLayout(1,1));
+		JPanel panel = createNicePanel(3);
 		
 		JLabel empolyeeLabel = new JLabel("Supervising employee : "); 
 		panel.add(empolyeeLabel);

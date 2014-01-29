@@ -90,4 +90,17 @@ public class Showing implements IEntity {
 	public void setMovie(Movie movie) {
 		this.movie = movie;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) return false;
+		
+		Showing showing = (Showing) obj;
+		return this.id.equals(showing.id);
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.id.hashCode();
+	}
 }

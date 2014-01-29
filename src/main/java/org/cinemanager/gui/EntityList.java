@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
 import java.util.BitSet;
 import java.util.List;
@@ -25,6 +26,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
 import org.cinemanager.entity.IEntity;
+import org.cinemanager.entity.Showing;
 
 public class EntityList<T extends IEntity> extends JList<T> {
 
@@ -33,6 +35,7 @@ public class EntityList<T extends IEntity> extends JList<T> {
 	private EntityFormatter<T> entityFormatter;
 	private DeleteActionListenerCreator deleteActionListenerCreator;
 	private BitSet deletedItems;
+	private EntityListCellRenderer cellRenderer;
 	
 	/**
 	 *	Creates an EntityList without delete button 
@@ -47,13 +50,24 @@ public class EntityList<T extends IEntity> extends JList<T> {
 		this.deletedItems = new BitSet(elements.size());
 		
 		createModel(elements);
-		setCellRenderer(new EntityListCellRenderer(elements.size(), this));
+		cellRenderer = new EntityListCellRenderer(elements.size());
+		setCellRenderer(cellRenderer);
 	}
 	
 	public void addElement(T element) {
 		((DefaultListModel<T>) getModel()).addElement(element);
+		cellRenderer.removeMouseListener();
+		cellRenderer = new EntityListCellRenderer(getModel().getSize());
+		setCellRenderer(cellRenderer);
 		this.invalidate();
-		setCellRenderer(new EntityListCellRenderer(getModel().getSize(), this));
+	}
+	
+	public void removeElement(T element) {
+		((DefaultListModel<T>) getModel()).removeElement(element);
+		cellRenderer.removeMouseListener();
+		cellRenderer = new EntityListCellRenderer(getModel().getSize());
+		setCellRenderer(cellRenderer);
+		this.invalidate();
 	}
 	
 	@Override
@@ -98,9 +112,12 @@ public class EntityList<T extends IEntity> extends JList<T> {
 		private static final int CELL_WIDTH = 750;
 		JPanel[] panels;
 		
-		public EntityListCellRenderer(int size, JList<T> jList) {
+		private MouseListener mouseListener;
+		
+		public EntityListCellRenderer(int size) {
 			panels = new JPanel[size];
-			jList.addMouseListener(new FuckingClicker());
+			mouseListener = new FuckingClicker();
+			EntityList.this.addMouseListener(mouseListener);
 		}
 		
 		@Override
@@ -169,6 +186,10 @@ public class EntityList<T extends IEntity> extends JList<T> {
 				}
 			}
 			deletedItems.set(index);
+		}
+		
+		public void removeMouseListener() {
+			EntityList.this.removeMouseListener(mouseListener);
 		}
 		
 		private class DeleteSuccessfulCallback implements ActionListener {
